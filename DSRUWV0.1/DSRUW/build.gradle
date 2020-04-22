@@ -1,0 +1,40 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        config {
+            storeFile file("release.keystore")
+            keyAlias 'vihva'
+            keyPassword 'vishva'
+            storePassword 'vishva'
+        }
+    }
+    compileSdkVersion 23
+    buildToolsVersion "26.0.0"
+    defaultConfig {
+        applicationId "com.example.vishvanath.dsruwv01"
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+           /* signingConfig signingConfig.release
+            minifyEnabled true
+            shrinkResources true*/
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug{
+            minifyEnabled false
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.mcxiaoke.volley:library:1.0.19'
+}

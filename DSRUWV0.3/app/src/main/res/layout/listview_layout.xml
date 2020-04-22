@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="420dp"
+        android:layout_height="95dp"
+        android:background="#bb00ff15"
+        android:clickable="true"
+        android:foreground="#00fd0303"
+        style="@style/Animation.AppCompat.Dialog"
+        android:descendantFocusability="blocksDescendants"
+        android:focusable="false"
+        >
+
+        <ImageView
+            android:layout_width="@dimen/abc_text_size_display_4_material"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/tvfuritname"
+            android:layout_alignBottom="@+id/ibut"
+            android:layout_toLeftOf="@+id/tvfuritname" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/tvfuritname"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:textColorHighlight="#f90303"
+            android:textIsSelectable="true"
+            android:textSize="@dimen/new2"
+            android:layout_alignLeft="@+id/textView2"
+            android:layout_alignStart="@+id/textView2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
+            android:id="@+id/tvdescription"
+            android:textStyle="bold"
+            android:layout_below="@+id/textView2"
+            android:layout_centerHorizontal="true"
+            android:textSize="@dimen/new3" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Price Per Dish in (INR)/-"
+            android:id="@+id/textView2"
+            android:textStyle="normal|bold"
+            android:layout_below="@+id/tvfuritname"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignLeft="@+id/tvdescription"
+            android:layout_alignStart="@+id/tvdescription"
+            android:textSize="@dimen/new4" />
+
+    <Button
+        style="@style/btus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Order Food"
+        android:id="@+id/ibut"
+        android:layout_below="@+id/tvdescription"
+        android:layout_toRightOf="@+id/imageView"
+        android:textSize="@dimen/new2" />
+</RelativeLayout>

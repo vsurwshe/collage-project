@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:textAlignment="center"
+    tools:context="com.example.vishvanath.dssruwtv21.Home"
+    android:background="#98f8fc02">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|top"
+        android:background="#ffffff">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="WEL-COME "
+            android:id="@+id/textView"
+            android:fontFamily="serif"
+            android:layout_gravity="center_horizontal"
+            android:textAlignment="center"
+            android:textColor="#0022ff"
+            android:textSize="50dp"
+            android:textStyle="bold"
+            android:textColorHighlight="#fe0202"
+            android:gravity="top|center"
+            android:foreground="#ff0000" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="TO"
+            android:id="@+id/textView2"
+            android:layout_gravity="center_horizontal"
+            android:textAlignment="center"
+            android:textColor="#ff0000"
+            android:textSize="50dp"
+            android:textStyle="bold"
+            android:textColorHighlight="#fe0202"
+            android:gravity="top|center"
+            android:foreground="#ff0000"
+            android:fontFamily="TimeNewRoman" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="315dp"
+        android:layout_gravity="center"
+        android:background="#85f996"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:src="@drawable/logo"
+            android:scaleType="center"
+            android:focusable="true"
+            android:layout_alignWithParentIfMissing="false"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView2"
+            android:layout_below="@+id/imageView"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/back2"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentBottom="true"
+            android:layout_alignWithParentIfMissing="false"
+            android:layout_alignParentRight="false" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="?android:attr/textColorLinkInverse"
+        android:fontFamily="sans-serif-condensed"
+        android:lineSpacingExtra="25sp"
+        android:text="Here Start Place Order"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_gravity="bottom|center" />
+
+
+</FrameLayout>

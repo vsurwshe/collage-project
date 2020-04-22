@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:id="@+id/na"
+            android:hint="Enter Your Name Sir"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:layout_width="355dp"
+            android:layout_height="wrap_content"
+            android:text="Start Your Order"
+            android:id="@+id/strt"
+            android:layout_gravity="center"
+            android:layout_below="@+id/na"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:id="@+id/imageView3"
+            android:src="@drawable/logo"
+            android:layout_above="@+id/textView5"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wel-Come To"
+            android:id="@+id/textView5"
+            android:layout_gravity="center_horizontal"
+            android:textSize="@dimen/new1"
+            android:textColor="#fb0000"
+            android:layout_marginBottom="44dp"
+            android:layout_above="@+id/na"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+
+</LinearLayout>

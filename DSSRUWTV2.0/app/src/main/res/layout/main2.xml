@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#88ff00">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:id="@+id/relativeLayout2"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView3"
+            android:background="#fffefe"
+            android:layout_gravity="center_horizontal|top">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView2"
+                android:src="@drawable/logo"
+                android:layout_below="@+id/textView4"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="to"
+                android:id="@+id/textView4"
+                android:textSize="@dimen/llt"
+                android:textColor="#f90404"
+                android:layout_below="@+id/textView3"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="WEL-COME"
+                android:id="@+id/textView3"
+                android:textSize="@dimen/lt"
+                android:textColorHighlight="#fb0505"
+                android:textColor="#17fb02"
+                android:shadowColor="#edfbb2b2"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/n"
+                android:hint="Enter Your Name"
+                android:layout_below="@+id/imageView2"
+                android:layout_centerHorizontal="true"
+                android:textColor="#ff0000"
+                android:textAlignment="@android:integer/config_shortAnimTime" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/mo"
+                android:hint="Enter Your Mobile No"
+                android:layout_below="@+id/n"
+                android:layout_centerHorizontal="true"
+                android:textColor="#ff0000"
+                android:textAlignment="@android:integer/config_shortAnimTime" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Order Food"
+                android:id="@+id/m2o"
+                android:layout_alignLeft="@+id/textView3"
+                android:layout_alignStart="@+id/textView3"
+                android:layout_alignTop="@+id/m2c"
+                android:textColor="#0033ff" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancle Order"
+                android:id="@+id/m2c"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@+id/textView4"
+                android:layout_toEndOf="@+id/textView4"
+                android:textColor="#0033ff" />
+
+        </RelativeLayout>
+    </FrameLayout>
+
+</RelativeLayout>
