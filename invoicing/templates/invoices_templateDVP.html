@@ -1,0 +1,154 @@
+<!-- Edit this file to change the layout of the detail view print preview page -->
+
+<style type="text/css"><!--  
+	@media print{.displayOnly {display: none;}}
+	td.TableHeaderPrint{
+		border-bottom: dotted 1px black;
+	}
+	.TableHeaderPrint{
+		font-weight: bold;
+	}
+	.TableTitlePrint{
+		font-size: 130%;
+		font-weight: bold;
+	}
+	.TableBodyPrint{
+		padding-left: .5em;
+		border-bottom: dotted 1px black;
+	}
+	*{
+		font-family: arial,sans-serif;
+	}
+	--></style><br />
+<table border="0" bordercolor="silver" cellpadding="2" cellspacing="0" width="100%">
+	<tr>
+		<td>
+			<div class=TableTitlePrint>Invoice <%%VALUE(code)%%></div>
+			<div align="center" class="displayOnly">
+				<input type="image" src="back.gif">
+				<input type="image" name="deselect" src="deselect.gif">
+				</div>
+			</td>
+		</tr>
+	<tr>
+		<td>
+			<table width="100%">
+				<!--<tr>
+					<td class="TableHeaderPrint" valign="top">
+						<div class="TableHeaderPrint" style="text-align: right;">ID</div>
+						</td>
+					<td class="TableBodyPrint" xwidth="300" valign="top"><%%VALUE(id)%%>&nbsp;&nbsp;</td>
+					</tr>
+				<tr>
+					<td class="TableHeaderPrint" valign="top">
+						<div class="TableHeaderPrint" style="text-align: right;">Code</div>
+						</td>
+					<td class="TableBodyPrint" xwidth="300" valign="top"><%%VALUE(code)%%>&nbsp;&nbsp;</td>
+					</tr>-->
+				<tr>
+					<td class="TableHeaderPrint" valign="top">
+						<div class="TableHeaderPrint" style="text-align: right;">Status</div>
+						</td>
+					<td class="TableBodyPrint" xwidth="300" valign="top"><%%COMBOTEXT(status)%%>&nbsp;&nbsp;</td>
+
+					<td class="TableHeaderPrint" valign="top">
+						<div class="TableHeaderPrint" style="text-align: right;">Date due</div>
+						</td>
+					<td class="TableBodyPrint" xwidth="300" valign="top"><%%COMBOTEXT(date_due)%%>&nbsp;&nbsp;</td>
+					</tr>
+				<tr>
+					<td colspan="2">&nbsp;</td>
+					<td class="TableHeaderPrint" valign="top">
+						<div class="TableHeaderPrint" style="text-align: right;">Client</div>
+						</td>
+					<td class="TableBodyPrint" xwidth="300" valign="top"><span id="client"><%%COMBOTEXT(client)%%></span>&nbsp;&nbsp;</td>
+					</tr>
+				<tr>
+					<td colspan="2">&nbsp;</td>
+					<td class="TableHeaderPrint" valign="top">
+						<div class="TableHeaderPrint" style="text-align: right;">C/O</div>
+						</td>
+					<td class="TableBodyPrint" xwidth="300" valign="top"><span id="client_contact"></span>&nbsp;&nbsp;</td>
+					</tr>
+				<tr>
+					<td colspan="2">&nbsp;</td>
+					<td class="TableHeaderPrint" valign="top">
+						<div class="TableHeaderPrint" style="text-align: right;">Phone</div>
+						</td>
+					<td class="TableBodyPrint" xwidth="300" valign="top"><span id="client_phone"></span>&nbsp;&nbsp;</td>
+					</tr>
+				<tr>
+					<td colspan="2">&nbsp;</td>
+					<td class="TableHeaderPrint" valign="top">
+						<div class="TableHeaderPrint" style="text-align: right;">Address</div>
+						</td>
+					<td class="TableBodyPrint" xwidth="300" valign="top"><span id="client_address"></span>&nbsp;&nbsp;</td>
+					</tr>
+				<tr>
+					<td colspan="2">&nbsp;</td>
+					<td class="TableHeaderPrint" valign="top">
+						<div class="TableHeaderPrint" style="text-align: right;">Email</div>
+						</td>
+					<td class="TableBodyPrint" xwidth="300" valign="top"><span id="client_email"></span>&nbsp;&nbsp;</td>
+					</tr>
+				<tr>
+					<td colspan="4">
+						<div id="invoiceItems"></div>
+						</td>
+					<td>&nbsp;</td>
+					</tr>
+				<!--<tr>
+					<td class="TableHeaderPrint" valign="top">
+						<div class="TableHeaderPrint" style="text-align: right;">Client website</div>
+						</td>
+					<td class="TableBodyPrint" xwidth="300" valign="top"><span id="client_website"></span>&nbsp;&nbsp;</td>
+					</tr>
+				<tr>
+					<td class="TableHeaderPrint" valign="top">
+						<div class="TableHeaderPrint" style="text-align: right;">Client comments</div>
+						</td>
+					<td class="TableBodyPrint" xwidth="300" valign="top"><span id="client_comments"></span>&nbsp;&nbsp;</td>
+					</tr>-->
+				<tr>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td class="TableHeaderPrint" valign="top">
+						<div class="TableHeaderPrint" style="text-align: right;"><br>Subtotal</div>
+						</td>
+					<td class="TableBodyPrint" xwidth="300" align="right" valign="top"><br><%%VALUE(subtotal)%%></td>
+					</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td class="TableHeaderPrint" valign="top">
+						<div class="TableHeaderPrint" style="text-align: right;">Discount %</div>
+						</td>
+					<td class="TableBodyPrint" xwidth="300" align="right" valign="top"><%%VALUE(discount)%%></td>
+					</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td class="TableHeaderPrint" valign="top">
+						<div class="TableHeaderPrint" style="text-align: right;">Tax</div>
+						</td>
+					<td class="TableBodyPrint" xwidth="300" align="right" valign="top"><%%VALUE(tax)%%></td>
+					</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td class="TableHeaderPrint" valign="top">
+						<div class="TableHeaderPrint" style="text-align: right;">Total</div>
+						</td>
+					<td class="TableBodyPrint" xwidth="300" align="right" valign="top"><%%VALUE(total)%%></td>
+					</tr>
+				<tr>
+					<!--<td class="TableHeaderPrint" valign="top">
+						<div class="TableHeaderPrint" style="text-align: right;">Comments</div>
+						</td>-->
+					<td colspan="4" class="TableBodyPrint" xwidth="300" valign="top"><%%VALUE(comments)%%>&nbsp;&nbsp;</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+

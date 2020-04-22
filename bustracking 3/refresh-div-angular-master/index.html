@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <title>Refresh DIV Angularjs : Code for geek Demos</title>
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCUAAbIZnuyTSK926w0O0IU7HHzIemEbLo"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+    <script src="main.js"></script>
+    <style>
+    div
+    {
+      font-size:70px;
+      font-family:segou ui;
+    }
+    input
+    {
+      font-size:30px;
+      margin-left:25%;
+    }
+    </style>
+  </head>
+  <body>
+    <div ng-app="refresh_div" ng-controller="refresh_control">
+	<input class="form-control" type="text" ng-model="email" placeholder="Enter Your Key" value="1234"><br>
+      {{message}}
+      <br><input type="button" ng-click="killtimer()" value="Kill Me">
+    </div>
+	<hr />
+    <div id="dvMap" style="width: 900px; height: 700px">
+
+</div>
+  </body>
+</html>

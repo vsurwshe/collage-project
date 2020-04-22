@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Invoice</title>
+	<link rel="stylesheet" href="css/font-awesome.min.css" type="text/css" media="screen" title="no title" charset="utf-8"/>
+	<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" title="no title" charset="utf-8"/>
+	
+	<script src="js/jquery.js"></script>
+	<script src="js/custom.js"></script>
+	 <script type="text/javascript" src="app.js"></script>
+</head>
+<body onload="load()">
+	<div class="container">
+		<section id="invoice">
+
+				<h2 class="text-center">I AUTO LAB SOULTIONS BILLING FORM</h2>
+				<hr />
+				<form id="invoice_form" action="addRow()" method="get" accept-charset="utf-8">
+					<div class="left-side">
+						<p>
+							<label for="customer_name">Customer Name: </label>
+							<input type="text" name="customer_name" />
+						</p>
+						<p>
+							<label for="product_name">Product Name: </label>
+							<select name="product_name" >
+							<option value="Product1">Product1</option>
+						    <option value="Product2">Product2</option>
+							<option value="Product3">Product3</option>
+							<option value="Product4">Product4</option>
+							<option value="Product5">Product5</option>
+							</select>
+						</p>
+						<p>
+							<button class="btn" type="submit" id="add" onclick="Javascript:addRow()"/>Add Product</button>
+							<button class="btn" id="empty_cart">Remove All Item</button>
+						</p>
+
+						</div>
+						
+						<div class="right-side">
+						<p>
+						<label for="date">Date:</label>
+						<input type="date" name="date">
+						</p>
+						<p>
+							<label for="quantity">Quantity: </label>
+							<input type="text" name="quantity"  />
+						</p>
+						<p>
+							<label for="tax">Tax: </label>
+							<input type="text" name="Tax"  />
+						</p>
+						
+					<!---	<p>
+							<input type="hidden" name="ajax" value="1" />
+						</p>---->
+						<input type="button" value="Generate invoice." onclick="generate_invoice()">
+					</div>
+
+				</form>
+				
+				
+		</section><!-- /invoice -->
+		<div class="clearfix"></div>
+	<!--	<section id="product-list">
+			<table id="products">
+				<tr border="0">
+				<td> Customer Name:-</td>
+				<td> Date:-</td>
+				</tr>
+				<tr>
+					<th>Sl. No.</th>
+					<th>Product Name</th>
+					<th>T.P</th>
+					<th>Quantity</th>
+					<th>Amount</th>
+				</tr>
+				<tr>
+					<td colspan="4" class="total">Total:</td>
+					<td class="total">0</td>
+				</tr>
+
+			</table>
+			
+			<p>
+				<span class="amount-in-word">In Word: </span>
+				<button class="btn pull-right" id="generateInvoice">Generate Invoice</button>
+			</p>
+		</section>--->
+<script>
+function addRow() {
+          
+    var cName = document.getElementById("customer_name");
+    var pname = document.getElementById("product_name");
+	var dat = document.getElementById("date");
+	var qut = document.getElementById("quantity");
+	var tax = document.getElementById("Tax");
+    var table = document.getElementById("myTableData");
+    var rowCount = table.rows.length;
+    var row = table.insertRow(rowCount);
+ 
+    row.insertCell(0).innerHTML= '<input type="button" value = "Delete" onClick="Javacsript:deleteRow(this)">';
+    row.insertCell(1).innerHTML= cName.value;
+    row.insertCell(2).innerHTML= pname.value;
+	row.insertCell(3).innerHTML= dat.value;
+    row.insertCell(4).innerHTML= qut.value;
+	row.insertCell(5).innerHTML= tax.value;
+    
+ 
+ 
+}
+</script>
+
+	</div>
+	
+</body>
+</html>

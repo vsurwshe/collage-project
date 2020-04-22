@@ -1,0 +1,28 @@
+<html>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.24/angular.min.js"></script>
+ <script src="app.js"></script> 
+
+<body>
+	<!--  <div ng-app='angularPostPHP' ng-controller='loginCtrl'> 
+		<input class="form-control" type="text" ng-model="email" placeholder="Enter Your Key"><br>
+		<button class="btn btn-success" ng-click="login()">UPDATE</button><br>
+		<span>{{responseMessage}}</span>
+	</div> -->
+	<div ng-app='angularPostPHP' ng-controller='loginCtrl'> 
+			<div ng-controller='TimeCtrl'>
+			     <p>{{ clock | date:'HH:mm:ss'}}</p>
+				<input class="form-control" type="text" ng-model="email" placeholder="Enter Your Key"><br>
+				<button class="btn btn-success">UPDATE</button><br>
+				<span>{{responseMessage}}</span>
+			</div>
+</div>
+<hr />
+<script>
+  
+</script>
+<div id="dvMap" style="width: 900px; height: 700px">
+
+</div>
+</body>
+</html>

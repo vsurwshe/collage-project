@@ -1,0 +1,7 @@
+/backups/
+/@user_guide/
+
+.DS_Store
+Thumbs.db
+/uploads/companies/*
+/uploads/users/*

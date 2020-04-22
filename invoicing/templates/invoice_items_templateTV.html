@@ -1,0 +1,12 @@
+<!-- Edit this file to change the layout of each record in the table view -->
+<!-- To disable clicking of a field, remove the <%%select%%> and <%%endselect%%> formatters around it-->
+
+<!-- If you wish to hide the table view header that contains the column titles, -->
+<!-- open the generated 'invoice_items_view.php' file in your text editor and -->
+<!-- change the value of $x->ShowTableHeader to 0 -->
+
+		<td id="invoice_items.item.<%%VALUE(ID)%%>" valign="top" width="350" class="TableBody"><%%SELECT%%><%%VALUE(Item)%%><%%ENDSELECT%%></td>
+		<td id="invoice_items.unit_price.<%%VALUE(ID)%%>" valign="top" width="80" class="TableBodyNumeric"><%%VALUE(Unit price)%%></td>
+		<td id="invoice_items.qty.<%%VALUE(ID)%%>" valign="top" width="60" class="TableBodyNumeric"><%%VALUE(Qty)%%></td>
+		<td id="invoice_items.tax.<%%VALUE(ID)%%>" valign="top" width="60" class="TableBodyNumeric"><%%VALUE(Tax %)%%></td>
+		<td id="invoice_items.price.<%%VALUE(ID)%%>" valign="top" width="80" class="TableBodyNumeric"><%%VALUE(Price)%%></td>

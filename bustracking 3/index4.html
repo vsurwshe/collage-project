@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html data-ng-app="TestModule">
+
+  <head>
+    <script data-require="angular.js@*" data-semver="1.5.0-rc.0" src="angular.min.js"></script>
+    <!--<link rel="stylesheet" href="style.css" />-->
+    <!--<script src="script.js"></script>-->
+  </head>
+  
+  <script>
+  var asyncService = function($timeout)
+  {
+    var someData = 0;
+    var service =
+    {
+      FetchData: function(someArray)
+      {
+        someData++;
+        //timeout here just for demonstration of async request
+        return $timeout(function(){return someData}, 1000)
+          .then(function(result)
+          {
+            return service.ProcessData(result, someArray);
+          });
+      },
+      ProcessData: function(data, someArray)
+      {
+        console.log(data);
+        if(data == 15)
+        {
+          return someArray;
+        }
+        else
+        {
+          someArray.push(data)
+          return service.FetchData(someArray);
+        }
+      }
+    };
+    
+    return service;
+  }
+    var module = angular.module("TestModule",[]);
+    module.factory("AsyncSvc", ["$timeout", asyncService]);
+    module.controller("TestCtrl",["$scope","AsyncSvc", function($scope, asyncService)
+    {
+      var array = [];
+      asyncService
+      .FetchData(array)
+      .then(function(result){
+        //console.log(result);
+        document.write(result);
+      });
+    } ]);
+  </script>
+
+  <body>
+    <div data-ng-controller="TestCtrl"></div>
+  </body>
+
+</html>

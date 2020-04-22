@@ -1,0 +1,7 @@
+<!-- Edit this file to change the layout of the highlighted record in the table view -->
+		<td id="clients.name.<%%VALUE(ID)%%>" valign="top" width="250" class="TableBodyHighlighted"><div class="TableBodyHighlighted" style="padding: 0;"><%%VALUE(Name)%%></div></td>
+		<td id="clients.contact.<%%VALUE(ID)%%>" valign="top" width="200" class="TableBodyHighlighted"><div class="TableBodyHighlighted" style="padding: 0;"><%%VALUE(Contact)%%></div></td>
+		<td id="clients.phone.<%%VALUE(ID)%%>" valign="top" width="150" class="TableBodyHighlighted"><div class="TableBodyHighlighted" style="padding: 0;"><%%VALUE(Phone)%%></div></td>
+		<td id="clients.email.<%%VALUE(ID)%%>" valign="top" width="50" class="TableBodyHighlighted"><a href="mailto:<%%VALUE(Email)%%>" class="TableBodyHighlighted" style="padding: 0;"><img src="mailLink.gif" border="0" title="<%%VALUE(Email)%%>"></a></td>
+		<td id="clients.website.<%%VALUE(ID)%%>" valign="top" width="50" class="TableBodyHighlighted"><a href="link.php?t=clients&f=website&i=<%%VALUE(ID)%%>" target="_blank" class="TableBodyHighlighted" style="padding: 0;"><img src="webLink.gif" border="0" title="<%%VALUE(Website)%%>"></a></td>
+		<script>var website='<%%VALUE(Website)%%>'; if(website=='' || website=='&nbsp;') $('clients.website.<%%VALUE(ID)%%>').innerHTML='&nbsp;';</script>

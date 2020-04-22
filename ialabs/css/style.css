@@ -1,0 +1,242 @@
+/******************************************************/
+/*	Some Reset */
+/******************************************************/
+
+ul, li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+a, a:hover, a:focus {
+	text-decoration: none;
+	outline: 0;
+}
+
+section {
+	padding-top: 30px;
+	padding-bottom: 30px;
+}
+
+p {
+	font-size: 15px;
+	margin-bottom: 10px;
+}
+
+
+hr {
+	border-color: #666666;
+	border-top: 1px;
+	height: 0;
+}
+
+hr.alt::before {
+	content: "\f111";
+	font-family: FontAwesome;
+	font-style: normal;
+	font-weight: normal;
+	color: #333333;
+	margin-top: -10px;
+	display: block;
+}
+
+
+
+/******************************************************/
+/*	Some Helper class */
+/******************************************************/
+.section{
+	padding-top: 30px;
+	padding-bottom: 30px;
+}
+
+.clearfix{
+	clear: both;
+}
+
+.clearfix::before, .clearfix::after{
+	content: "";
+}
+
+.text-center{
+	text-align: center;
+}
+.btn{
+	padding: 5px 8px;
+	background: #EEEEEE;
+	border: 1px solid transparent;
+	box-shadow: 2px 2px rgba(33, 33, 33, 0.4);
+	cursor: pointer;
+	
+}
+
+.pull-right{
+	float: right;
+}
+
+
+.transparent{
+	background: rgba(0, 0, 0, 0.8);
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: none;
+	-moz-transition: all 0.3s ease-in-out;
+	-webkit-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.show{
+	display: block !important;
+}
+
+.close{
+	position: absolute;
+	width: 40px;
+	height: 40px;
+	top: 10px;
+	right: 10px;
+	color: #551010;
+	cursor: pointer;
+	
+}
+
+
+/******************************************************/
+/*	General Style flow */
+/******************************************************/
+
+body{
+	position: relative;
+}
+
+.container{
+	width: 960px;
+	margin: 0 auto;
+	padding: 15px;
+}
+
+.left-side{
+	float: left;
+	width: 460px;
+}
+
+.right-side{
+	float: right;
+	width: 460px;
+}
+
+#invoice_form{
+	
+}
+
+#invoice_form label{
+	width: 150px;
+	display: inline-block;
+	
+}
+
+
+#invoice_form input[type="text"], #invoice_form select, #invoice_form input[type="submit"]{
+	padding: 3px 8px;
+	border: 1px solid #666666;
+	border-radius: 3px;
+}
+
+#invoice_form input[type="submit"], #empty_cart{
+	background: #EEEEEE;
+	border: 1px solid transparent;
+	box-shadow: 2px 2px rgba(33, 33, 33, 0.4);
+	margin-top: 15px;
+	margin-left: 212px;
+	cursor: pointer;
+}
+
+#invoice_form  #empty_cart{
+	margin-left: 187px;
+	
+}
+
+#checkboxWrapper{
+	padding: 15px;
+	border: 1px solid #666666;
+	background: rgba(66, 66, 66, 0.6);
+	margin-top: 30px;
+}
+#checkboxWrapper  div.color-code{
+	display: none;
+	-moz-transition: all .3s ease-in-out;
+	-webkit-transition: all .3s ease-in-out;
+	-o-transition: all .3s ease-in-out;
+	transition: all .3s ease-in-out;
+}
+
+#checkboxWrapper  div.show{
+	display: block;
+}
+
+
+#checkboxWrapper label{
+	display: block;
+	cursor: pointer;
+	font-weight: bold;
+	margin-bottom: 5px;
+	/* width: auto; */
+}
+#checkboxWrapper input[type="checkbox"]{
+	margin: 5px 10px;
+}
+
+#checkboxWrapper input.qty{
+	max-width: 60px;
+	display: inline-block;
+	margin-left: 15px;
+}
+
+
+table{
+	border-collapse: collapse;
+	border-spacing: 0;
+	width: 100%;
+	margin-bottom: 20px;
+}
+
+table th, table td{
+	border: 1px solid #333333;
+	padding: 5px 8px;
+	
+}
+
+table th{
+	background: #666666;
+}
+
+td.total{
+	font-weight: bold;
+}
+
+.amount-in-word{
+	font-weight: bold;
+	display: inline-block;
+	margin-top: 10px;
+}
+
+.invoice-bill{
+	background: #ffffff;
+	padding: 30px;
+	border: 1px solid #eeeeee;
+	width: 960px;
+	margin: 0px auto;
+	margin-top: 300px;
+	position: relative;
+	
+}
+
+
+
+
+
+

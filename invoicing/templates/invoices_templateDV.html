@@ -1,0 +1,194 @@
+<!-- Edit this file to change the layout of the detail view form -->
+
+<script type="text/javascript" src="resources/datepicker/js/datepicker.packed.js"></script>
+<link href="resources/datepicker/css/datepicker.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css"><!--  #noMouseOver:hover{ color: #000000; }  --></style>
+<table border=1 bordercolor=navy cellpadding=0 cellspacing=0>
+	<tr>
+		<td>
+			<div class=TableTitle><%%DETAIL_VIEW_TITLE%%></div>
+			</td>
+		</tr>
+	<tr>
+		<td class=TableHeader colspan=3 height=25>
+			<div class=TableHeader style="text-align: right; height: 100%; padding-right: 3px;">
+				<a href="invoice_items_view.php?FilterField[1]=2&FilterOperator[1]=%3C%3D%3E&FilterValue[1]=<%%VALUE(code)%%>" style="position: relative; top: 5px; border: 1px solid navy; background-color: #ffffff; text-decoration: none; color: navy; padding: 1px 10px 1px 10px; visibility: hidden;" id="invoice_items_link">Invoice items</a>
+				</div>
+			</td>
+		</tr>
+	<tr>
+		<td>
+			<table>
+				<tr>
+					<td colspan=2></td>
+					<td rowspan=6 valign=top>
+						<div><%%DVPRINT_BUTTON%%></div>
+						<div><%%UPDATE_BUTTON%%></div>
+						<div><%%DELETE_BUTTON%%></div>
+						<div><%%DESELECT_BUTTON%%></div>
+						<br />
+						<div><%%INSERT_BUTTON%%></div>
+						</td>
+					</tr>
+				<tr>
+					<td class=TableHeader valign=top>
+						<div class=TableHeader style="text-align:right;">ID</div>
+						</td>
+					<td class=TableBody id="noMouseOver" width=300 valign=top><%%VALUE(id)%%>&nbsp;&nbsp;</td>
+					</tr>
+				<tr>
+					<td class=TableHeader valign=top>
+						<div class=TableHeader style="text-align:right;">Code</div>
+						</td>
+					<td class=TableBody id="noMouseOver" width=300 valign=top><input size="20" type="text" class="TextBox" name="code" id="code" value="<%%VALUE(code)%%>">&nbsp;&nbsp;</td>
+					</tr>
+				<tr>
+					<td class=TableHeader valign=top>
+						<div class=TableHeader style="text-align:right;">Status</div>
+						</td>
+					<td class=TableBody id="noMouseOver" width=300 valign=top><span style="float: left;"><%%COMBO(status)%%></span>&nbsp;&nbsp;</td>
+					</tr>
+				<tr>
+					<td class=TableHeader valign=top>
+						<div class=TableHeader style="text-align:right;">Date due</div>
+						</td>
+					<td class=TableBody id="noMouseOver" width=300 valign=top><span style="float: left;"><%%COMBO(date_due)%%></span>&nbsp;&nbsp;
+						<script>$('date_due').className='Option split-date';</script>
+						</td>
+					</tr>
+				<tr>
+					<td class=TableHeader valign=top>
+						<div class=TableHeader style="text-align:right;">Client</div>
+						</td>
+					<td class=TableBody id="noMouseOver" width=300 valign=top><span style="float: left;"><%%COMBO(client)%%></span> <span id="clientLoading"></span> <%%PLINK(client)%%>&nbsp;&nbsp;</td>
+					</tr>
+				<tr>
+					<td class=TableHeader valign=top>
+						<div class=TableHeader style="text-align:right;">Client contact</div>
+						</td>
+					<td class=TableBody id="noMouseOver" width=300 valign=top><span id="client_contact"></span>&nbsp;&nbsp;</td>
+					</tr>
+				<tr>
+					<td class=TableHeader valign=top>
+						<div class=TableHeader style="text-align:right;">Client address</div>
+						</td>
+					<td class=TableBody id="noMouseOver" width=300 valign=top><span id="client_address"></span>&nbsp;&nbsp;</td>
+					</tr>
+				<tr>
+					<td class=TableHeader valign=top>
+						<div class=TableHeader style="text-align:right;">Client phone</div>
+						</td>
+					<td class=TableBody id="noMouseOver" width=300 valign=top><span id="client_phone"></span>&nbsp;&nbsp;</td>
+					</tr>
+				<tr>
+					<td class=TableHeader valign=top>
+						<div class=TableHeader style="text-align:right;">Client email</div>
+						</td>
+					<td class=TableBody id="noMouseOver" width=300 valign=top><%%COMBOTEXT(client_email)%%> <%%PLINK(client_email)%%>&nbsp;&nbsp;</td>
+					</tr>
+				<tr>
+					<td class=TableHeader valign=top>
+						<div class=TableHeader style="text-align:right;">Client website</div>
+						</td>
+					<td class=TableBody id="noMouseOver" width=300 valign=top><span id="client_website"></span>&nbsp;&nbsp;</td>
+					</tr>
+				<tr>
+					<td class=TableHeader valign=top>
+						<div class=TableHeader style="text-align:right;">Client comments</div>
+						</td>
+					<td class=TableBody id="noMouseOver" width=300 valign=top><span id="client_comments"></span>&nbsp;&nbsp;</td>
+					</tr>
+				<tr>
+					<td class=TableHeader valign=top>
+						<div class=TableHeader style="text-align:right;">Subtotal</div>
+						</td>
+					<td class=TableBody id="noMouseOver" width=300 valign=top><%%VALUE(subtotal)%%>&nbsp;&nbsp;<a href="#" onclick="return invoices_showDescription('subtotal', event);" tabindex="-1"><img src="information.gif" border="0" align="top"></a></td>
+					</tr>
+				<tr>
+					<td class=TableHeader valign=top>
+						<div class=TableHeader style="text-align:right;">Discount %</div>
+						</td>
+					<td class=TableBody id="noMouseOver" width=300 valign=top><input size="10" type="text" class="TextBox" name="discount" id="discount" value="<%%VALUE(discount)%%>">&nbsp;&nbsp;<a href="#" onclick="return invoices_showDescription('discount', event);" tabindex="-1"><img src="information.gif" border="0" align="top"></a></td>
+					</tr>
+				<tr>
+					<td class=TableHeader valign=top>
+						<div class=TableHeader style="text-align:right;">Tax</div>
+						</td>
+					<td class=TableBody id="noMouseOver" width=300 valign=top><%%VALUE(tax)%%>&nbsp;&nbsp;<a href="#" onclick="return invoices_showDescription('tax', event);" tabindex="-1"><img src="information.gif" border="0" align="top"></a></td>
+					</tr>
+				<tr>
+					<td class=TableHeader valign=top>
+						<div class=TableHeader style="text-align:right;">Total</div>
+						</td>
+					<td class=TableBody id="noMouseOver" width=300 valign=top><%%VALUE(total)%%>&nbsp;&nbsp;<a href="#" onclick="return invoices_showDescription('total', event);" tabindex="-1"><img src="information.gif" border="0" align="top"></a></td>
+					</tr>
+				<tr>
+					<td class=TableHeader valign=top>
+						<div class=TableHeader style="text-align:right;">Comments</div>
+						</td>
+					<td class=TableBody id="noMouseOver" width=300 valign=top><%%HTMLAREA(comments)%%></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+
+
+	<div id="fieldDescription" class="fieldDescription" onclick="this.style.visibility='hidden';">&nbsp;</div>
+
+	<script type="text/javascript" src="nicEdit.js"></script>
+	<script language="javaScript"><!-- 
+		bkLib.onDomLoaded(function(){
+			if(document.getElementById('comments')!=undefined)
+				new nicEditor().panelInstance('comments');
+		}); //--></script>
+
+	<script>
+		if(document.getElementsByName('code').length){
+			document.getElementsByName('code')[0].focus();
+		}
+	</script>
+	<script>
+		function invoices_showDescription(fieldName, e){
+			var desc='&nbsp';
+			if(fieldName=='subtotal'){
+				desc="<b>Subtotal</b><br />Automatically calculated from invoice items.";
+			}
+			if(fieldName=='discount'){
+				desc="<b>Discount %</b><br />Enter discount percentage here. Example: enter \"10\" (without the quotes) to apply a 10% discount off the invoice subtotal.";
+			}
+			if(fieldName=='tax'){
+				desc="<b>Tax</b><br />Automatically calculated from invoice items.";
+			}
+			if(fieldName=='total'){
+				desc="<b>Total</b><br />Automatically calculated from subtotal, discount and tax.";
+			}
+
+			var x=0;
+			var y=0;
+			if(e.pageX){
+				x=e.pageX-10;
+				y=e.pageY-10;
+			}else if(e.clientX){
+				x=e.clientX-10;
+				y=e.clientY-10;
+				if(document.body && ( document.body.scrollLeft || document.body.scrollTop )){
+					x+=document.body.scrollLeft;
+					y+=document.body.scrollTop;
+				}else if(document.documentElement && ( document.documentElement.scrollLeft || document.documentElement.scrollTop )){
+					x+=document.documentElement.scrollLeft;
+					y+=document.documentElement.scrollTop;
+				}
+			}else{
+				return false;
+			}
+
+			$('fieldDescription').innerHTML=desc;
+			$('fieldDescription').style.left=x+'px';
+			$('fieldDescription').style.top=y+'px';
+			$('fieldDescription').style.visibility='visible';
+
+			return false;
+		}
+	</script>

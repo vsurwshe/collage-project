@@ -1,0 +1,119 @@
+<!-- Edit this file to change the layout of the detail view form -->
+
+<style type="text/css"><!--  #noMouseOver:hover{ color: #000000; }  --></style>
+<table border=1 bordercolor=navy cellpadding=0 cellspacing=0>
+	<tr>
+		<td>
+			<div class=TableTitle><%%DETAIL_VIEW_TITLE%%></div>
+			</td>
+		</tr>
+	<tr>
+		<td>
+			<table>
+				<tr>
+					<td colspan=2></td>
+					<td rowspan=6 valign=top>
+						<div><%%DVPRINT_BUTTON%%></div>
+						<div><%%UPDATE_BUTTON%%></div>
+						<div><%%DELETE_BUTTON%%></div>
+						<div><%%DESELECT_BUTTON%%></div>
+						<br />
+						<div><%%INSERT_BUTTON%%></div>
+						</td>
+					</tr>
+				<tr>
+					<td class=TableHeader valign=top>
+						<div class=TableHeader style="text-align:right;">ID</div>
+						</td>
+					<td class=TableBody id="noMouseOver" width=300 valign=top><%%VALUE(id)%%>&nbsp;&nbsp;</td>
+					</tr>
+				<tr>
+					<td class=TableHeader valign=top>
+						<div class=TableHeader style="text-align:right;">Invoice</div>
+						</td>
+					<td class=TableBody id="noMouseOver" width=300 valign=top><span style="float: left;"><%%COMBO(invoice)%%></span> <%%PLINK(invoice)%%>&nbsp;&nbsp;</td>
+					</tr>
+				<tr>
+					<td class=TableHeader valign=top>
+						<div class=TableHeader style="text-align:right;">Item</div>
+						</td>
+					<td class=TableBody id="noMouseOver" width=300 valign=top><input size="60" type="text" class="TextBox" name="item" id="item" value="<%%VALUE(item)%%>">&nbsp;&nbsp;</td>
+					</tr>
+				<tr>
+					<td class=TableHeader valign=top>
+						<div class=TableHeader style="text-align:right;">Unit price</div>
+						</td>
+					<td class=TableBody id="noMouseOver" width=300 valign=top><input size="10" type="text" class="TextBox" name="unit_price" id="unit_price" value="<%%VALUE(unit_price)%%>">&nbsp;&nbsp;<a href="#" onclick="return invoice_items_showDescription('unit_price', event);" tabindex="-1"><img src="information.gif" border="0" align="top"></a></td>
+					</tr>
+				<tr>
+					<td class=TableHeader valign=top>
+						<div class=TableHeader style="text-align:right;">Qty</div>
+						</td>
+					<td class=TableBody id="noMouseOver" width=300 valign=top><input size="10" type="text" class="TextBox" name="qty" id="qty" value="<%%VALUE(qty)%%>">&nbsp;&nbsp;</td>
+					</tr>
+				<tr>
+					<td class=TableHeader valign=top>
+						<div class=TableHeader style="text-align:right;">Tax %</div>
+						</td>
+					<td class=TableBody id="noMouseOver" width=300 valign=top><input size="10" type="text" class="TextBox" name="tax" id="tax" value="<%%VALUE(tax)%%>">&nbsp;&nbsp;<a href="#" onclick="return invoice_items_showDescription('tax', event);" tabindex="-1"><img src="information.gif" border="0" align="top"></a></td>
+					</tr>
+				<tr>
+					<td class=TableHeader valign=top>
+						<div class=TableHeader style="text-align:right;">Price</div>
+						</td>
+					<td class=TableBody id="noMouseOver" width=300 valign=top><%%VALUE(price)%%>&nbsp;&nbsp;<a href="#" onclick="return invoice_items_showDescription('price', event);" tabindex="-1"><img src="information.gif" border="0" align="top"></a></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+
+
+	<div id="fieldDescription" class="fieldDescription" onclick="this.style.visibility='hidden';">&nbsp;</div>
+
+
+	<script>
+		if(document.getElementsByName('invoice').length){
+			document.getElementsByName('invoice')[0].focus();
+		}
+	</script>
+	<script>
+		function invoice_items_showDescription(fieldName, e){
+			var desc='&nbsp';
+			if(fieldName=='unit_price'){
+				desc="<b>Unit price</b><br />Enter the price per unit of this item, excluding taxes.";
+			}
+			if(fieldName=='tax'){
+				desc="<b>Tax %</b><br />If a tax applies to this item, enter tax percentage here. If you leave this field empty, no tax will be applied.<br><i>Example:</i> Enter \"10\" (without quotes) to apply a 10% tax to this item.";
+			}
+			if(fieldName=='price'){
+				desc="<b>Price</b><br />Will be automatically calculated from unit price and quantity, excluding taxes.";
+			}
+
+			var x=0;
+			var y=0;
+			if(e.pageX){
+				x=e.pageX-10;
+				y=e.pageY-10;
+			}else if(e.clientX){
+				x=e.clientX-10;
+				y=e.clientY-10;
+				if(document.body && ( document.body.scrollLeft || document.body.scrollTop )){
+					x+=document.body.scrollLeft;
+					y+=document.body.scrollTop;
+				}else if(document.documentElement && ( document.documentElement.scrollLeft || document.documentElement.scrollTop )){
+					x+=document.documentElement.scrollLeft;
+					y+=document.documentElement.scrollTop;
+				}
+			}else{
+				return false;
+			}
+
+			$('fieldDescription').innerHTML=desc;
+			$('fieldDescription').style.left=x+'px';
+			$('fieldDescription').style.top=y+'px';
+			$('fieldDescription').style.visibility='visible';
+
+			return false;
+		}
+	</script>

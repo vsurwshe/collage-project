@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>AngularJS Post data with PHP</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.24/angular.min.js"></script>
+        <script src="app.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div class="container">
+            <h1>AngularJS ajax POST with PHP</h1>
+            <div ng-app='angularPostPHP' ng-controller='loginCtrl'>
+               <input class="form-control" type="text" ng-model="email" placeholder="Enter Your Email"><br>
+               <input class="form-control" type="password" ng-model="password" placeholder="Enter Your Password"><br>
+                <button class="btn btn-success" ng-click="login()">Login</button><br>
+                <span>{{responseMessage}}</span>
+            </div>
+            </div>
+    </body>
+</html>

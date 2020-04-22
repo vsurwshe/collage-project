@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invoice</title>
+	<link rel="stylesheet" href="css/font-awesome.min.css" type="text/css" media="screen" title="no title" charset="utf-8"/>
+	<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" title="no title" charset="utf-8"/>
+	<script src="js/jquery.js"></script>
+	<script src="js/custom.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+</head>
+<body onload="load()">
+<div id="myform">
+<!---<table>
+    <tr>
+        <td>Name:</td>
+        <td><input type="text" id="name"></td>
+    </tr>
+    <tr>
+        <td>Age:</td>
+        <td><input type="text" id="age">
+        <input type="button" id="add" value="Add" onclick="Javascript:addRow()"></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>
+</table>--->
+<div class="container">
+		<section id="invoice">
+
+				<h2 class="text-center">I AUTO LAB SOULTIONS BILLING FORM</h2>
+				<hr />
+				<!---<form id="invoice_form" action="addRow()" method="get" accept-charset="utf-8">--->
+					<div class="left-side">
+						<p>
+							<label for="customer_name">Customer Name: </label>
+							<input type="text" id="customer_name" />
+						</p>
+						<p>
+							<label for="product_name">Product Name: </label>
+							<select id="product_name" >
+							<option value="Product1">Product1</option>
+						    <option value="Product2">Product2</option>
+							<option value="Product3">Product3</option>
+							<option value="Product4">Product4</option>
+							<option value="Product5">Product5</option>
+							</select>
+						</p>
+						<p>
+							<button class="btn" type="submit" id="add" onclick="Javascript:addRow()"/>Add Product</button>
+							<button class="btn" id="empty_cart">Remove All Item</button>
+						</p>
+
+						</div>
+						
+						<div class="right-side">
+						<p>
+						<label for="date">Date:</label>
+						<input type="date" id="date">
+						</p>
+						<p>
+							<label for="quantity">Quantity: </label>
+							<input type="text" id="quantity"  />
+						</p>
+						<p>
+							<label for="tax">Tax: </label>
+							<input type="text" id="Tax"  />
+						</p>
+						
+					<!---	<p>
+							<input type="hidden" name="ajax" value="1" />
+						</p>---->
+						<input type="button" value="Generate invoice." onclick="generate_invoice()">
+					</div>
+
+				<!--</form>-->
+				
+				
+		</section>
+</div>
+<div id="mydata">
+<b>Current data in the system ...</b>
+<!--<table id="myTableData"  border="1" cellpadding="2">--->
+    <div class="clearfix"></div>
+		<section id="product-list">
+			<table id="myTableData">
+				<tr border="0">
+				<td> Customer Name:-</td>
+				<td> Date:-</td>
+				</tr>
+				<tr>
+					<th width = "16.66%">Remove</th>
+					<th width = "16.66%">Sl. No.</th>
+					<th width = "16.66%">Product Name</th>
+					<th width = "16.66%">T.P</th>
+					<th width = "16.66%">Quantity</th>
+					<th width = "16.66%">Amount</th>
+				</tr>
+				<tr>
+					<!-- <td colspan="4" class="total">Total:</td>
+					<td class="total">0</td> -->
+				</tr>
+
+			</table>
+			
+			<p>
+				<span class="amount-in-word">In Word: </span>
+				<button class="btn pull-right" id="generateInvoice">Generate Invoice</button>
+			</p>
+		</section>--->
+
+</table>
+&nbsp;
+ 
+</div>
+
+</body>
+</html>

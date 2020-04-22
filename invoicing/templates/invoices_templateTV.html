@@ -1,0 +1,14 @@
+<!-- Edit this file to change the layout of each record in the table view -->
+<!-- To disable clicking of a field, remove the <%%select%%> and <%%endselect%%> formatters around it-->
+
+<!-- If you wish to hide the table view header that contains the column titles, -->
+<!-- open the generated 'invoices_view.php' file in your text editor and -->
+<!-- change the value of $x->ShowTableHeader to 0 -->
+
+		<td id="invoices.code.<%%VALUE(ID)%%>" valign="top" width="60" class="TableBody"><%%SELECT%%><%%VALUE(Code)%%><%%ENDSELECT%%></td>
+		<td id="invoices.status.<%%VALUE(ID)%%>" valign="top" width="70" class="TableBody"><%%SELECT%%><%%VALUE(Status)%%><%%ENDSELECT%%></td>
+		<td id="invoices.date_due.<%%VALUE(ID)%%>" valign="top" width="100" class="TableBody"><%%SELECT%%><%%VALUE(Date due)%%><%%ENDSELECT%%></td>
+		<td id="invoices.client.<%%VALUE(ID)%%>" valign="top" width="250" class="TableBody"><%%SELECT%%><%%VALUE(Client)%%><%%ENDSELECT%%></td>
+		<td id="invoices.client_contact.<%%VALUE(ID)%%>" valign="top" width="200" class="TableBody"><%%SELECT%%><%%VALUE(Client contact)%%><%%ENDSELECT%%></td>
+		<td id="invoices.client_phone.<%%VALUE(ID)%%>" valign="top" width="100" class="TableBody"><%%SELECT%%><%%VALUE(Client phone)%%><%%ENDSELECT%%></td>
+		<td id="invoices.total.<%%VALUE(ID)%%>" valign="top" width="70" class="TableBodyNumeric"><%%SELECT%%><%%VALUE(Total)%%><%%ENDSELECT%%></td>

@@ -1,0 +1,13 @@
+<!-- Edit this file to change the layout of each record in the table view -->
+<!-- To disable clicking of a field, remove the <%%select%%> and <%%endselect%%> formatters around it-->
+
+<!-- If you wish to hide the table view header that contains the column titles, -->
+<!-- open the generated 'clients_view.php' file in your text editor and -->
+<!-- change the value of $x->ShowTableHeader to 0 -->
+
+		<td id="clients.name.<%%VALUE(ID)%%>" valign="top" width="250" class="TableBody"><%%SELECT%%><%%VALUE(Name)%%><%%ENDSELECT%%></td>
+		<td id="clients.contact.<%%VALUE(ID)%%>" valign="top" width="200" class="TableBody"><%%SELECT%%><%%VALUE(Contact)%%><%%ENDSELECT%%></td>
+		<td id="clients.phone.<%%VALUE(ID)%%>" valign="top" width="150" class="TableBody"><%%SELECT%%><%%VALUE(Phone)%%><%%ENDSELECT%%></td>
+		<td id="clients.email.<%%VALUE(ID)%%>" valign="top" width="50" class="TableBody"><a href="mailto:<%%VALUE(Email)%%>"><img src="mailLink.gif" border="0" title="<%%VALUE(Email)%%>"></a></td>
+		<td id="clients.website.<%%VALUE(ID)%%>" valign="top" width="50" class="TableBody"><a href="link.php?t=clients&f=website&i=<%%VALUE(ID)%%>" target="_blank"><img src="webLink.gif" border="0" title="<%%VALUE(Website)%%>"></a></td>
+		<script>var website='<%%VALUE(Website)%%>'; if(website=='' || website=='&nbsp;') $('clients.website.<%%VALUE(ID)%%>').innerHTML='&nbsp;';</script>
