@@ -1,0 +1,94 @@
+<html>
+<head>
+  <script type="text/javascript">
+  window.onload = function () {
+    var chart = new CanvasJS.Chart("chartContainer",
+    {
+      title:{
+        text: "Survey report from Godavari river of district Beed for year 2013"
+      },
+	  axisY: {
+				title: "Value(MM)",
+				titleFontFamily: "verdana",
+		
+		},
+
+      legend: {
+       horizontalAlign: "center", // "center" , "right"
+       verticalAlign: "bottom",  // "top" , "bottom"
+       fontSize: 15
+     },
+	 dataPointMaxWidth: 20,
+	  
+     data: [
+     {
+      type: "line",
+      showInLegend: true,
+	  legendText: "Evapotranspiration",
+      dataPoints: [
+	  {label: "JAN",y:4.75},
+	  {label: "FEB",y:9.43},
+	  {label: "MAR",y:35.16},
+	  {label: "APR",y:70.71},
+	  {label: "MAY",y:0.63},
+	  {label: "JUN",y:12.81},
+	  {label: "JUL",y:28.64},
+	  {label: "AUG",y:33.12},
+	  {label: "SEPT",y:31.39},
+	  {label: "OCT",y:20.30},
+	  {label: "NOV",y:8.37},
+	  {label: "DEC",y:5.90}
+	  
+    ]
+    },
+	{
+      showInLegend: true,
+      legendText: "Rain Fall",
+	    color: "Blue",
+		  dataPoints: 
+		  [
+			  {label: "JAN",y:1.34},
+			  {label: "FEB",y:26.21},
+			  {label: "MAR",y:0.00},
+			  {label: "APR",y:12.23},
+			  {label: "MAY",y:15.79},
+			  {label: "JUN",y:155.78},
+			  {label: "JUL",y:357.21},
+			  {label: "AUG",y:157.60},
+			  {label: "SEPT",y:104.22},
+			  {label: "OCT",y:86.61},
+			  {label: "NOV",y:10.97},
+			  {label: "DEC",y:0.00}
+		  ]
+    }, {
+      type: "splineArea",
+      showInLegend: true,
+      legendText: "Water Yeild",
+      dataPoints: 
+		  [
+			  {label: "JAN",y:3.77},
+			  {label: "FEB",y:0.89},
+			  {label: "MAR",y:0.63},
+			  {label: "APR",y:0.18},
+			  {label: "MAY",y:0.07},
+			  {label: "JUN",y:0.03},
+			  {label: "JUL",y:75.15},
+			  {label: "AUG",y:83.68},
+			  {label: "SEPT",y:143.43},
+			  {label: "OCT",y:48.97},
+			  {label: "NOV",y:22.31},
+			  {label: "DEC",y:11.61}
+		  ]
+    }
+    ]
+  });
+
+    chart.render();
+  }
+  </script>
+  <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script></head>
+  <body>
+    <div id="chartContainer" style="height: 300px; width: 100%;">
+    </div>
+  </body>
+  </html>

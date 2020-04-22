@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>MHIS</title>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/normalize.min.css">
+
+<link rel='stylesheet' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'>
+<link rel='stylesheet prefetch' href='css/metisMenu.min.css'>
+<link rel='stylesheet prefetch' href='css/timeline.css'>
+<link rel='stylesheet prefetch' href='css/morris.css'>
+<link rel='stylesheet prefetch' href='http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css'>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<style>
+.dropdown {background-color: #990000; color:#337ab7;}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    min-width: 160px;
+  }
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+.dropdown-content a:hover {}
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+.dropdown:hover .dropbtn {
+    background-color: #990000;
+}
+
+select {
+    margin-bottom: 1em;
+  padding: .25em;
+  border: 0;
+  border-bottom: 2px solid currentcolor; 
+  font-weight: bold;
+  letter-spacing: .15em;
+  border-radius: 0;
+  &:focus, &:active {
+    outline: 0;
+    border-bottom-color: red;
+  }
+}
+
+</style>
+<script>
+function body()
+{
+alert('main');
+document.getElementById('Menu').style.visibility='block';
+}
+</script>
+<body onload="body()">
+<div id="wrapper" style="background-color: #990000;">
+  <!-- Navigation-->
+   <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0;background-color: #990000; color:#ffffff">
+    <div class="navbar-header">
+      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand" href="index.html" Style=" color:#ffffff">Maharashtra Hydrological Infromation System</a>
+    </div>
+    <!-- /.navbar-header-->
+    <ul class="nav navbar-top-links navbar-right">
+      
+      <!-- /.dropdown-->
+      
+      <!-- /.dropdown-->
+      
+      <!-- /.dropdown-->
+      <li class="dropdown">
+	  <!--<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user fa-fw"></i><i class="fa fa-caret-down"></i></a>
+        <ul class="dropdown-menu dropdown-user">
+          <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a></li>
+          <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a></li>
+          <li class="divider"></li>
+          <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
+        </ul>--->
+		<button >Reload</button>
+        <!-- /.dropdown-user-->
+      </li>
+      <!-- /.dropdown-->
+    </ul>
+    <!-- /.navbar-top-links-->
+	<script>
+	function ShowImg()
+	{
+		alert("Hello");
+		var sourceOfPicture="";
+		var img=document.getElementById('bigpic');
+		img.src=sourceOfPicture.replace('90x90','226x225');
+		img.style.display="block";
+	}
+	function showTool()
+	{
+		document.getElementById('Menu').style.visibility='visible';
+	}
+	</script>
+    <div class="navbar-default sidebar" role="navigation">
+		<div class="sidebar-nav navbar-collapse">
+			<div class="dropdown">
+				<i class="fa fa-bar-chart-o fa-fw" ></i> <span onclick="showTool()" >Charts</span><span class="fa arrow"></span>
+				<!--<div id="drop" class="dropdown-content">-->
+						      <div id="Menu">
+								<select class="select" name="example5">
+								  <option>Select your District</option>
+									<option onclick="ShowImg()" value="Aurangabad">Aurangabad</option>
+									<option onclick="ShowImg()" value="Nanded">Nanded</option>
+									<option onclick="ShowImg()" value="Beed">Beed</option>
+									<option onclick="ShowImg()" value="Osmanabad">Osmanabad</option>
+									<option onclick="ShowImg()" value="Latur">Latur</option>
+									<option onclick="ShowImg()" value="Jalna">Jalna</option>
+									<option onclick="ShowImg()" value="Parbhani">Parbhani</option>
+									<option onclick="ShowImg()" value="Hingoli">Hingoli</option>
+											 <!--- <option value="yes">Yes!</option>
+												<option value="no">No!</option>--->
+								</select>
+								</div>
+							  <div class="conditional" data-cond-option="example5" data-cond-value="Aurangabad">
+								<select >
+								<option>Select your River</option>
+									 <option onclick="ShowImg()" value="Khelana">Khelana</option>
+									 <option onclick="ShowImg()" value="Godavari">Godavari</option>
+									 <option onclick="ShowImg()" value="Dheku">Dheku</option>
+									 <option onclick="ShowImg()" value="Anjana">Anjana</option>
+									 <option onclick="ShowImg()" value="Nagjhari">Nagjhari</option>
+								</select>
+							  </div>
+							  
+							  <div class="conditional" data-cond-option="example5" data-cond-value="Nanded">
+								<select >
+									<option>Select your River</option>
+									<option onclick="ShowImg()" value="Godavari">Godavari</option>
+									 <option onclick="ShowImg()" value="Penganga">Penganga</option>
+									 <option onclick="ShowImg()" value="Siddha">Siddha</option>
+									 <option onclick="ShowImg()" value="Kahala R">Kahala R</option>
+									 <option onclick="ShowImg()" value="Kahala N">Kahala N</option>
+								</select>
+							  </div>
+							  <div class="conditional" data-cond-option="example5" data-cond-value="Beed">
+								<select >
+									<option>Select your River</option>
+									<option onclick="ShowImg()" value="Meheri">Meheri</option>
+									 <option onclick="ShowImg()" value="Godavari">Godavari</option>
+									 <option onclick="ShowImg()" value="Gunwara">Gunwara</option>
+									 <option onclick="ShowImg()" value="Sindhphana">Sindhphana</option>
+								</select>
+							  </div>
+							  <div class="conditional" data-cond-option="example5" data-cond-value="Osmanabad">
+								<select >
+									<option>Select your River</option>
+							       	<option onclick="ShowImg()" value="Terna">Terna</option>
+									 <option onclick="ShowImg()" value="Manjra">Manjra</option>
+									 <option onclick="ShowImg()" value="Bori">Bori</option>
+									 <option onclick="ShowImg()" value="Benithora">Benithora</option>
+								</select>
+							  </div>
+							  <div class="conditional" data-cond-option="example5" data-cond-value="Latur">
+								<select >
+									<option>Select your River</option>
+									 <option onclick="ShowImg()" value="Manjra">Manjra</option>
+									 <option onclick="ShowImg()" value="Manar">Manar</option>
+									 <option onclick="ShowImg()" value="Tirna">Tirna</option>
+									 <option onclick="ShowImg()" value="Tiru">Tiru</option>
+								</select>
+							  </div>
+							  <div class="conditional" data-cond-option="example5" data-cond-value="Jalna">
+								<select >
+									<option>Select your River</option>
+									 <option onclick="ShowImg()" value="Dudhana">Dudhana</option>
+									 <option onclick="ShowImg()" value="Godavari">Godavari</option>
+									 <option onclick="ShowImg()" value="Purna">Purna</option>
+									 <option onclick="ShowImg()" value="Khelna">Khelna</option>
+								</select>
+							  </div><div class="conditional" data-cond-option="example5" data-cond-value="Parbhani">
+								<select >
+									<option>Select your River</option>
+									 <option onclick="ShowImg()" value="Godavari">Godavari</option>
+									 <option onclick="ShowImg()" value="Purna">Purna</option>
+									 <option onclick="ShowImg()" value="Dudhana">Dudhana</option>
+									 <option onclick="ShowImg()" value="Kastora">Kastora</option>
+								</select>
+							  </div>
+							  <div class="conditional" data-cond-option="example5" data-cond-value="Hingoli">
+								<select >
+									<option>Select your River</option>
+									 <option onclick="ShowImg()" value="Kayadhu">Kayadhu</option>
+									 <option onclick="ShowImg()" value="Godavari">Godavari</option>
+									 <option onclick="ShowImg()" value="Penganga">Penganga</option>
+									 <option onclick="ShowImg()" value="Purna">Purna</option>
+								</select>
+							  </div>
+				
+
+
+
+				<!--<a href="#">Link 2</a>
+					<a href="#">Link 3</a>
+				</div>--->
+			</div>
+		</div>
+	</div>
+    <!-- /.navbar-static-side-->
+  </nav>
+   <div id="page-wrapper" style="min-height: 611px;">
+    <div class="row">
+      <div class="col-lg-12">
+        
+		<div id="main">
+		<center><img style="" id="bigpic" src="MAP/ALL.png" width="80%" height="50%" /></center>
+		</div>
+		  <div class="conditional" data-cond-option="example5" data-cond-value="Godavari">
+		</div>
+      </div>
+      <!-- /.col-lg-12-->
+    </div>
+    <!-- /.row-->
+    <div class="row">
+      <div class="col-lg-3 col-md-6">
+        
+      </div>
+      
+      
+      
+    </div>
+    <!-- /.row-->
+    
+    <!-- /.row-->
+  </div>
+  <!-- /#page-wrapper-->
+</div>
+<!-- /#wrapper-->
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js'></script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.2.0/metisMenu.min.js'></script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/timelinejs/2.36.0/js/timeline-min.js'></script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js'></script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js'></script>
+<script  src="js/index.js"></script>
+<script>
+/* * * * * * * * * * * * * * * * * *
+* Show/hide fields conditionally
+* * * * * * * * * * * * * * * * * */
+(function($) {
+  $.fn.conditionize = function(options){ 
+      var settings = $.extend({
+        hideJS: true
+    }, options );
+    $.fn.showOrHide = function(listenTo, listenFor, $section) {
+      if ($(listenTo).is('select, input[type=text]') && $(listenTo).val() == listenFor ) {
+        $section.slideDown();
+      }
+      else if ($(listenTo + ":checked").val() == listenFor) {
+        $section.slideDown();
+      }
+      else {
+        $section.slideUp();
+      }
+    } 
+
+    return this.each( function() {
+      var listenTo = "[name=" + $(this).data('cond-option') + "]";
+      var listenFor = $(this).data('cond-value');
+      var $section = $(this);
+  
+      //Set up event listener
+      $(listenTo).on('change', function() {
+        $.fn.showOrHide(listenTo, listenFor, $section);
+      });
+      //If setting was chosen, hide everything first...
+      if (settings.hideJS) {
+        $(this).hide();
+      }
+      //Show based on current value on page load
+      $.fn.showOrHide(listenTo, listenFor, $section);
+    });
+  }
+}(jQuery));
+  
+ $('.conditional').conditionize();
+</script>
+
+
+
+
+</body>
+
+</html>

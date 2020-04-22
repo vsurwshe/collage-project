@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <script type="text/javascript">
+  window.onload = function () {
+    var chart = new CanvasJS.Chart("chartContainer",
+    {
+      title:{
+        text: "Understanding Legend"
+      },
+	  axisY: {
+				title: "Value(MM)",
+				titleFontFamily: "verdana",
+		
+		},
+
+      legend: {
+       horizontalAlign: "center", // "center" , "right"
+       verticalAlign: "bottom",  // "top" , "bottom"
+       fontSize: 15
+     },
+     data: [
+     {
+      type: "line",
+      showInLegend: true,
+      legendText: "Numbers",
+      dataPoints: [
+      {label: "Jon", y: 230 },
+      {label: "Jose", y: 245},
+      {label: "Joey", y: 345},
+      {label: "Trin", y: 367 },
+      {label: "Mike", y: 453 },
+      {label: "Hulk", y: 256 },
+      {label: "Dan", y: 478},
+      {label: "Nate", y: 543 },      
+      {label: "Jen", y: 456 }
+      ]
+    },
+	{
+      
+      showInLegend: true,
+      legendText: "Numbers",
+      dataPoints: [
+      {label: "Jon", y: 23 },
+      {label: "Jose", y: 25},
+      {label: "Joey", y: 34},
+      {label: "Trin", y: 37 },
+      {label: "Mike", y: 53 },
+      {label: "Hulk", y: 56 },
+      {label: "Dan", y: 48},
+      {label: "Nate", y: 53 },      
+      {label: "Jen", y: 45 }
+      ]
+    }, {
+      type: "splineArea",
+      showInLegend: true,
+      legendText: "Numbers",
+      dataPoints: [
+      {label: "Jon", y: 230 },
+      {label: "Jose", y: 245},
+      {label: "Joey", y: 345},
+      {label: "Trin", y: 367 },
+      {label: "Mike", y: 453 },
+      {label: "Hulk", y: 256 },
+      {label: "Dan", y: 478},
+      {label: "Nate", y: 543 },      
+      {label: "Jen", y: 456 }
+      ]
+    }
+    ]
+  });
+
+    chart.render();
+  }
+  </script>
+  <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script></head>
+  <body>
+    <div id="chartContainer" style="height: 300px; width: 100%;">
+    </div>
+  </body>
+  </html>

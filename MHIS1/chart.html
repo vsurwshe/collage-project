@@ -1,0 +1,75 @@
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CSGO Budget Chart</title>
+</head>
+<style>
+.chart{
+width:1100px;
+height:400px;
+}
+</style>
+<body>
+<div class="chart">
+  <canvas id="canvas"></canvas>
+ </div>
+ <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.bundle.min.js'></script>
+	<script>
+	
+	new Chart(document.getElementById("canvas"), {
+   
+   type: 'bar',
+	
+   data: {
+      labels: ["Jan, 2013", "Feb, 2013", "Mar, 2013", "Apr, 2013","May, 2013", "Jun, 2013", "Jul, 2013", "Aug, 2013", "Sept, 2013", "Oct, 2013", "Nov, 2013", "Dec, 2013"],
+      datasets: [{
+          label: "Europe",
+          type: "line",
+          borderColor: "#8e5ea2",
+		  data: [408,547,675,734,408,547,675,734,675,734,675,734],
+          fill: false
+        }, {
+          label: "Africa",
+		  type: "line",
+          borderColor: "#3e95cd",
+          data: [133,221,783,2478,133,221,783,2478,783,2478,783,2478],
+          fill: true
+        }, {
+          label: "Europe",
+          type: "bar",
+		  Width:2,
+		  backgroundColor:'#3355FF',
+          data: [408,547,675,734,408,547,675,734,675,734,675,734],
+        }
+      ]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Survey report from Dudhana river of district Aurangabad for year 2013',
+	 },
+      axisX:{
+       labelFontStyle: "bold"
+      },
+	  legend: { display: true,
+		horizontalAlign: "center", // "center" , "right"
+       verticalAlign: "bottom",  // "top" , "bottom"
+		labels:{
+		fontColor:'#000',
+		fontSize:18
+		}
+	  },
+	  scales: {
+        yAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'Value(MM)',
+			 labelFontStyle: "bold"
+			 }
+        }]
+       }
+    }
+});
+	</script>
+</body>
+</html>
