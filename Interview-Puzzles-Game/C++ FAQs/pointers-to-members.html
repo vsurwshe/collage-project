@@ -1,0 +1,335 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"
+	"http://www.w3.org/TR/REC-html40/strict.dtd">
+<html>
+<head>
+<title>[33] Pointers to member functions, C++ FAQ Lite</title>
+<meta name="FILENAME" content="pointers-to-members.html">
+<meta name="ABSTRACT" content="[33] Pointers to member functions, C++ FAQ Lite">
+<meta name="OWNER"    content="cline@parashift.com">
+<meta name="AUTHOR"   content="Marshall Cline, cline@parashift.com">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rev=made href="mailto:cline@parashift.com">
+<style type='text/css'>
+  <!--
+  body       { font-family: arial; color: black; background: white }
+  .CodeBlock { color: black; background-color: #dfdfdf; margin-left: 30px; margin-right: 30px; padding: 5pt }
+  .FaqTitle  { color: black; background-color: gold }
+  .Updated   { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #ffff00; border: solid #e0e000 1px; }
+  .New       { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #00ff00; border: solid #00d000 1px; }
+  ul         { margin-bottom: 1px; margin-top: 1px }
+  ol         { margin-bottom: 1px; margin-top: 1px }
+  li         { margin-bottom: 4px; margin-top: 4px }
+  a          { color: blue }
+  a:hover    { color: red }
+  -->
+</style>
+</head>
+<body>
+<h1><a name="top"></a>[33] Pointers to member functions<br>
+<small><small>(Part of <a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>, <a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">Copyright&nbsp;&copy; 1991-2003</a>, <a href="http://www.parashift.com/" title="www.parashift.com/" target='_blank'>Marshall Cline</a>, <a href="mailto:cline@parashift.com" title="cline@parashift.com"><tt>cline@parashift.com</tt></a>)</small></small></h1>
+<hr>
+<h3>FAQs in section [33]:</h3>
+<ul>
+<li><a href="pointers-to-members.html#faq-33.1" title="[33.1] Is the type of &quot;pointer-to-member-function&quot; different from &quot;pointer-to-function&quot;?">[33.1] Is the type of &quot;pointer-to-member-function&quot; different from &quot;pointer-to-function&quot;?</a></li>
+<li><a href="pointers-to-members.html#faq-33.2" title="[33.2] How do I pass a pointer-to-member-function to a signal handler, X event callback, system call that starts a thread/task, etc?">[33.2] How do I pass a pointer-to-member-function to a signal handler, X event callback, system call that starts a thread/task, etc?</a></li>
+<li><a href="pointers-to-members.html#faq-33.3" title="[33.3] Why do I keep getting compile errors (type mismatch) when I try to use a member function as an interrupt service routine?">[33.3] Why do I keep getting compile errors (type mismatch) when I try to use a member function as an interrupt service routine?</a></li>
+<li><a href="pointers-to-members.html#faq-33.4" title="[33.4] Why am I having trouble taking the address of a C++ function?">[33.4] Why am I having trouble taking the address of a C++ function?</a></li>
+<li><a href="pointers-to-members.html#faq-33.5" title="[33.5] How can I avoid syntax errors when calling a member function using a pointer-to-member-function?">[33.5] How can I avoid syntax errors when calling a member function using a pointer-to-member-function?</a></li>
+<li><a href="pointers-to-members.html#faq-33.6" title="[33.6] How do I create and use an array of pointer-to-member-function?">[33.6] How do I create and use an array of pointer-to-member-function?</a></li>
+<li><a href="pointers-to-members.html#faq-33.7" title="[33.7] Can I convert a pointer-to-member-function to a void*?">[33.7] Can I convert a pointer-to-member-function to a <nobr><tt>void*</tt></nobr>?</a></li>
+<li><a href="pointers-to-members.html#faq-33.8" title="[33.8] Can I convert a pointer-to-function to a void*?">[33.8] Can I convert a pointer-to-function to a <nobr><tt>void*</tt></nobr>?</a></li>
+</ul>
+<p><hr>
+<p><a name="faq-33.1"></a>
+<div class=FaqTitle><h3>[33.1] Is the type of &quot;pointer-to-member-function&quot; different from &quot;pointer-to-function&quot;?</h3></div>
+<p>Yep.
+<p>Consider the following function:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;int&nbsp;f(char&nbsp;a,&nbsp;float&nbsp;b);
+</tt>
+</div>
+<p>The type of this function is different depending on whether it is an ordinary
+function or a non-<tt>static</tt> member function of some class:
+<ul>
+<li>Its type is &quot;<nobr><tt>int (*)(char,float)</tt></nobr>&quot; if an ordinary
+function</li>
+<li>Its type is &quot;<nobr><tt>int (Fred::*)(char,float)</tt></nobr>&quot; if a non-<tt>static</tt>
+member function of <tt>class</tt> <tt>Fred</tt></li>
+</ul>
+<p>Note: if it's a <tt>static</tt> member function of <tt>class</tt> <tt>Fred</tt>, its type is the
+same as if it was an ordinary function: &quot;<nobr><tt>int (*)(char,float)</tt></nobr>&quot;.
+<p><small>[&nbsp;<a href="#top" title="Top of section [33] Pointers to member functions">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [33] Pointers to member functions">Bottom</a> |&nbsp;<a href="mixing-c-and-cpp.html" title="[32] How to mix C and C++">Previous&nbsp;section</a> |&nbsp;<a href="containers-and-templates.html" title="[34] Container classes and templates">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-33.2"></a>
+<div class=FaqTitle><h3>[33.2] How do I pass a pointer-to-member-function to a signal handler, X event callback, system call that starts a thread/task, etc?</h3></div>
+<p>Don't.
+<p>Because a member function is meaningless without an object to invoke it on, you
+can't do this directly (if The X Window System was rewritten in C++, it would
+probably pass references to <em>objects</em> around, not just pointers to
+functions; naturally the objects would embody the required function and
+probably a whole lot more).
+<p>As a patch for existing software, use a top-level (non-member) function as a
+wrapper which takes an object obtained through some other technique.
+Depending on the routine you're calling, this &quot;other technique&quot; might be
+trivial or might require a little work on your part.  The system call that
+starts a thread, for example, might require you to pass a function pointer
+along with a <nobr><tt>void*</tt></nobr>, so you can pass the object pointer in the
+<nobr><tt>void*</tt></nobr>.  Many real time operating systems do something similar for the
+function that starts a new task.  Worst case you could store the object
+pointer in a global variable; this might be required for Unix signal handlers
+(but globals are, in general, undesired).  In any case, the top-level function
+would call the desired member function on the object.
+<p>Here's an example of the worst case (using a global).  Suppose you want to
+call <nobr><tt>Fred::memberFn()</tt></nobr> on interrupt:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Fred&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;void&nbsp;memberFn();<br>
+&nbsp;&nbsp;&nbsp;static&nbsp;void&nbsp;staticMemberFn();&nbsp;&nbsp;</tt><em>//&nbsp;A&nbsp;<tt>static</tt>&nbsp;member&nbsp;function&nbsp;can&nbsp;handle&nbsp;it</em><tt><br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;</tt><em>//&nbsp;Wrapper&nbsp;function&nbsp;uses&nbsp;a&nbsp;global&nbsp;to&nbsp;remember&nbsp;the&nbsp;object:</em><tt><br>
+&nbsp;Fred*&nbsp;object_which_will_handle_signal;<br>
+&nbsp;<br>
+&nbsp;void&nbsp;Fred_memberFn_wrapper()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;object_which_will_handle_signal-&gt;memberFn();<br>
+&nbsp;}<br>
+&nbsp;<br>
+&nbsp;int&nbsp;main()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>/*&nbsp;<nobr><tt>signal(SIGINT,&nbsp;Fred::memberFn);</tt></nobr>&nbsp;*/</em><tt>&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Can&nbsp;NOT&nbsp;do&nbsp;this</em><tt><br>
+&nbsp;&nbsp;&nbsp;signal(SIGINT,&nbsp;Fred_memberFn_wrapper);&nbsp;&nbsp;</tt><em>//&nbsp;OK</em><tt><br>
+&nbsp;&nbsp;&nbsp;signal(SIGINT,&nbsp;Fred::staticMemberFn);&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Also&nbsp;OK</em><tt><br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>Note: <tt>static</tt> member functions do not require an actual object to be invoked,
+so pointers-to-<tt>static</tt>-member-functions are type compatible with regular
+pointers-to-functions.
+<p><small>[&nbsp;<a href="#top" title="Top of section [33] Pointers to member functions">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [33] Pointers to member functions">Bottom</a> |&nbsp;<a href="mixing-c-and-cpp.html" title="[32] How to mix C and C++">Previous&nbsp;section</a> |&nbsp;<a href="containers-and-templates.html" title="[34] Container classes and templates">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-33.3"></a>
+<div class=FaqTitle><h3>[33.3] Why do I keep getting compile errors (type mismatch) when I try to use a member function as an interrupt service routine?</h3></div>
+<p>This is a special case of the previous two questions, therefore read the
+previous two answers first.
+<p>Non-<tt>static</tt> member functions have a hidden parameter that corresponds to the
+<tt>this</tt> pointer.  The <tt>this</tt> pointer points to the instance data for the
+object.  The interrupt hardware/firmware in the system is not capable of
+providing the <tt>this</tt> pointer argument.  You must use &quot;normal&quot; functions (non
+class members) or <tt>static</tt> member functions as interrupt service routines.
+<p>One possible solution is to use a <tt>static</tt> member as the interrupt service
+routine and have that function look somewhere to find the instance/member pair
+that should be called on interrupt.  Thus the effect is that a member function
+is invoked on an interrupt, but for technical reasons you need to call an
+intermediate function first.
+<p><small>[&nbsp;<a href="#top" title="Top of section [33] Pointers to member functions">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [33] Pointers to member functions">Bottom</a> |&nbsp;<a href="mixing-c-and-cpp.html" title="[32] How to mix C and C++">Previous&nbsp;section</a> |&nbsp;<a href="containers-and-templates.html" title="[34] Container classes and templates">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-33.4"></a>
+<div class=FaqTitle><h3>[33.4] Why am I having trouble taking the address of a C++ function?</h3></div>
+<p>This is a corollary to the previous FAQ.
+<p>Long answer: In C++, member functions have an implicit parameter which points
+to the object (the <tt>this</tt> pointer inside the member function).  Normal C
+functions can be thought of as having a different calling convention from
+member functions, so the types of their pointers (pointer-to-member-function <em>vs.</em>
+pointer-to-function) are different and incompatible.  C++ introduces a new type
+of pointer, called a pointer-to-member, which can be invoked only by providing
+an object.
+<p>NOTE: do <em>not</em> attempt to &quot;cast&quot; a pointer-to-member-function into a
+pointer-to-function; the result is undefined and probably disastrous.  E.g., a
+pointer-to-member-function is <em>not</em> required to contain the machine
+address of the appropriate function.  As was said in the last example, if you
+have a pointer to a regular C function, use either a top-level (non-member)
+function, or a <tt>static</tt> (class) member function.
+<p><small>[&nbsp;<a href="#top" title="Top of section [33] Pointers to member functions">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [33] Pointers to member functions">Bottom</a> |&nbsp;<a href="mixing-c-and-cpp.html" title="[32] How to mix C and C++">Previous&nbsp;section</a> |&nbsp;<a href="containers-and-templates.html" title="[34] Container classes and templates">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-33.5"></a>
+<div class=FaqTitle><h3>[33.5] How can I avoid syntax errors when calling a member function using a pointer-to-member-function?</h3></div>
+<p>Do <em>both</em> a <tt>typedef</tt> <em>and</em> a <nobr><tt>#define</tt></nobr> macro.
+<p><b>Step 1:</b> create a <tt>typedef</tt>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Fred&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;f(char&nbsp;x,&nbsp;float&nbsp;y);<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;g(char&nbsp;x,&nbsp;float&nbsp;y);<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;h(char&nbsp;x,&nbsp;float&nbsp;y);<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;i(char&nbsp;x,&nbsp;float&nbsp;y);<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;</tt><em>//&nbsp;<tt>FredMemFn</tt>&nbsp;points&nbsp;to&nbsp;a&nbsp;member&nbsp;of&nbsp;<tt>Fred</tt>&nbsp;that&nbsp;takes&nbsp;<nobr><tt>(char,float)</tt></nobr></em><tt><br>
+&nbsp;typedef&nbsp;&nbsp;int&nbsp;(Fred::*FredMemFn)(char&nbsp;x,&nbsp;float&nbsp;y);
+</tt>
+</div>
+<p><b>Step 2:</b> create a <nobr><tt>#define</tt></nobr> macro:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#define&nbsp;CALL_MEMBER_FN(object,ptrToMember)&nbsp;&nbsp;((object).*(ptrToMember))
+</tt>
+</div>
+<p>(<a href="inline-functions.html#faq-9.5" title="[9.5] Why should I use inline functions instead of plain old #define macros?">Normally I dislike <nobr><tt>#define</tt></nobr> macros<!--rawtext:[9.5]:rawtext--></a>, but
+<a href="big-picture.html#faq-6.15" title="[6.15] Will I sometimes use any so-called &quot;evil&quot; constructs?">you should use them with pointers to
+members<!--rawtext:[6.15]:rawtext--></a> because they improve the readability and writability of that
+sort of code.)
+<p>Here's how you use these features:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;userCode(Fred&amp;&nbsp;fred,&nbsp;FredMemFn&nbsp;memFn)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;CALL_MEMBER_FN(fred,memFn)('x',&nbsp;3.14);<br>
+&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Would&nbsp;normally&nbsp;be:&nbsp;<nobr><tt>(fred.*memFn)('x',&nbsp;3.14);</tt></nobr></em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>I <em>strongly</em> recommend these features.  In the real world, member
+function invocations are a <em>lot</em> more complex than the simple example
+just given, and the difference in readability and writability is significant.
+<a href="news:comp.lang.c++" title="comp.lang.c++"><tt>comp.lang.c++</tt></a> has had to endure hundreds and hundreds of
+postings from confused programmers who couldn't quite get the syntax right.
+Almost all these errors would have vanished had they used these features.
+<p>Note: <nobr><tt>#define</tt></nobr> macros are <a href="big-picture.html#faq-6.14" title="[6.14] What does the FAQ mean by &quot;such-in-such is evil&quot;?">evil<!--rawtext:[6.14]:rawtext--></a> in 4 different
+ways: <a href="inline-functions.html#faq-9.5" title="[9.5] Why should I use inline functions instead of plain old #define macros?">evil#1<!--rawtext:[9.5]:rawtext--></a>, <a href="misc-technical-issues.html#faq-38.4" title="[38.4] What should be done with macros that contain if?">evil#2<!--rawtext:[38.4]:rawtext--></a>,
+<a href="misc-technical-issues.html#faq-38.5" title="[38.5] What should be done with macros that have multiple lines?">evil#3<!--rawtext:[38.5]:rawtext--></a>, and
+<a href="misc-technical-issues.html#faq-38.6" title="[38.6] What should be done with macros that need to paste two tokens together?">evil#4<!--rawtext:[38.6]:rawtext--></a>.  But they're
+<a href="big-picture.html#faq-6.15" title="[6.15] Will I sometimes use any so-called &quot;evil&quot; constructs?">still useful sometimes<!--rawtext:[6.15]:rawtext--></a>.  But you should
+still feel a vague sense of shame after using them.
+<p><small>[&nbsp;<a href="#top" title="Top of section [33] Pointers to member functions">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [33] Pointers to member functions">Bottom</a> |&nbsp;<a href="mixing-c-and-cpp.html" title="[32] How to mix C and C++">Previous&nbsp;section</a> |&nbsp;<a href="containers-and-templates.html" title="[34] Container classes and templates">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-33.6"></a>
+<div class=FaqTitle><h3>[33.6] How do I create and use an array of pointer-to-member-function?</h3></div>
+<p>Use <em>both</em> the <tt>typedef</tt> <em>and</em> the <nobr><tt>#define</tt></nobr> macro
+<a href="pointers-to-members.html#faq-33.5" title="[33.5] How can I avoid syntax errors when calling a member function using a pointer-to-member-function?">described earlier<!--rawtext:[33.5]:rawtext--></a>, and you're 90% done.
+<p><b>Step 1:</b> create a <tt>typedef</tt>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Fred&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;f(char&nbsp;x,&nbsp;float&nbsp;y);<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;g(char&nbsp;x,&nbsp;float&nbsp;y);<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;h(char&nbsp;x,&nbsp;float&nbsp;y);<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;i(char&nbsp;x,&nbsp;float&nbsp;y);<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;</tt><em>//&nbsp;<tt>FredMemFn</tt>&nbsp;points&nbsp;to&nbsp;a&nbsp;member&nbsp;of&nbsp;<tt>Fred</tt>&nbsp;that&nbsp;takes&nbsp;<nobr><tt>(char,float)</tt></nobr></em><tt><br>
+&nbsp;typedef&nbsp;&nbsp;int&nbsp;(Fred::*FredMemFn)(char&nbsp;x,&nbsp;float&nbsp;y);
+</tt>
+</div>
+<p><b>Step 2:</b> create a <nobr><tt>#define</tt></nobr> macro:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#define&nbsp;CALL_MEMBER_FN(object,ptrToMember)&nbsp;&nbsp;((object).*(ptrToMember))
+</tt>
+</div>
+<p>Now your array of pointers-to-member-functions is straightforward:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;FredMemFn&nbsp;a[]&nbsp;=&nbsp;{&nbsp;&amp;Fred::f,&nbsp;&amp;Fred::g,&nbsp;&amp;Fred::h,&nbsp;&amp;Fred::i&nbsp;};
+</tt>
+</div>
+<p>And your usage of one of the member function pointers is also straightforward:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;userCode(Fred&amp;&nbsp;fred,&nbsp;int&nbsp;memFnNum)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Assume&nbsp;<tt>memFnNum</tt>&nbsp;is&nbsp;between&nbsp;0&nbsp;and&nbsp;3&nbsp;inclusive:</em><tt><br>
+&nbsp;&nbsp;&nbsp;CALL_MEMBER_FN(fred,&nbsp;a[memFnNum])&nbsp;('x',&nbsp;3.14);<br>
+&nbsp;}
+</tt>
+</div>
+<p>Note: <nobr><tt>#define</tt></nobr> macros are <a href="big-picture.html#faq-6.14" title="[6.14] What does the FAQ mean by &quot;such-in-such is evil&quot;?">evil<!--rawtext:[6.14]:rawtext--></a> in 4 different ways:
+<a href="inline-functions.html#faq-9.5" title="[9.5] Why should I use inline functions instead of plain old #define macros?">evil#1<!--rawtext:[9.5]:rawtext--></a>, <a href="misc-technical-issues.html#faq-38.4" title="[38.4] What should be done with macros that contain if?">evil#2<!--rawtext:[38.4]:rawtext--></a>,
+<a href="misc-technical-issues.html#faq-38.5" title="[38.5] What should be done with macros that have multiple lines?">evil#3<!--rawtext:[38.5]:rawtext--></a>, and
+<a href="misc-technical-issues.html#faq-38.6" title="[38.6] What should be done with macros that need to paste two tokens together?">evil#4<!--rawtext:[38.6]:rawtext--></a>.  But they're still useful
+sometimes.  Feel ashamed, feel guilty, but when an evil construct like a macro
+improves your software, <a href="big-picture.html#faq-6.15" title="[6.15] Will I sometimes use any so-called &quot;evil&quot; constructs?">use it<!--rawtext:[6.15]:rawtext--></a>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [33] Pointers to member functions">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [33] Pointers to member functions">Bottom</a> |&nbsp;<a href="mixing-c-and-cpp.html" title="[32] How to mix C and C++">Previous&nbsp;section</a> |&nbsp;<a href="containers-and-templates.html" title="[34] Container classes and templates">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-33.7"></a>
+<div class=FaqTitle><h3>[33.7] Can I convert a pointer-to-member-function to a <nobr><tt>void*</tt></nobr>?</h3></div>
+<p>No!
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Fred&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;f(char&nbsp;x,&nbsp;float&nbsp;y);<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;g(char&nbsp;x,&nbsp;float&nbsp;y);<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;h(char&nbsp;x,&nbsp;float&nbsp;y);<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;i(char&nbsp;x,&nbsp;float&nbsp;y);<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;</tt><em>//&nbsp;<tt>FredMemFn</tt>&nbsp;points&nbsp;to&nbsp;a&nbsp;member&nbsp;of&nbsp;<tt>Fred</tt>&nbsp;that&nbsp;takes&nbsp;<nobr><tt>(char,float)</tt></nobr></em><tt><br>
+&nbsp;typedef&nbsp;&nbsp;int&nbsp;(Fred::*FredMemFn)(char&nbsp;x,&nbsp;float&nbsp;y);<br>
+&nbsp;<br>
+&nbsp;#define&nbsp;CALL_MEMBER_FN(object,ptrToMember)&nbsp;&nbsp;((object).*(ptrToMember))<br>
+&nbsp;<br>
+&nbsp;int&nbsp;callit(Fred&amp;&nbsp;o,&nbsp;FredMemFn&nbsp;p,&nbsp;char&nbsp;x,&nbsp;float&nbsp;y)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;return&nbsp;CALL_MEMBER_FN(o,p)(x,&nbsp;y);<br>
+&nbsp;}<br>
+&nbsp;<br>
+&nbsp;int&nbsp;main()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;FredMemFn&nbsp;p&nbsp;=&nbsp;&amp;Fred::f;<br>
+&nbsp;&nbsp;&nbsp;void*&nbsp;p2&nbsp;=&nbsp;(void*)p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;<big>&#8592;</big>&nbsp;illegal!!</em><tt><br>
+&nbsp;&nbsp;&nbsp;Fred&nbsp;o;<br>
+&nbsp;&nbsp;&nbsp;callit(o,&nbsp;p,&nbsp;'x',&nbsp;3.14f);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;okay</em><tt><br>
+&nbsp;&nbsp;&nbsp;callit(o,&nbsp;FredMemFn(p2),&nbsp;'x',&nbsp;3.14f);&nbsp;</tt><em>//&nbsp;might&nbsp;fail!!</em><tt><br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p><em>Please</em> do not email me if the above <em>seems to work</em> on your
+particular version of your particular compiler on your particular operating
+system.  I don't care.  It's illegal, period.
+<p><small>[&nbsp;<a href="#top" title="Top of section [33] Pointers to member functions">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [33] Pointers to member functions">Bottom</a> |&nbsp;<a href="mixing-c-and-cpp.html" title="[32] How to mix C and C++">Previous&nbsp;section</a> |&nbsp;<a href="containers-and-templates.html" title="[34] Container classes and templates">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-33.8"></a>
+<div class=FaqTitle><h3>[33.8] Can I convert a pointer-to-function to a <nobr><tt>void*</tt></nobr>?</h3></div>
+<p>No!
+<p><div class=CodeBlock>
+<tt>
+&nbsp;int&nbsp;f(char&nbsp;x,&nbsp;float&nbsp;y);<br>
+&nbsp;int&nbsp;g(char&nbsp;x,&nbsp;float&nbsp;y);<br>
+&nbsp;<br>
+&nbsp;typedef&nbsp;int(*FunctPtr)(char,float);<br>
+&nbsp;<br>
+&nbsp;int&nbsp;callit(FunctPtr&nbsp;p,&nbsp;char&nbsp;x,&nbsp;float&nbsp;y)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;return&nbsp;p(x,&nbsp;y);<br>
+&nbsp;}<br>
+&nbsp;<br>
+&nbsp;int&nbsp;main()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;FunctPtr&nbsp;p&nbsp;=&nbsp;f;<br>
+&nbsp;&nbsp;&nbsp;void*&nbsp;p2&nbsp;=&nbsp;(void*)p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;<big>&#8592;</big>&nbsp;illegal!!</em><tt><br>
+&nbsp;&nbsp;&nbsp;callit(p,&nbsp;'x',&nbsp;3.14f);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;okay</em><tt><br>
+&nbsp;&nbsp;&nbsp;callit(FunctPtr(p2),&nbsp;'x',&nbsp;3.14f);&nbsp;</tt><em>//&nbsp;might&nbsp;fail!!</em><tt><br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p><em>Please</em> do not email me if the above <em>seems to work</em> on your
+particular version of your particular compiler on your particular operating
+system.  I don't care.  It's illegal, period.
+<p><small>[&nbsp;<a href="#top" title="Top of section [33] Pointers to member functions">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [33] Pointers to member functions">Bottom</a> |&nbsp;<a href="mixing-c-and-cpp.html" title="[32] How to mix C and C++">Previous&nbsp;section</a> |&nbsp;<a href="containers-and-templates.html" title="[34] Container classes and templates">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="bottom"></a>
+<a href="mailto:cline@parashift.com" title="cline@parashift.com"><img src="mbox.gif" height=26 width=89 alt="E-Mail">&nbsp;E-mail the author</a><br>
+[&nbsp;<a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>
+|&nbsp;<a href="index.html#table-of-contents" title="Table of contents">Table&nbsp;of&nbsp;contents</a>
+|&nbsp;<a href="subject-index.html" title="Subject index; 3706 links to 2361 topics">Subject&nbsp;index</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.1" title="[1.1] Author">About&nbsp;the&nbsp;author</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">&copy;</a>
+|&nbsp;<a href="on-line-availability.html#faq-2.2" title="[2.2] How can I get a copy of all the HTML files of C++ FAQ Lite so I can read them Off-Line?">Download&nbsp;your&nbsp;own&nbsp;copy</a>&nbsp;]<br>
+<small>Revised May 2, 2003</small>
+</body>
+</html>

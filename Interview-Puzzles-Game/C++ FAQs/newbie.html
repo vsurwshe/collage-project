@@ -1,0 +1,901 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"
+	"http://www.w3.org/TR/REC-html40/strict.dtd">
+<html>
+<head>
+<title>[29] Newbie Questions / Answers, C++ FAQ Lite</title>
+<meta name="FILENAME" content="newbie.html">
+<meta name="ABSTRACT" content="[29] Newbie Questions / Answers, C++ FAQ Lite">
+<meta name="OWNER"    content="cline@parashift.com">
+<meta name="AUTHOR"   content="Marshall Cline, cline@parashift.com">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rev=made href="mailto:cline@parashift.com">
+<style type='text/css'>
+  <!--
+  body       { font-family: arial; color: black; background: white }
+  .CodeBlock { color: black; background-color: #dfdfdf; margin-left: 30px; margin-right: 30px; padding: 5pt }
+  .FaqTitle  { color: black; background-color: gold }
+  .Updated   { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #ffff00; border: solid #e0e000 1px; }
+  .New       { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #00ff00; border: solid #00d000 1px; }
+  ul         { margin-bottom: 1px; margin-top: 1px }
+  ol         { margin-bottom: 1px; margin-top: 1px }
+  li         { margin-bottom: 4px; margin-top: 4px }
+  a          { color: blue }
+  a:hover    { color: red }
+  -->
+</style>
+</head>
+<body>
+<h1><a name="top"></a>[29] Newbie Questions / Answers<br>
+<small><small>(Part of <a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>, <a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">Copyright&nbsp;&copy; 1991-2003</a>, <a href="http://www.parashift.com/" title="www.parashift.com/" target='_blank'>Marshall Cline</a>, <a href="mailto:cline@parashift.com" title="cline@parashift.com"><tt>cline@parashift.com</tt></a>)</small></small></h1>
+<hr>
+<h3>FAQs in section [29]:</h3>
+<ul>
+<li><a href="newbie.html#faq-29.1" title="[29.1] What is this &quot;newbie section&quot; all about?">[29.1] What is this &quot;newbie section&quot; all about?</a></li>
+<li><a href="newbie.html#faq-29.2" title="[29.2] Where do I start? Why do I feel so confused, so stupid?">[29.2] Where do I start? Why do I feel so confused, so stupid?</a></li>
+<li><a href="newbie.html#faq-29.3" title="[29.3] Should I use void main() or int main()?">[29.3] Should I use <nobr><tt>void main()</tt></nobr> or <nobr><tt>int main()</tt></nobr>?</a></li>
+<li><a href="newbie.html#faq-29.4" title="[29.4] Should I use f(void) or f()?">[29.4] Should I use <nobr><tt>f(void)</tt></nobr> or <nobr><tt>f()</tt></nobr>?</a></li>
+<li><a href="newbie.html#faq-29.5" title="[29.5] What are the criteria for choosing between short / int / long data types?">[29.5] What are the criteria for choosing between <tt>short</tt> / <tt>int</tt> / <tt>long</tt> data types?</a></li>
+<li><a href="newbie.html#faq-29.6" title="[29.6] What the heck is a const variable? Isn't that a contradiction in terms?">[29.6] What the heck is a <tt>const</tt> variable? Isn't that a contradiction in terms?</a></li>
+<li><a href="newbie.html#faq-29.7" title="[29.7] Why would I use a const variable / const identifier as opposed to #define?">[29.7] Why would I use a <tt>const</tt> variable / <tt>const</tt> identifier as opposed to <nobr><tt>#define</tt></nobr>?</a></li>
+<li><a href="newbie.html#faq-29.8" title="[29.8] Are you saying that the preprocessor is evil?">[29.8] Are you saying that the preprocessor is evil?</a></li>
+<li><a href="newbie.html#faq-29.9" title="[29.9] What is the &quot;standard library&quot;? What is included / excluded from it?">[29.9] What is the &quot;standard library&quot;? What is included / excluded from it?</a></li>
+<li><a href="newbie.html#faq-29.10" title="[29.10] How should I lay out my code? When should I use spaces, tabs, and/or newlines in my code?">[29.10] How should I lay out my code? When should I use spaces, tabs, and/or newlines in my code?</a></li>
+<li><a href="newbie.html#faq-29.11" title="[29.11] Is it okay if a lot of numbers appear in my code?">[29.11] Is it okay if a lot of numbers appear in my code?</a></li>
+<li><a href="newbie.html#faq-29.12" title="[29.12] What's the point of the L, U and f suffixes on numeric literals?">[29.12] What's the point of the <tt>L</tt>, <tt>U</tt> and <tt>f</tt> suffixes on numeric literals?</a></li>
+<li><a href="newbie.html#faq-29.13" title="[29.13] I can understand the and (&amp;&amp;) and or (||) operators, but what's the purpose of the not (!) operator?">[29.13] I can understand the <em>and</em> (<nobr><tt>&amp;&amp;</tt></nobr>) and <em>or</em> (<nobr><tt>||</tt></nobr>) operators, but what's the purpose of the <em>not</em> (<nobr><tt>!</tt></nobr>) operator?</a></li>
+<li><a href="newbie.html#faq-29.14" title="[29.14] Is !(a &lt; b) logically the same as a &gt;= b?">[29.14] Is <nobr><tt>!(a &lt; b)</tt></nobr> logically the same as <nobr><tt>a &gt;= b</tt></nobr>?</a></li>
+<li><a href="newbie.html#faq-29.15" title="[29.15] What is this NaN thing?">[29.15] What is this NaN thing?</a></li>
+<li><a href="newbie.html#faq-29.16" title="[29.16] Why is floating point so inaccurate? Why doesn't this print 0.43?">[29.16] Why is floating point so inaccurate? Why doesn't this print 0.43?</a></li>
+<li><a href="newbie.html#faq-29.17" title="[29.17] Why doesn't my floating-point comparison work?">[29.17] Why doesn't my floating-point comparison work?</a></li>
+<li><a href="newbie.html#faq-29.18" title="[29.18] What is the type of an enumeration such as enum Color? Is it of type int?">[29.18] What is the type of an enumeration such as <nobr><tt>enum Color</tt></nobr>? Is it of type <tt>int</tt>?</a></li>
+<li><a href="newbie.html#faq-29.19" title="[29.19] If an enumeration type is distinct from any other type, what good is it? What can you do with it?">[29.19] If an enumeration type is distinct from any other type, what good is it? What can you do with it?</a></li>
+</ul>
+<p><hr>
+<p><a name="faq-29.1"></a>
+<div class=FaqTitle><h3>[29.1] What is this &quot;newbie section&quot; all about?</h3></div>
+<p>It's a <em>randomly ordered</em> collection containing a <em>few</em> questions
+newbies <em>might</em> ask.
+<ul>
+<li>This section doesn't pretend to be organizied.  Think of it as
+random.  In truth, think of it as a hurried, initial cut by a busy
+guy.</li>
+<li>This section doesn't pretend to be complete.  Think of it as
+offering a little help to a few people.  It won't help everyone and it might
+not help you.</li>
+</ul>
+<p>Hopefully someday I'll be able to improve this section, but for now, it is
+incomplete and unorganized.  If that bothers you, my suggestion is to click
+that little <tt>x</tt> on the extreme upper right of your browser window <nobr><tt>:-)</tt></nobr>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [29] Newbie Questions / Answers">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [29] Newbie Questions / Answers">Bottom</a> |&nbsp;<a href="how-to-learn-cpp.html" title="[28] Learning OO/C++">Previous&nbsp;section</a> |&nbsp;<a href="smalltalk.html" title="[30] Learning C++ if you already know Smalltalk">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-29.2"></a>
+<div class=FaqTitle><h3>[29.2] Where do I start? Why do I feel so confused, so stupid?</h3></div>
+<p>Read the FAQ, especially the <a href="how-to-learn-cpp.html" title="[28] Learning OO/C++">section on learning
+C++<!--rawtext:[28]:rawtext--></a>, read <a href="news:comp.lang.c++" title="comp.lang.c++"><tt>comp.lang.c++</tt></a>, read <a href="how-to-learn-cpp.html#faq-28.4" title="[28.4] Should I buy one book, or several?">books<!--rawtext:[28.4]:rawtext--></a> plural.
+<p>But if everything still seems too hard, if you're feeling bombarded with
+mysterious terms and concepts, if you're wondering how you'll ever grasp
+anything, do this:
+<ol>
+<li>Type in some C++ code from any of the sources listed
+above.</li>
+<li>Get it to compile and run.</li>
+<li>Repeat.</li>
+</ol>
+<p>That's it.  Just practice and play.  Hopefully that will give you a foothold.
+<p>Here are some places you can get &quot;sample problems&quot; (in alphabetical order):
+<ul>
+<li>The <a href="http://www.christs.cam.ac.uk/bio/problems.html" title="www.christs.cam.ac.uk/bio/problems.html" target='_blank'>British Informatics Olympiad</a></li>
+<li>The <a href="http://www.nist.gov/dads/" title="www.nist.gov/dads/" target='_blank'>Dictionary of Algorithms and Data Structures</a></li>
+<li>The <a href="http://acm.uva.es/problemset/" title="acm.uva.es/problemset/" target='_blank'>University of Valladolid Programming Contest Site</a></li>
+</ul>
+<p><small>[&nbsp;<a href="#top" title="Top of section [29] Newbie Questions / Answers">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [29] Newbie Questions / Answers">Bottom</a> |&nbsp;<a href="how-to-learn-cpp.html" title="[28] Learning OO/C++">Previous&nbsp;section</a> |&nbsp;<a href="smalltalk.html" title="[30] Learning C++ if you already know Smalltalk">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-29.3"></a>
+<div class=FaqTitle><h3>[29.3] Should I use <nobr><tt>void main()</tt></nobr> or <nobr><tt>int main()</tt></nobr>?</h3></div>
+<p><nobr><tt>int main()</tt></nobr>
+<p><nobr><tt>main()</tt></nobr> must return <tt>int</tt>.  Not <tt>void</tt>, not <tt>bool</tt>, not <tt>float</tt>.  <tt>int</tt>.
+Just <tt>int</tt>, nothing but <tt>int</tt>, only <tt>int</tt>.
+<p>Some compilers accept <nobr><tt>void main()</tt></nobr>, but that is non-standard and
+shouldn't be used.  Instead use <nobr><tt>int main()</tt></nobr>.
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;main()&nbsp;&nbsp;</tt><em>//&nbsp;<big>&#8592;</big>&nbsp;BAD;&nbsp;DO&nbsp;NOT&nbsp;DO&nbsp;THIS</em><tt><br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p><div class=CodeBlock>
+<tt>
+&nbsp;int&nbsp;main()&nbsp;&nbsp;</tt><em>//&nbsp;<big>&#8592;</big>&nbsp;GOOD</em><tt><br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p><div class=CodeBlock>
+<tt>
+&nbsp;int&nbsp;main(int&nbsp;argc,&nbsp;char**&nbsp;argv)&nbsp;&nbsp;</tt><em>//&nbsp;<big>&#8592;</big>&nbsp;GOOD</em><tt><br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>As to the specific return value, if you don't know what else to return just
+say <nobr><tt>return 0;</tt></nobr>
+<p><small>[&nbsp;<a href="#top" title="Top of section [29] Newbie Questions / Answers">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [29] Newbie Questions / Answers">Bottom</a> |&nbsp;<a href="how-to-learn-cpp.html" title="[28] Learning OO/C++">Previous&nbsp;section</a> |&nbsp;<a href="smalltalk.html" title="[30] Learning C++ if you already know Smalltalk">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-29.4"></a>
+<div class=FaqTitle><h3>[29.4] Should I use <nobr><tt>f(void)</tt></nobr> or <nobr><tt>f()</tt></nobr>?</h3></div>
+<p><nobr><tt>f()</tt></nobr>
+<p>C programmers often use <nobr><tt>f(void)</tt></nobr> when declaring a function that takes
+no parameters, however in C++ that is considered bad style.  In fact, the
+<nobr><tt>f(void)</tt></nobr> style has been called
+<a href="http://www.research.att.com/~bs/sibling_rivalry.pdf" title="www.research.att.com/~bs/sibling_rivalry.pdf" target='_blank'>an
+&quot;abomination&quot;</a> by Bjarne Stroustrup, the creator of C++, Dennis
+Ritchie, the co-creator of C, and Doug McIlroy, head of the research
+department where Unix was born.
+<p>If you're writing C++ code, you should use <nobr><tt>f()</tt></nobr>.  The <nobr><tt>f(void)</tt></nobr>
+style is legal in C++, but only to make it easier to compile C code.
+<p>This C++ code shows the best way to declare a function that takes no
+parameters:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;f();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;declares&nbsp;(not&nbsp;defines)&nbsp;a&nbsp;function&nbsp;that&nbsp;takes&nbsp;no&nbsp;parameters</em><tt>
+</tt>
+</div>
+<p>This C++ code both declares and defines a function that takes no parameters:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;f()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;declares&nbsp;and&nbsp;defines&nbsp;a&nbsp;function&nbsp;that&nbsp;takes&nbsp;no&nbsp;parameters</em><tt><br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>The following C++ code also declares a function that takes no parameters, but
+it uses the less desirable (some would say &quot;abomination&quot;) style,
+<nobr><tt>f(void)</tt></nobr>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;f(void);&nbsp;&nbsp;</tt><em>//&nbsp;undesirable&nbsp;style&nbsp;for&nbsp;C++;&nbsp;use&nbsp;<nobr><tt>void&nbsp;f()</tt></nobr>&nbsp;instead</em><tt>
+</tt>
+</div>
+<p>Actually this <nobr><tt>f()</tt></nobr> thing is all you need to know about C++.  That and
+using those new fangled <nobr><tt>//</tt></nobr> comments.  Once you know those two things,
+you can claim to be a C++ expert.  Go for it: type those magical &quot;++&quot; marks on
+your resume.  Who cares about all that OO stuff &#151; why should you bother
+changing the way you <em>think</em>?  After all, the really important thing
+isn't thinking; it's typing in function declarations and comments.  (Sigh; I
+wish nobody actually thought that way.)
+<p><small>[&nbsp;<a href="#top" title="Top of section [29] Newbie Questions / Answers">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [29] Newbie Questions / Answers">Bottom</a> |&nbsp;<a href="how-to-learn-cpp.html" title="[28] Learning OO/C++">Previous&nbsp;section</a> |&nbsp;<a href="smalltalk.html" title="[30] Learning C++ if you already know Smalltalk">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-29.5"></a>
+<div class=FaqTitle><h3>[29.5] What are the criteria for choosing between <tt>short</tt> / <tt>int</tt> / <tt>long</tt> data types?</h3></div>
+<p>Other related questions: If a <nobr><tt>short int</tt></nobr> is the same size as an <tt>int</tt>
+on my particular implementation, why choose one or the other?  If I start
+taking the actual size in bytes of the variables into account, won't I be
+making my code unportable (since the size in bytes may differ from
+implementation to implementation)?  Or should I simply go with sizes much
+larger than I actually need, as a sort of safety buffer?
+<p>Answer: It's usually a good idea to write code that can be ported to a
+different operating system and/or compiler.  After all, if you're successful
+at what you do, someone else might want to use it somewhere else.  This can be
+a little tricky with built-in types like <tt>int</tt> and <tt>short</tt>, since C++ doesn't
+give guaranteed sizes.  However C++ does give you guaranteed <em>minimum</em>
+sizes, and that will usually be all you need to know.
+<p>C++ guarantees <a href="intrinsic-types.html#faq-26.1" title="[26.1] Can sizeof(char) be 2 on some machines? For example, what about double-byte characters?">a <tt>char</tt> is exactly one byte<!--rawtext:[26.1]:rawtext--></a>, <tt>short</tt>
+is at least 2 bytes, <tt>int</tt> is at least 2 bytes, and <tt>long</tt> is at least 4
+bytes.  It also guarantees the <tt>unsigned</tt> version of each of these is the same
+size as the original, for example, <nobr><tt>sizeof(unsigned short) ==
+sizeof(short)</tt></nobr>.
+<p>When writing portable code, you shouldn't make additional assumptions about
+these sizes.  For example, don't assume <tt>int</tt> has 4 bytes.  If you have an
+integral variable that needs at least 4 bytes, use a <tt>long</tt> or <nobr><tt>unsigned
+long</tt></nobr> even if <nobr><tt>sizeof(int) == 4</tt></nobr> on your particular implementation.
+On the other hand, if you have an integral variable quantity that will always
+fit within 2 bytes <em>and</em> if you want to minimize the use of data memory,
+use a <tt>short</tt> or <nobr><tt>unsigned short</tt></nobr> even if you know <nobr><tt>sizeof(int) ==
+2</tt></nobr> on your particular implementation.
+<p>Note that there are some subtle tradeoffs here.  In some cases, your computer
+might be able to manipulate smaller things faster than bigger things, but in
+other cases it is exactly the opposite: <tt>int</tt> arithmetic might be faster than
+<tt>short</tt> arithmetic on some implementations.  Another tradeoff is data-space
+against code-space: <tt>int</tt> arithmetic might generate less binary code than
+<tt>short</tt> arithmetic on some implementations.  Don't make simplistic
+assumptions.  Just because a particular variable <em>can</em> be declared as
+<tt>short</tt> doesn't necessarily mean it <em>should</em>, even if you're trying to
+save space.
+<p><small>[&nbsp;<a href="#top" title="Top of section [29] Newbie Questions / Answers">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [29] Newbie Questions / Answers">Bottom</a> |&nbsp;<a href="how-to-learn-cpp.html" title="[28] Learning OO/C++">Previous&nbsp;section</a> |&nbsp;<a href="smalltalk.html" title="[30] Learning C++ if you already know Smalltalk">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-29.6"></a>
+<div class=FaqTitle><h3>[29.6] What the heck is a <tt>const</tt> variable? Isn't that a contradiction in terms?</h3></div>
+<p>If it bothers you, call it a &quot;<tt>const</tt> identifier&quot; instead.
+<p>The main issue is to figure out what it <em>is</em>; we can figure out what to
+call it later.  For example, consider the symbol <tt>max</tt> in the following
+function:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;f()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;const&nbsp;int&nbsp;max&nbsp;=&nbsp;107;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;float&nbsp;array[max];<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>It doesn't matter whether you call <tt>max</tt> a <tt>const</tt> variable or a <tt>const</tt>
+identifier.  What matters is that you realize it is like a normal variable in
+some ways (e.g., you can take its address or pass it by const-reference), but
+it is unlike a normal variable in that you can't change its value.
+<p>Here is another even more common example:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Fred&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;private:<br>
+&nbsp;&nbsp;&nbsp;static&nbsp;const&nbsp;int&nbsp;max_&nbsp;=&nbsp;107;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;};
+</tt>
+</div>
+<p>In this example, you would need to add the line <nobr><tt>int Fred::max_;</tt></nobr> in
+exactly one .cpp file, typically in <tt>Fred.cpp</tt>.
+<p>It is generally considered good programming practice to
+<a href="newbie.html#faq-29.11" title="[29.11] Is it okay if a lot of numbers appear in my code?">give each &quot;magic number&quot; (like 107) a symbolic
+name and use that name rather than the raw magic number<!--rawtext:[29.11]:rawtext--></a>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [29] Newbie Questions / Answers">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [29] Newbie Questions / Answers">Bottom</a> |&nbsp;<a href="how-to-learn-cpp.html" title="[28] Learning OO/C++">Previous&nbsp;section</a> |&nbsp;<a href="smalltalk.html" title="[30] Learning C++ if you already know Smalltalk">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-29.7"></a>
+<div class=FaqTitle><h3>[29.7] Why would I use a <tt>const</tt> variable / <tt>const</tt> identifier as opposed to <nobr><tt>#define</tt></nobr>?</h3></div>
+<p><tt>const</tt> identifiers are often better than <nobr><tt>#define</tt></nobr> because:
+<ul>
+<li>they obey the language's scoping rules</li>
+<li>you can see them in the debugger</li>
+<li>you can take their address if you need to</li>
+<li>you can pass them by <tt>const</tt>-reference if you need to</li>
+<li>they don't create new &quot;keywords&quot; in your program.</li>
+</ul>
+<p>In short, <tt>const</tt> identifiers act like they're part of the language because
+they <em>are</em> part of the language.  The preprocessor can be thought of as
+a language layered on top of C++.  You can imagine that the preprocessor runs
+as a separate pass through your code, which would mean your original source
+code would be seen only by the preprocessor, not by the C++ compiler itself.
+In other words, you can imagine the preprocessor sees your original source
+code and replaces all <nobr><tt>#define</tt></nobr> symbols with their values, <em>then</em> the
+C++ compiler proper sees the modified source code <em>after</em> the original
+symbols got replaced by the preprocessor.
+<p>There are cases where <nobr><tt>#define</tt></nobr> is needed, but you should generally avoid it
+when you have the choice.  You should evaluate whether to use <tt>const</tt>
+<em>vs.</em> <nobr><tt>#define</tt></nobr> based on business value: time, money, risk.  In other
+words, one size does not fit all.  Most of the time you'll use <tt>const</tt> rather
+than <nobr><tt>#define</tt></nobr> for constants, but sometimes you'll use <nobr><tt>#define</tt></nobr>.  But please
+remember to wash your hands afterwards.
+<p><small>[&nbsp;<a href="#top" title="Top of section [29] Newbie Questions / Answers">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [29] Newbie Questions / Answers">Bottom</a> |&nbsp;<a href="how-to-learn-cpp.html" title="[28] Learning OO/C++">Previous&nbsp;section</a> |&nbsp;<a href="smalltalk.html" title="[30] Learning C++ if you already know Smalltalk">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-29.8"></a>
+<div class=FaqTitle><h3>[29.8] Are you saying that the preprocessor is evil?</h3></div>
+<p>Yes, that's exactly what I'm saying: the preprocessor is <a href="big-picture.html#faq-6.14" title="[6.14] What does the FAQ mean by &quot;such-in-such is evil&quot;?">evil<!--rawtext:[6.14]:rawtext--></a>.
+<p>Every <nobr><tt>#define</tt></nobr> macro effectively creates a new keyword in every source file
+and every scope until that symbol is <nobr><tt>#undef</tt></nobr>d.  The preprocessor lets
+you create a <nobr><tt>#define</tt></nobr> symbol that is <em>always</em> replaced independent of
+the <nobr><tt>{</tt>...<tt>}</tt></nobr> scope where that symbol appears.
+<p><a href="big-picture.html#faq-6.15" title="[6.15] Will I sometimes use any so-called &quot;evil&quot; constructs?">Sometimes we need the preprocessor<!--rawtext:[6.15]:rawtext--></a>, such
+as the <nobr><tt>#ifndef</tt></nobr>/<nobr><tt>#define</tt></nobr> wrapper within each header file, but it should be
+avoided when you can.  <a href="big-picture.html#faq-6.14" title="[6.14] What does the FAQ mean by &quot;such-in-such is evil&quot;?">&quot;Evil&quot; doesn't mean &quot;never use.&quot;<!--rawtext:[6.14]:rawtext--></a>
+You <em>will</em> use evil things sometimes, particularly when they are &quot;the
+lesser of two evils.&quot; But they're still evil <nobr><tt>:-)</tt></nobr>
+<p><small>[&nbsp;<a href="#top" title="Top of section [29] Newbie Questions / Answers">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [29] Newbie Questions / Answers">Bottom</a> |&nbsp;<a href="how-to-learn-cpp.html" title="[28] Learning OO/C++">Previous&nbsp;section</a> |&nbsp;<a href="smalltalk.html" title="[30] Learning C++ if you already know Smalltalk">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-29.9"></a>
+<div class=FaqTitle><h3>[29.9] What is the &quot;standard library&quot;? What is included / excluded from it?</h3></div>
+<p>Most (not all) implementations have a &quot;standard include&quot; directory, sometimes
+directories plural.  If your implementation is like that, the headers in the
+standard library are probably a subset of the files in those directories.  For
+example, <tt>iostream</tt> and <tt>string</tt> are part of the standard library,
+as is <tt>cstring</tt> and <tt>cstdio</tt>.  There are a bunch of .h files that
+are also part of the standard libarary, but not every .h file in those
+directories is part of the standard library.  For example, <tt>stdio.h</tt> is
+but <tt>windows.h</tt> is not.
+<p>You include headers from the standard library like this:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#include&nbsp;&lt;iostream&gt;<br>
+&nbsp;<br>
+&nbsp;int&nbsp;main()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;Hello&nbsp;world!\n&quot;;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p><small>[&nbsp;<a href="#top" title="Top of section [29] Newbie Questions / Answers">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [29] Newbie Questions / Answers">Bottom</a> |&nbsp;<a href="how-to-learn-cpp.html" title="[28] Learning OO/C++">Previous&nbsp;section</a> |&nbsp;<a href="smalltalk.html" title="[30] Learning C++ if you already know Smalltalk">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-29.10"></a>
+<div class=FaqTitle><h3>[29.10] How should I lay out my code? When should I use spaces, tabs, and/or newlines in my code?</h3></div>
+<p>The short answer is: <em>Just like the rest of your team</em>.  In other words,
+the team should use a consistent approach to whitespace, but otherwise please
+don't waste a lot of time worrying about it.
+<p>Here are a few details:
+<p>There is no universally accepted coding standard when it comes to whitespace.
+There are a few popular whitespace standards, such as the &quot;one true brace&quot;
+style, but there is a lot of contention over certain aspects of any given
+coding standard.
+<p>Most whitespace standards agree on a few points, such as putting a space
+around infix operators like <nobr><tt>x * y</tt></nobr> or <nobr><tt>a - b</tt></nobr>.  Most (not all)
+whitespace standards do not put spaces around the <nobr><tt>[</tt></nobr> or <nobr><tt>]</tt></nobr> in
+<nobr><tt>a[i]</tt></nobr>, and similar comments for <nobr><tt>(</tt></nobr> and <nobr><tt>)</tt></nobr> in
+<nobr><tt>f(x)</tt></nobr>.  However there is a great deal of contention over vertical
+whitespace, particularly when it comes to <nobr><tt>{</tt></nobr> and <nobr><tt>}</tt></nobr>.  For
+example, here are a few of the many ways to lay out <nobr><tt>if (foo()) { bar();
+baz(); }</tt></nobr>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;if&nbsp;(foo())&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;bar();<br>
+&nbsp;&nbsp;&nbsp;baz();<br>
+&nbsp;}
+</tt>
+</div>
+<p><div class=CodeBlock>
+<tt>
+&nbsp;if&nbsp;(foo())<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;bar();<br>
+&nbsp;&nbsp;&nbsp;baz();<br>
+&nbsp;}
+</tt>
+</div>
+<p><div class=CodeBlock>
+<tt>
+&nbsp;if&nbsp;(foo())<br>
+&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bar();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;baz();<br>
+&nbsp;&nbsp;&nbsp;}
+</tt>
+</div>
+<p><div class=CodeBlock>
+<tt>
+&nbsp;if&nbsp;(foo())<br>
+&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;bar();<br>
+&nbsp;&nbsp;&nbsp;baz();<br>
+&nbsp;&nbsp;&nbsp;}
+</tt>
+</div>
+<p><div class=CodeBlock>
+<tt>
+&nbsp;if&nbsp;(foo())&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;bar();<br>
+&nbsp;&nbsp;&nbsp;baz();<br>
+&nbsp;&nbsp;&nbsp;}
+</tt>
+</div>
+<p>...and others...
+<p><b>IMPORTANT:</b> Do <em>NOT</em> email me with reasons your whitespace
+approach is better than the others.  I don't care.  Plus I won't believe you.
+There is <em>no</em> objective standard of &quot;better&quot; when it comes to whitespace
+so your opinion is just that: your opinion.  If you write me an email in spite
+of this paragraph, I will consider you to be a hopeless geek who focuses on
+nits.  Don't waste your time worrying about whitespace: as long as your team
+uses a consistent whitespace style, get on with your life and worry about more
+important things.
+<p>For example, things you <em>should</em> be worried about include design issues
+like when <a href="abcs.html#faq-22.3" title="[22.3] What is an ABC?">ABCs<!--rawtext:[22.3]:rawtext--></a> should be used, whether inheritance should
+be an implementation or specification technique, what testing and inspection
+strategies should be used, whether interfaces should uniformly have a <nobr><tt>get()</tt></nobr>
+and/or <nobr><tt>set()</tt></nobr> member function for each data member, whether interfaces should
+be designed from the outside-in or the inside-out, whether errors be handled
+by <tt>try</tt>/<tt>catch</tt>/<tt>throw</tt> or by return codes, etc.  Read the FAQ for some
+opinions on those important questions, but please don't waste your time
+arguing over whitespace.  As long as the team is using a consistent whitespace
+strategy, drop it.
+<p><small>[&nbsp;<a href="#top" title="Top of section [29] Newbie Questions / Answers">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [29] Newbie Questions / Answers">Bottom</a> |&nbsp;<a href="how-to-learn-cpp.html" title="[28] Learning OO/C++">Previous&nbsp;section</a> |&nbsp;<a href="smalltalk.html" title="[30] Learning C++ if you already know Smalltalk">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-29.11"></a>
+<div class=FaqTitle><h3>[29.11] Is it okay if a lot of numbers appear in my code?</h3></div>
+<p>Probably not.
+<p>In many (not all) cases, it's best to <em>name</em> your numbers so each number
+appears only once in your code.  That way, when the number changes there will
+only be one place in the code that has to change.
+<p>For example, suppose your program is working with shipping crates.  The weight
+of an empty crate is <tt>5.7</tt>.  The expression <nobr><tt>5.7 + contentsWeight</tt></nobr>
+probably means the weight of the crate including its contents, meaning the
+number <tt>5.7</tt> probably appear many times in the software.  All these
+occurances of the number <tt>5.7</tt> will be difficult to find and change when
+(not if) somebody changes the style of crates used in this application.  The
+solution is to make sure the value <tt>5.7</tt> appears <em>exactly once</em>,
+usually as the initializer for a <tt>const</tt> identifier.  Typically this will be
+something like <nobr><tt>const double crateWeight = 5.7;</tt></nobr>.  After that, <nobr><tt>5.7 +
+contentsWeight</tt></nobr> would be replaced by <nobr><tt>crateWeight + contentsWeight</tt></nobr>.
+<p>Now that's the general rule of thumb.  But unfortunately there is some fine
+print.
+<p>Some people believe one should <em>never</em> have numeric literals scattered
+in the code.  They believe <em>all</em> numeric values should be named in a
+manner similar to that described above.  That rule, however noble in intent,
+just doesn't work very well in practice.  It is too tedious for people to
+follow, and ultimately it costs companies more than it saves them.  Remember:
+the goal of all programming rules is to <em>reduce</em> time, cost and risk.
+If a rule actually makes things worse, it is a bad rule, period.
+<p>A more practical rule is to focus on those values that are likely to change.
+For example, if a numeric literal is likely to change, it should appear only
+once in the software, usually as the initializer of a <tt>const</tt> identifier.
+This rule lets unchanging values, such as some occurances of 0, 1, -1, etc.,
+get coded directly in the software so programmers don't have to search for the
+one true definition of <tt>one</tt> or <tt>zero</tt>.  In other words, if a
+programmer wants to loop over the indices of a <tt>vector</tt>, he can simply
+write <nobr><tt>for (int i = 0; i &lt; v.size(); ++i)</tt></nobr>.  The &quot;extremist&quot; rule
+described earlier would require the programmer to poke around asking if
+anybody else has defined a <tt>const</tt> identifier initialized to 0, and if not, to
+define his own <nobr><tt>const int zero = 0;</tt></nobr> then replace the loop with <nobr><tt>for
+(int i = zero; i &lt; v.size(); ++i)</tt></nobr>.  This is all a waste of time since the
+loop will <em>always</em> start with 0.  It adds cost without adding any value
+to compensate for that cost.
+<p>Obviously people might argue over exactly which values are &quot;likely to change,&quot;
+but that kind of judgment is why you get paid the big bucks: do your job and
+make a decision.  Some people are so afraid of making a wrong decision that
+they'll adopt a one-size-fits-all rule such as &quot;give a name to <em>every</em>
+number.&quot; But if you adopt rules like that, you're <em>guaranteed</em> to have
+made the wrong decision: those rules cost your company more than they save.
+They are bad rules.
+<p>The choice is simple: use a flexible rule even though you <em>might</em> make a
+wrong decision, or use a one-size-fits-all rule and be <em>guaranteed</em> to
+make a wrong decision.
+<p>There is one more piece of fine print: <em>where</em> the <tt>const</tt> identifier
+should be defined.  There are three typical cases:
+<ul>
+<li>If the <tt>const</tt> identifier is used only within a single function, it
+can be local to that function.</li>
+<li>If the <tt>const</tt> identifier is used throughout a class and no where
+else, it can be <tt>static</tt> within the <tt>private</tt> part of that class.</li>
+<li>If the <tt>const</tt> identifier is used in numerous classes, it can be
+<tt>static</tt> within the <tt>public</tt> part of the most appropriate class, or perhaps
+<tt>private</tt> in that class with a <tt>public</tt> <tt>static</tt> access method.</li>
+</ul>
+<p>As a last resort, make it <tt>static</tt> within a namespace or perhaps put it
+in the unnamed namespace.  Try very hard to avoid using <nobr><tt>#define</tt></nobr> since
+<a href="newbie.html#faq-29.8" title="[29.8] Are you saying that the preprocessor is evil?">the preprocessor is evil<!--rawtext:[29.8]:rawtext--></a>.  If you need to use
+<nobr><tt>#define</tt></nobr> <a href="big-picture.html#faq-6.15" title="[6.15] Will I sometimes use any so-called &quot;evil&quot; constructs?">anyway<!--rawtext:[6.15]:rawtext--></a>, wash your hands
+when you're done.  And please ask some friends if they know of a better
+alternative.
+<p>(As used throughout the FAQ, <a href="big-picture.html#faq-6.14" title="[6.14] What does the FAQ mean by &quot;such-in-such is evil&quot;?">&quot;evil&quot; doesn't mean &quot;never use
+it.&quot;<!--rawtext:[6.14]:rawtext--></a> There are times when you <em>will</em> use something that is &quot;evil&quot;
+since it will be, in those particular cases, <a href="big-picture.html#faq-6.15" title="[6.15] Will I sometimes use any so-called &quot;evil&quot; constructs?">the lesser of two evils<!--rawtext:[6.15]:rawtext--></a>.)
+<p><small>[&nbsp;<a href="#top" title="Top of section [29] Newbie Questions / Answers">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [29] Newbie Questions / Answers">Bottom</a> |&nbsp;<a href="how-to-learn-cpp.html" title="[28] Learning OO/C++">Previous&nbsp;section</a> |&nbsp;<a href="smalltalk.html" title="[30] Learning C++ if you already know Smalltalk">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-29.12"></a>
+<div class=FaqTitle><h3>[29.12] What's the point of the <tt>L</tt>, <tt>U</tt> and <tt>f</tt> suffixes on numeric literals?</h3></div>
+<p>You should use these suffixes when you need to force the compiler to treat the
+numeric literal as if it was the specified type.  For example, if <tt>x</tt> is
+of type <tt>float</tt>, the expression <nobr><tt>x + 5.7</tt></nobr> is of type double: it first
+promotes the value of <tt>x</tt> to a <tt>double</tt>, then performs the arithmetic
+using double-precision instructions.  If that is what you want, fine; but if
+you really wanted it to do the arithmetic using single-precision instructions,
+you can change that code to <nobr><tt>x + 5.7f</tt></nobr>.  Note: it is
+<a href="newbie.html#faq-29.11" title="[29.11] Is it okay if a lot of numbers appear in my code?">even better to &quot;name&quot; your numeric literals,
+particularly those that are likely to change<!--rawtext:[29.11]:rawtext--></a>.  That would require you to
+say <nobr><tt>x + crateWeight</tt></nobr> where <tt>crateWeight</tt> is a <tt>const</tt> <tt>float</tt>
+that is initialized to <tt>5.7f</tt>.
+<p>The <tt>U</tt> suffix is similar.  It's probably a good idea to use unsigned
+integers for variables that are always &gt;= 0.  For example, if a variable
+represents an index into an array, that variable would typically be declared
+as an <tt>unsigned</tt>.  The main reason for this is it requires less code, at least
+if you are careful to check your ranges.  For example, to check if a variable
+is both &gt;= 0 and &lt; max requires two tests if everything is signed: <nobr><tt>if (n
+&gt;= 0 &amp;&amp; n &lt; max)</tt></nobr>, but can be done with a single comparison if everything
+is unsigned: <nobr><tt>if (n &lt; max)</tt></nobr>.
+<p>If you end up using unsigned variables, it is generally a good idea to force
+your numeric literals to also be unsigned.  That makes it easier to see that
+the compiler will generate &quot;unsigned arithmetic&quot; instructions.  For example:
+<nobr><tt>if (n &lt; 256U)</tt></nobr> or <nobr><tt>if ((n &amp; 255u) &lt; 32u)</tt></nobr>.  Mixing signed and
+unsigned values in a single arithmetic expression is often confusing for
+programmers &#151; the compiler doesn't always do what you expect it should do.
+<p>The <tt>L</tt> suffix is not as common, but it is occasionally used for similar
+reasons as above: to make it obvious that the compiler is using <tt>long</tt>
+arithmetic.
+<p>The bottom line is this: it is a good discipline for programmers to force all
+numeric operands to be of the right type, as opposed to relying on the C++
+rules for promoting/demoting numeric expressions.  For example, if <tt>x</tt>
+is of type <tt>int</tt> and <tt>y</tt> is of type <tt>unsigned</tt>, it is a good idea to
+change <nobr><tt>x + y</tt></nobr> so the next programmer knows whether you intended to use
+unsigned arithmetic, e.g., <nobr><tt>unsigned(x) + y</tt></nobr>, or signed arithmetic:
+<nobr><tt>x + int(y)</tt></nobr>.  The other possibility is long arithmetic: <nobr><tt>long(x) +
+long(y)</tt></nobr>.  By using those casts, the code is more explicit and that's good
+in this case, since a lot of programmers don't know all the rules for implicit
+promotions.
+<p><small>[&nbsp;<a href="#top" title="Top of section [29] Newbie Questions / Answers">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [29] Newbie Questions / Answers">Bottom</a> |&nbsp;<a href="how-to-learn-cpp.html" title="[28] Learning OO/C++">Previous&nbsp;section</a> |&nbsp;<a href="smalltalk.html" title="[30] Learning C++ if you already know Smalltalk">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-29.13"></a>
+<div class=FaqTitle><h3>[29.13] I can understand the <em>and</em> (<nobr><tt>&amp;&amp;</tt></nobr>) and <em>or</em> (<nobr><tt>||</tt></nobr>) operators, but what's the purpose of the <em>not</em> (<nobr><tt>!</tt></nobr>) operator?</h3></div>
+<p>Some people are confused about the <nobr><tt>!</tt></nobr> operator.  For example, they think that
+<nobr><tt>!true</tt></nobr> is the same as <tt>false</tt>, or that <a href="newbie.html#faq-29.14" title="[29.14] Is !(a &lt; b) logically the same as a &gt;= b?"><nobr><tt>!(a &lt; b)</tt></nobr> is the same as <nobr><tt>a &gt;= b</tt></nobr><!--rawtext:[29.14]:rawtext--></a>, so in both cases the <nobr><tt>!</tt></nobr>
+operator doesn't seem to add anything.
+<p>Answer: The <nobr><tt>!</tt></nobr> operator is useful in boolean expressions, such occur in an
+<tt>if</tt> or <tt>while</tt> statement.  For example, let's assume <em>A</em> and <em>B</em>
+are boolean expressions, perhaps simple method-calls that return a <tt>bool</tt>.
+There are all sorts of ways to combine these two expressions:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;if&nbsp;(&nbsp;A&nbsp;&amp;&amp;&nbsp;&nbsp;B)&nbsp;</tt><em>...</em><tt><br>
+&nbsp;if&nbsp;(!A&nbsp;&amp;&amp;&nbsp;&nbsp;B)&nbsp;</tt><em>...</em><tt><br>
+&nbsp;if&nbsp;(&nbsp;A&nbsp;&amp;&amp;&nbsp;!B)&nbsp;</tt><em>...</em><tt><br>
+&nbsp;if&nbsp;(!A&nbsp;&amp;&amp;&nbsp;!B)&nbsp;</tt><em>...</em><tt><br>
+&nbsp;if&nbsp;(!(&nbsp;A&nbsp;&amp;&amp;&nbsp;&nbsp;B))&nbsp;</tt><em>...</em><tt><br>
+&nbsp;if&nbsp;(!(!A&nbsp;&amp;&amp;&nbsp;&nbsp;B))&nbsp;</tt><em>...</em><tt><br>
+&nbsp;if&nbsp;(!(&nbsp;A&nbsp;&amp;&amp;&nbsp;!B))&nbsp;</tt><em>...</em><tt><br>
+&nbsp;if&nbsp;(!(!A&nbsp;&amp;&amp;&nbsp;!B))&nbsp;</tt><em>...</em><tt>
+</tt>
+</div>
+<p>Along with a similar group formed using the <nobr><tt>||</tt></nobr> operator.
+<p>Note: boolean algebra can be used to transform each of the <nobr><tt>&amp;&amp;</tt></nobr>-versions into
+an equivalent <nobr><tt>||</tt></nobr>-version, so from a truth-table standpoint there are only 8
+logically distinct <tt>if</tt> statements.  However, since readability is so
+important in software, programmers should consider both the <nobr><tt>&amp;&amp;</tt></nobr>-version and
+the logically equivalent <nobr><tt>||</tt></nobr>-version.  For example, programmers should choose
+between <nobr><tt>!A &amp;&amp; !B</tt></nobr> and <nobr><tt>!(A || B)</tt></nobr> based on which one is more
+obvious to whoever will be maintaining the code.  In that sense there really
+are 16 different choices.
+<p>The point of all this is simple: the <nobr><tt>!</tt></nobr> operator is quite useful in boolean
+expressions.  Sometimes it is used for readability, and sometimes it is used
+because expressions like <nobr><tt>!(a &lt; b)</tt></nobr> actually are
+<a href="newbie.html#faq-29.14" title="[29.14] Is !(a &lt; b) logically the same as a &gt;= b?"><em>not</em><!--rawtext:[29.14]:rawtext--></a> equivalent to <nobr><tt>a &gt;= b</tt></nobr> in
+spite of what your grade school math teacher told you.
+<p><small>[&nbsp;<a href="#top" title="Top of section [29] Newbie Questions / Answers">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [29] Newbie Questions / Answers">Bottom</a> |&nbsp;<a href="how-to-learn-cpp.html" title="[28] Learning OO/C++">Previous&nbsp;section</a> |&nbsp;<a href="smalltalk.html" title="[30] Learning C++ if you already know Smalltalk">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-29.14"></a>
+<div class=FaqTitle><h3>[29.14] Is <nobr><tt>!(a &lt; b)</tt></nobr> logically the same as <nobr><tt>a &gt;= b</tt></nobr>?</h3></div>
+<p>No!
+<p>Despite what your grade school math teacher taught you, these equivalences
+don't always work in software, especially with floating point expressions or
+user-defined types.
+<p>Example: if <tt>a</tt> is a floating point <a href="newbie.html#faq-29.15" title="[29.15] What is this NaN thing?">NaN<!--rawtext:[29.15]:rawtext--></a>, then both <nobr><tt>a
+&lt; b</tt></nobr> and <nobr><tt>a &gt;= b</tt></nobr> will be false.  That means <nobr><tt>!(a &lt; b)</tt></nobr> will be
+true and <nobr><tt>a &gt;= b</tt></nobr> will be false.
+<p>Example: if <tt>a</tt> is an object of class <tt>Foo</tt> that has overloaded
+<nobr><tt>operator&lt;</tt></nobr> and <nobr><tt>operator&gt;=</tt></nobr>, then it is up to the creator of
+class <tt>Foo</tt> if these operators will have opposite semantics.  They
+probably <em>should</em> have opposite semantics, but that's up to whoever
+wrote class <tt>Foo</tt>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [29] Newbie Questions / Answers">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [29] Newbie Questions / Answers">Bottom</a> |&nbsp;<a href="how-to-learn-cpp.html" title="[28] Learning OO/C++">Previous&nbsp;section</a> |&nbsp;<a href="smalltalk.html" title="[30] Learning C++ if you already know Smalltalk">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-29.15"></a>
+<div class=FaqTitle><h3>[29.15] What is this NaN thing?</h3></div>
+<p>NaN means &quot;not a number,&quot; and is used for floating point operations.
+<p>There are lots of floating point operations that don't make sense, such as
+dividing by zero, taking the log of zero or a negative number, taking the
+square root of a negative number, etc.  Depending on your compiler, some of
+these operations may produce special floating point values such as infinity
+(with distinct values for positive <em>vs.</em> negative infinity) and the
+<em>not a number</em> value, NaN.
+<p>If your compiler produces a NaN, it has the unusual property that it is not
+equal to any value, including itself.  For example, if <tt>a</tt> is NaN, then
+<nobr><tt>a == a</tt></nobr> is false.  That is the usual way to check if you are dealing
+with a NaN:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;funct(double&nbsp;x)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;if&nbsp;(x&nbsp;==&nbsp;x)&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;<tt>x</tt>&nbsp;is&nbsp;a&nbsp;normal&nbsp;value</em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;<tt>x</tt>&nbsp;is&nbsp;NaN</em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;}
+</tt>
+</div>
+<p>Similarly, if <tt>a</tt> is NaN and <tt>b</tt> is some arbitrary floating point
+value, <tt>a</tt> will be neither less than, equal to, nor greater than
+<tt>b</tt>.  In other words, <nobr><tt>a &lt; b</tt></nobr>, <nobr><tt>a &lt;= b</tt></nobr>, <nobr><tt>a &gt; b</tt></nobr>,
+<nobr><tt>a &gt;= b</tt></nobr>, and <nobr><tt>a == b</tt></nobr> will all return false.
+<p><small>[&nbsp;<a href="#top" title="Top of section [29] Newbie Questions / Answers">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [29] Newbie Questions / Answers">Bottom</a> |&nbsp;<a href="how-to-learn-cpp.html" title="[28] Learning OO/C++">Previous&nbsp;section</a> |&nbsp;<a href="smalltalk.html" title="[30] Learning C++ if you already know Smalltalk">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-29.16"></a>
+<div class=FaqTitle><h3>[29.16] Why is floating point so inaccurate? Why doesn't this print 0.43?</h3></div>
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#include&nbsp;&lt;iostream&gt;<br>
+&nbsp;<br>
+&nbsp;int&nbsp;main()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;float&nbsp;a&nbsp;=&nbsp;1000.43;<br>
+&nbsp;&nbsp;&nbsp;float&nbsp;b&nbsp;=&nbsp;1000.0;<br>
+&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;a&nbsp;-&nbsp;b&nbsp;&lt;&lt;&nbsp;'\n';<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>(On one C++ implementation, this prints 0.429993)
+<p>Disclaimer: Frustration with rounding/truncation/approximation isn't really a
+C++ issue; it's a computer science issue.  However, people keep asking about
+it on <a href="news:comp.lang.c++" title="comp.lang.c++"><tt>comp.lang.c++</tt></a>, so what follows is a nominal answer.
+<p>Answer: Floating point is an approximation.  The IEEE standard for 32 bit
+float supports 1 bit of sign, 8 bits of exponent, and 23 bits of mantissa.
+Since a normalized binary-point mantissa always has the form 1.xxxxx... the
+leading 1 is dropped and you get effectively 24 bits of mantissa.  The number
+1000.43 (and many, many others, including some really common ones like 0.1) is
+not exactly representable in float or double format.  1000.43 is actually
+represented as the following bitpattern (the &quot;<tt>s</tt>&quot; shows the position of
+the sign bit, the &quot;<tt>e</tt>&quot;s show the positions of the exponent bits, and
+the &quot;<tt>m</tt>&quot;s show the positions of the mantissa bits):
+<p><div class=CodeBlock>
+<tt>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seeeeeeeemmmmmmmmmmmmmmmmmmmmmmm<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;01000100011110100001101110000101
+</tt>
+</div>
+<p>The shifted mantissa is 1111101000.01101110000101 or 1000 + 7045/16384.  The
+fractional part is 0.429992675781.  With 24 bits of mantissa you only get
+about 1 part in 16M of precision for float.  The <tt>double</tt> type provides more
+precision (53 bits of mantissa).
+<p><small>[&nbsp;<a href="#top" title="Top of section [29] Newbie Questions / Answers">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [29] Newbie Questions / Answers">Bottom</a> |&nbsp;<a href="how-to-learn-cpp.html" title="[28] Learning OO/C++">Previous&nbsp;section</a> |&nbsp;<a href="smalltalk.html" title="[30] Learning C++ if you already know Smalltalk">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-29.17"></a>
+<div class=FaqTitle><h3>[29.17] Why doesn't my floating-point comparison work?</h3></div>
+<p>Because floating point arithmetic is different from real number arithmetic.
+<p>Bottom line: Never use <nobr><tt>==</tt></nobr> to compare two floating point numbers.
+<p>Here's a simple example:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;double&nbsp;x&nbsp;=&nbsp;1.0&nbsp;/&nbsp;10.0;<br>
+&nbsp;double&nbsp;y&nbsp;=&nbsp;x&nbsp;*&nbsp;10.0;<br>
+&nbsp;if&nbsp;(y&nbsp;!=&nbsp;1.0)<br>
+&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;surprise:&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;y&nbsp;&lt;&lt;&nbsp;&quot;&nbsp;!=&nbsp;1\n&quot;;
+</tt>
+</div>
+<p>The above &quot;surprise&quot; message will appear on some (but not all)
+compilers/machines.  But even if your particular compiler/machine doesn't
+cause the above &quot;surprise&quot; message (and if you write me telling me whether it
+does, you'll show you've missed the whole point of this FAQ), floating point
+will surprise you at some point.  So read this FAQ and you'll know what to do.
+<p>The reason floating point will surprise you is that <tt>float</tt> and
+<tt>double</tt> values are normally represented using a finite precision binary
+format.  In other words, floating point numbers are not real numbers.  For
+example, in your machine's floating point format it might be impossible to
+exactly represent the number 0.1.  By way of analogy, it's impossible to
+exactly represent the number <em>one third</em> in decimal format (unless you
+use an infinite number of digits).
+<p>To dig a little deeper, let's examine what the decimal number 0.625 means.
+This number has a 6 in the &quot;tenths&quot; place, a 2 in the &quot;hundreths&quot; place, and a
+5 in the &quot;thousanths&quot; place.  In other words, we have a <em>digit</em> for each
+power of <em>10</em>.  But in binary, we might, depending on the details of
+your machine's floating point format, have a <em>bit</em> for each power of
+<em>2</em>.  So the fractional part might have a &quot;halves&quot; place, a &quot;quarters&quot;
+place, an &quot;eighths&quot; place, &quot;sixteenths&quot; place, etc., and each of these places
+has a bit.
+<p>Let's pretend your machine represents the fractional part of floating point
+numbers using the above scheme (it's normally more complicated than that, but
+if you already know exactly how floating point numbers are stored, chances are
+you don't need this FAQ to begin with, so look at this as a good starting
+point).  On that pretend machine, the bits of the fractional part of 0.625
+would be 101: 1 in the &#189;-place, 0 in the &#188;-place, and 1 in the
+&#8539;-place.  In other words, 0.625 is &#189; + &#8539;.
+<p>But on this pretend machine, 0.1 cannot be represented exactly since it cannot
+be formed as a sum of a finite number of powers of 2.  You can get close but
+you can't represent it exactly.  In particular you'd have a 0 in the
+&#189;-place, a 0 in the &#188;-place, a 0 in the &#8539;-place, and finally a 1
+in the &quot;sixteenths&quot; place, leaving a remainder of 1/10 - 1/16 = 3/80.
+Figuring out the other bits is left as an exercise (hint: look for a repeating
+bit-pattern, analogous to trying to represent 1/3 or 1/7 in decimal format).
+<p>The message is that some floating point numbers cannot always be represented
+exactly, so comparisons don't always do what you'd like them to do.  In other
+words, if the computer actually multiplies 10.0 by 1.0/10.0, it might not
+<em>exactly</em> get 1.0 back.
+<p>That's the problem.  Now here's the solution: be <em>very</em> careful when
+comparing floating point numbers for equality (or when doing other things with
+floating point numbers; e.g., finding the average of two floating point
+numbers seems simple but to do it right requires an <tt>if</tt>/<tt>else</tt> with at least
+three cases).
+<p>Here's the <em>wrong</em> way to do it:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;dubious(double&nbsp;x,&nbsp;double&nbsp;y)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;if&nbsp;(x&nbsp;==&nbsp;y)&nbsp;&nbsp;</tt><em>//&nbsp;Dubious!</em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foo();<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>If what you really want is to make sure they're &quot;very close&quot; to each other
+(e.g., if variable <tt>a</tt> contains the value <nobr><tt>1.0 / 10.0</tt></nobr> and you want to
+see <nobr><tt>if (10*a == 1)</tt></nobr>), you'll probably want to do something fancier than
+the above:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;smarter(double&nbsp;x,&nbsp;double&nbsp;y)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;if&nbsp;(isEqual(x,&nbsp;y))&nbsp;&nbsp;</tt><em>//&nbsp;Smarter!</em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foo();<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>There are many ways to define the <nobr><tt>isEqual()</tt></nobr> function, including:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;inline&nbsp;bool&nbsp;isEqual(double&nbsp;x,&nbsp;double&nbsp;y)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;const&nbsp;double&nbsp;epsilon&nbsp;=&nbsp;</tt><em>/*&nbsp;some&nbsp;small&nbsp;number&nbsp;such&nbsp;as&nbsp;1e-5&nbsp;*/</em><tt>;<br>
+&nbsp;&nbsp;&nbsp;return&nbsp;std::abs(x&nbsp;-&nbsp;y)&nbsp;&lt;=&nbsp;epsilon&nbsp;*&nbsp;std::abs(x);<br>
+&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;see&nbsp;Knuth&nbsp;section&nbsp;4.2.2&nbsp;pages&nbsp;217-218</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>Note: the above solution is not completely symmetric, meaning it is possible
+for <nobr><tt>isEqual(x,y)</tt></nobr> <nobr><tt>!=</tt></nobr> <nobr><tt>isEqual(y,x)</tt></nobr>.  From a practical
+standpoint, does not usually occur when the magnitudes of <tt>x</tt> and <tt>y</tt> are
+significantly larger than <tt>epsilon</tt>, but your mileage may vary.
+<p>For other useful functions, check out the following (listed alphabetically):
+<ul>
+<li>Isaacson, E. and Keller, H., Analysis of Numerical Methods,
+Dover.</li>
+<li>Kahan, W.,
+<a href="http://http.cs.berkeley.edu/~wkahan/" title="http.cs.berkeley.edu/~wkahan/" target='_blank'><tt>http.cs.berkeley.edu/~wkahan/</tt></a>.</li>
+<li>Knuth, Donald E., The Art of Computer Programming, Volume II:
+Seminumerical Algorithms, Addison-Wesley, 1969.</li>
+<li>LAPACK &#151; Linear Algebra Subroutine Library,
+<a href="http://www.siam.org" title="www.siam.org" target='_blank'><tt>www.siam.org</tt></a></li>
+<li>Press et al., Numerical Recipes.</li>
+<li>Ralston and Rabinowitz, A First Course in Numerical Analysis:
+Second Edition, Dover.</li>
+<li>Stoer, J. and Bulirsch, R., Introduction to Numerical Analysis,
+Springer Verlag, in German.</li>
+</ul>
+<p>Double-check your assumptions, including &quot;obvious&quot; things like how to compute
+averages, how to solve quadratic equations, etc., etc.  Do <em>not</em> assume
+the formulas you learned in High School will work with floating point numbers!
+<p>For insights on the underlying ideas and issues of floating point computation,
+start with David Goldberg's paper,
+<a href="http://docs.sun.com/source/806-3568/ncg_goldberg.html" title="docs.sun.com/source/806-3568/ncg_goldberg.html" target='_blank'><em>What Every
+Computer-Scientist Should Know About Floating Point Arithmetic</em></a> or
+<a href="http://192.18.99.138/800-7895/800-7895.pdf" title="192.18.99.138/800-7895/800-7895.pdf" target='_blank'>here in PDF format</a>.
+You might also want to read
+<a href="http://www.validlab.com/goldberg/addendum.html" title="www.validlab.com/goldberg/addendum.html" target='_blank'>this supplement by Doug
+Priest</a>.  The <a href="ftp://ftp.quitt.net/Outgoing/goldbergFollowup.pdf" title="ftp.quitt.net/Outgoing/goldbergFollowup.pdf" target='_blank'>combined paper + supplement</a> is also available.  You might also want to
+<a href="http://www.validlab.com/" title="www.validlab.com/" target='_blank'>go here for links to other floating-point
+topics</a>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [29] Newbie Questions / Answers">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [29] Newbie Questions / Answers">Bottom</a> |&nbsp;<a href="how-to-learn-cpp.html" title="[28] Learning OO/C++">Previous&nbsp;section</a> |&nbsp;<a href="smalltalk.html" title="[30] Learning C++ if you already know Smalltalk">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-29.18"></a>
+<div class=FaqTitle><h3>[29.18] What is the type of an enumeration such as <nobr><tt>enum Color</tt></nobr>? Is it of type <tt>int</tt>?</h3></div>
+<p>An enumeration such as <nobr><tt>enum Color { red, white, blue };</tt></nobr> is its own
+type.  It is not of type <tt>int</tt>.
+<p>When you create an object of an enumeration type, e.g., <nobr><tt>Color x;</tt></nobr>, we
+say that the object <tt>x</tt> is of type <tt>Color</tt>.  Object <tt>x</tt>
+isn't of type &quot;enumeration,&quot; and it's not of type <tt>int</tt>.
+<p>An expression of an enumeration type can be <em>converted</em> to a temporary
+<tt>int</tt>.  An analogy may help here.  An expression of type <tt>float</tt> can be
+converted to a temporary <tt>double</tt>, but that doesn't mean <tt>float</tt> is a subtype
+of <tt>double</tt>.  For example, after the declaration <nobr><tt>float y;</tt></nobr>, we say that
+<tt>y</tt> is of type <tt>float</tt>, and the expression <tt>y</tt> can be converted to a temporary
+<tt>double</tt>.  When that happens, a brand new, temporary <tt>double</tt> is created by
+copying something out of <tt>y</tt>.  In the say way, a <tt>Color</tt> object such as
+<tt>x</tt> can be converted to a temporary <tt>int</tt>, in which case a brand new,
+temporary <tt>int</tt> is created by copying something out of <tt>x</tt>.  (Note: the
+<em>only</em> purpose of the <tt>float</tt> / <tt>double</tt> analogy in this paragraph is to
+help explain how expressions of an enumeration type can be converted to
+temporary <tt>int</tt>s; do <em>not</em> try to use that analogy to imply <em>any</em>
+other behavior!)
+<p>The above conversion is very different from a subtype relationship, such as
+the relationship between derived class <tt>Car</tt> and its base class <tt>Vehicle</tt>.
+For example, an object of class <tt>Car</tt>, such as <nobr><tt>Car z;</tt></nobr>, actually
+<em>is</em> an object of class <tt>Vehicle</tt>, therefore you can bind a <nobr><tt>Vehicle&amp;</tt></nobr>
+to that object, e.g., <nobr><tt>Vehicle&amp; v = z;</tt></nobr>.  Unlike the previous paragraph,
+the object <tt>z</tt> is not copied to a temporary; reference <tt>v</tt> binds to <tt>z</tt>
+itself.  So we say an object of class <tt>Car</tt> <em>is</em> a <tt>Vehicle</tt>, but an
+object of class &quot;Color&quot; simply can be copied/converted into a temporary <tt>int</tt>.
+Big difference.
+<p>Final note, especially for C programmers: <a href="newbie.html#faq-29.19" title="[29.19] If an enumeration type is distinct from any other type, what good is it? What can you do with it?">the C++
+compiler will <em>not</em> automatically convert an <tt>int</tt> expression to a
+temporary <tt>Color</tt><!--rawtext:[29.19]:rawtext--></a>.  Since that sort of conversion is unsafe, it
+requires a cast, e.g., <nobr><tt>Color x = Color(2);</tt></nobr>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [29] Newbie Questions / Answers">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [29] Newbie Questions / Answers">Bottom</a> |&nbsp;<a href="how-to-learn-cpp.html" title="[28] Learning OO/C++">Previous&nbsp;section</a> |&nbsp;<a href="smalltalk.html" title="[30] Learning C++ if you already know Smalltalk">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-29.19"></a>
+<div class=FaqTitle><h3>[29.19] If an enumeration type is distinct from any other type, what good is it? What can you do with it?</h3></div>
+<p>Let's consider this enumeration type: <nobr><tt>enum Color { red, white, blue };</tt></nobr>.
+<p>The best way to look at this (C programmers: hang on to your seats!!) is that
+the values of this type are <tt>red</tt>, <tt>white</tt>, and <tt>blue</tt>, as
+opposed to merely thinking of those names as constant <tt>int</tt> values.  The C++
+compiler provides an automatic conversion from <tt>Color</tt> to <tt>int</tt>, and the
+converted values will be, in this case, 0, 1, and 2 respectively.  But you
+shouldn't think of <tt>blue</tt> as a fancy name for 2.  <tt>blue</tt> is of
+type <tt>Color</tt> and there is an automatic conversion from <tt>blue</tt> to
+2, but the inverse conversion, from <tt>int</tt> to <tt>Color</tt>, is <em>not</em>
+provided automatically by the C++ compiler.
+<p>Here is an example that illustrates the conversion from <tt>Color</tt> to
+<tt>int</tt>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;enum&nbsp;Color&nbsp;{&nbsp;red,&nbsp;white,&nbsp;blue&nbsp;};<br>
+&nbsp;<br>
+&nbsp;void&nbsp;f()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;n;<br>
+&nbsp;&nbsp;&nbsp;n&nbsp;=&nbsp;red;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;change&nbsp;<tt>n</tt>&nbsp;to&nbsp;0</em><tt><br>
+&nbsp;&nbsp;&nbsp;n&nbsp;=&nbsp;white;&nbsp;&nbsp;</tt><em>//&nbsp;change&nbsp;<tt>n</tt>&nbsp;to&nbsp;1</em><tt><br>
+&nbsp;&nbsp;&nbsp;n&nbsp;=&nbsp;blue;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;change&nbsp;<tt>n</tt>&nbsp;to&nbsp;2</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>The following example also demonstrates the conversion from <tt>Color</tt> to
+<tt>int</tt>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;f()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;Color&nbsp;x&nbsp;=&nbsp;red;<br>
+&nbsp;&nbsp;&nbsp;Color&nbsp;y&nbsp;=&nbsp;white;<br>
+&nbsp;&nbsp;&nbsp;Color&nbsp;z&nbsp;=&nbsp;blue;<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;n;<br>
+&nbsp;&nbsp;&nbsp;n&nbsp;=&nbsp;x;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;change&nbsp;<tt>n</tt>&nbsp;to&nbsp;0</em><tt><br>
+&nbsp;&nbsp;&nbsp;n&nbsp;=&nbsp;y;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;change&nbsp;<tt>n</tt>&nbsp;to&nbsp;1</em><tt><br>
+&nbsp;&nbsp;&nbsp;n&nbsp;=&nbsp;z;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;change&nbsp;<tt>n</tt>&nbsp;to&nbsp;2</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>However the inverse conversion, from <tt>int</tt> to <tt>Color</tt>, is not
+automatically provided by the C++ compiler:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;f()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;Color&nbsp;x;<br>
+&nbsp;&nbsp;&nbsp;x&nbsp;=&nbsp;blue;&nbsp;&nbsp;</tt><em>//&nbsp;change&nbsp;<tt>x</tt>&nbsp;to&nbsp;<tt>blue</tt></em><tt><br>
+&nbsp;&nbsp;&nbsp;x&nbsp;=&nbsp;2;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;compile-time&nbsp;error:&nbsp;can't&nbsp;convert&nbsp;<tt>int</tt>&nbsp;to&nbsp;<tt>Color</tt></em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>The last line above shows that enumeration types are <em>not</em> <tt>int</tt>s in
+disguise.  You can think of them as <tt>int</tt> types if you want to, but if you do,
+you <em>must</em> remember that the C++ compiler will not implicitly convert an
+<tt>int</tt> to a <tt>Color</tt>.  If you really want that, you can use a cast:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;f()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;Color&nbsp;x;<br>
+&nbsp;&nbsp;&nbsp;x&nbsp;=&nbsp;red;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;change&nbsp;<tt>x</tt>&nbsp;to&nbsp;<tt>red</tt></em><tt><br>
+&nbsp;&nbsp;&nbsp;x&nbsp;=&nbsp;Color(1);&nbsp;</tt><em>//&nbsp;change&nbsp;<tt>x</tt>&nbsp;to&nbsp;<tt>white</tt></em><tt><br>
+&nbsp;&nbsp;&nbsp;x&nbsp;=&nbsp;Color(2);&nbsp;</tt><em>//&nbsp;change&nbsp;<tt>x</tt>&nbsp;to&nbsp;<tt>blue</tt></em><tt><br>
+&nbsp;&nbsp;&nbsp;x&nbsp;=&nbsp;2;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;compile-time&nbsp;error:&nbsp;can't&nbsp;convert&nbsp;<tt>int</tt>&nbsp;to&nbsp;<tt>Color</tt></em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>There are other ways that enumeration types are unlike <tt>int</tt>.  For example,
+enumeration types don't have a <nobr><tt>++</tt></nobr> operator:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;f()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;n&nbsp;=&nbsp;red;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;change&nbsp;<tt>n</tt>&nbsp;to&nbsp;0</em><tt><br>
+&nbsp;&nbsp;&nbsp;Color&nbsp;x&nbsp;=&nbsp;red;&nbsp;&nbsp;</tt><em>//&nbsp;change&nbsp;<tt>x</tt>&nbsp;to&nbsp;<tt>red</tt></em><tt><br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;n++;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;change&nbsp;<tt>n</tt>&nbsp;to&nbsp;1</em><tt><br>
+&nbsp;&nbsp;&nbsp;x++;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;compile-time&nbsp;error:&nbsp;can't&nbsp;<nobr><tt>++</tt></nobr>&nbsp;an&nbsp;enumeration</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p><small>[&nbsp;<a href="#top" title="Top of section [29] Newbie Questions / Answers">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [29] Newbie Questions / Answers">Bottom</a> |&nbsp;<a href="how-to-learn-cpp.html" title="[28] Learning OO/C++">Previous&nbsp;section</a> |&nbsp;<a href="smalltalk.html" title="[30] Learning C++ if you already know Smalltalk">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="bottom"></a>
+<a href="mailto:cline@parashift.com" title="cline@parashift.com"><img src="mbox.gif" height=26 width=89 alt="E-Mail">&nbsp;E-mail the author</a><br>
+[&nbsp;<a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>
+|&nbsp;<a href="index.html#table-of-contents" title="Table of contents">Table&nbsp;of&nbsp;contents</a>
+|&nbsp;<a href="subject-index.html" title="Subject index; 3706 links to 2361 topics">Subject&nbsp;index</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.1" title="[1.1] Author">About&nbsp;the&nbsp;author</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">&copy;</a>
+|&nbsp;<a href="on-line-availability.html#faq-2.2" title="[2.2] How can I get a copy of all the HTML files of C++ FAQ Lite so I can read them Off-Line?">Download&nbsp;your&nbsp;own&nbsp;copy</a>&nbsp;]<br>
+<small>Revised May 2, 2003</small>
+</body>
+</html>

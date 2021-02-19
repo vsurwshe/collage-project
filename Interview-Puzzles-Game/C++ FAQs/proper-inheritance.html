@@ -1,0 +1,582 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"
+	"http://www.w3.org/TR/REC-html40/strict.dtd">
+<html>
+<head>
+<title>[21] Inheritance -- proper inheritance and substitutability, C++ FAQ Lite</title>
+<meta name="FILENAME" content="proper-inheritance.html">
+<meta name="ABSTRACT" content="[21] Inheritance -- proper inheritance and substitutability, C++ FAQ Lite">
+<meta name="OWNER"    content="cline@parashift.com">
+<meta name="AUTHOR"   content="Marshall Cline, cline@parashift.com">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rev=made href="mailto:cline@parashift.com">
+<style type='text/css'>
+  <!--
+  body       { font-family: arial; color: black; background: white }
+  .CodeBlock { color: black; background-color: #dfdfdf; margin-left: 30px; margin-right: 30px; padding: 5pt }
+  .FaqTitle  { color: black; background-color: gold }
+  .Updated   { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #ffff00; border: solid #e0e000 1px; }
+  .New       { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #00ff00; border: solid #00d000 1px; }
+  ul         { margin-bottom: 1px; margin-top: 1px }
+  ol         { margin-bottom: 1px; margin-top: 1px }
+  li         { margin-bottom: 4px; margin-top: 4px }
+  a          { color: blue }
+  a:hover    { color: red }
+  -->
+</style>
+</head>
+<body>
+<h1><a name="top"></a>[21] Inheritance &#151; proper inheritance and substitutability<br>
+<small><small>(Part of <a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>, <a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">Copyright&nbsp;&copy; 1991-2003</a>, <a href="http://www.parashift.com/" title="www.parashift.com/" target='_blank'>Marshall Cline</a>, <a href="mailto:cline@parashift.com" title="cline@parashift.com"><tt>cline@parashift.com</tt></a>)</small></small></h1>
+<hr>
+<h3>FAQs in section [21]:</h3>
+<ul>
+<li><a href="proper-inheritance.html#faq-21.1" title="[21.1] Should I hide member functions that were public in my base class?">[21.1] Should I hide member functions that were public in my base class?</a></li>
+<li><a href="proper-inheritance.html#faq-21.2" title="[21.2] Converting Derived* &#8594; Base* works OK; why doesn't Derived** &#8594; Base** work?">[21.2] Converting <nobr><tt>Derived*</tt></nobr> <big>&#8594;</big> <nobr><tt>Base*</tt></nobr> works OK; why doesn't <nobr><tt>Derived**</tt></nobr> <big>&#8594;</big> <nobr><tt>Base**</tt></nobr> work?</a></li>
+<li><a href="proper-inheritance.html#faq-21.3" title="[21.3] Is a parking-lot-of-Car a kind-of parking-lot-of-Vehicle?">[21.3] Is a parking-lot-of-<tt>Car</tt> a kind-of parking-lot-of-<tt>Vehicle</tt>?</a></li>
+<li><a href="proper-inheritance.html#faq-21.4" title="[21.4] Is an array of Derived a kind-of array of Base?">[21.4] Is an array of <tt>Derived</tt> a kind-of array of <tt>Base</tt>?</a></li>
+<li><a href="proper-inheritance.html#faq-21.5" title="[21.5] Does array-of-Derived is-not-a-kind-of array-of-Base mean arrays are bad?">[21.5] Does array-of-<tt>Derived</tt> is-<em>not</em>-a-kind-of array-of-<tt>Base</tt> mean arrays are bad?</a></li>
+<li><a href="proper-inheritance.html#faq-21.6" title="[21.6] Is a Circle a kind-of an Ellipse?">[21.6] Is a <tt>Circle</tt> a kind-of an <tt>Ellipse</tt>?</a></li>
+<li><a href="proper-inheritance.html#faq-21.7" title="[21.7] Are there other options to the &quot;Circle is/isnot kind-of Ellipse&quot; dilemma?">[21.7] Are there other options to the &quot;<tt>Circle</tt> is/isnot kind-of <tt>Ellipse</tt>&quot; dilemma?</a></li>
+<li><a href="proper-inheritance.html#faq-21.8" title="[21.8] But I have a Ph.D. in Mathematics, and I'm sure a Circle is a kind of an Ellipse! Does this mean Marshall Cline is stupid? Or that C++ is stupid? Or that OO is stupid?">[21.8] But I have a Ph.D. in Mathematics, and I'm <em>sure</em> a Circle is a kind of an Ellipse! Does this mean Marshall Cline is stupid? Or that C++ is stupid? Or that OO is stupid?</a></li>
+<li><a href="proper-inheritance.html#faq-21.9" title="[21.9] Perhaps Ellipse should inherit from Circle then?">[21.9] Perhaps Ellipse should inherit from Circle then?</a></li>
+<li><a href="proper-inheritance.html#faq-21.10" title="[21.10] But my problem doesn't have anything to do with circles and ellipses, so what good is that silly example to me?">[21.10] But my problem doesn't have anything to do with circles and ellipses, so what good is that silly example to me?</a></li>
+<li><a href="proper-inheritance.html#faq-21.11" title="[21.11] How could &quot;it depend&quot;??!? Aren't terms like &quot;Circle&quot; and &quot;Ellipse&quot; defined mathematically?">[21.11] How could &quot;it depend&quot;??!? Aren't terms like &quot;Circle&quot; and &quot;Ellipse&quot; defined mathematically?</a></li>
+<li><a href="proper-inheritance.html#faq-21.12" title="[21.12] If SortedList has exactly the same public interface as List, is SortedList a kind-of List?">[21.12] If <tt>SortedList</tt> has <em>exactly</em> the same public interface as <tt>List</tt>, is <tt>SortedList</tt> a kind-of <tt>List</tt>?</a></li>
+</ul>
+<p><hr>
+<p><a name="faq-21.1"></a>
+<div class=FaqTitle><h3>[21.1] Should I hide member functions that were public in my base class?</h3></div>
+<p>Never, never, never do this.  Never.  <em>Never!</em>
+<p>Attempting to hide (eliminate, revoke, privatize) inherited <tt>public</tt> member
+functions is an all-too-common design error.  It usually stems from muddy
+thinking.
+<p>(Note: this FAQ has to do with <tt>public</tt> inheritance;
+<a href="private-inheritance.html" title="[24] Inheritance -- private and protected inheritance"><tt>private</tt> and <tt>protected</tt>
+inheritance<!--rawtext:[24]:rawtext--></a> are different.)
+<p><small>[&nbsp;<a href="#top" title="Top of section [21] Inheritance -- proper inheritance and substitutability">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [21] Inheritance -- proper inheritance and substitutability">Bottom</a> |&nbsp;<a href="virtual-functions.html" title="[20] Inheritance -- virtual functions">Previous&nbsp;section</a> |&nbsp;<a href="abcs.html" title="[22] Inheritance -- abstract base classes (ABCs)">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-21.2"></a>
+<div class=FaqTitle><h3>[21.2] Converting <nobr><tt>Derived*</tt></nobr> <big>&#8594;</big> <nobr><tt>Base*</tt></nobr> works OK; why doesn't <nobr><tt>Derived**</tt></nobr> <big>&#8594;</big> <nobr><tt>Base**</tt></nobr> work?</h3></div>
+<p>Because converting <nobr><tt>Derived**</tt></nobr> <big>&#8594;</big> <nobr><tt>Base**</tt></nobr> would be
+invalid and dangerous.
+<p>C++ allows the conversion <nobr><tt>Derived*</tt></nobr> <big>&#8594;</big> <nobr><tt>Base*</tt></nobr>, since a <tt>Derived</tt> object
+is a kind of a <tt>Base</tt> object.  However trying to convert <nobr><tt>Derived**</tt></nobr> <big>&#8594;</big>
+<nobr><tt>Base**</tt></nobr> is flagged as an error.  Although this error may not be obvious, it is
+nonetheless a good thing.  For example, if you could convert <nobr><tt>Car**</tt></nobr> <big>&#8594;</big>
+<nobr><tt>Vehicle**</tt></nobr>, and if you could similarly convert <nobr><tt>NuclearSubmarine**</tt></nobr> <big>&#8594;</big>
+<nobr><tt>Vehicle**</tt></nobr>, you could assign those two pointers and end up making a <nobr><tt>Car*</tt></nobr>
+point at a <tt>NuclearSubmarine</tt>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Vehicle&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;virtual&nbsp;~Vehicle()&nbsp;{&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;virtual&nbsp;void&nbsp;startEngine()&nbsp;=&nbsp;0;<br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Car&nbsp;:&nbsp;public&nbsp;Vehicle&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;virtual&nbsp;void&nbsp;startEngine();<br>
+&nbsp;&nbsp;&nbsp;virtual&nbsp;void&nbsp;openGasCap();<br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;class&nbsp;NuclearSubmarine&nbsp;:&nbsp;public&nbsp;Vehicle&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;virtual&nbsp;void&nbsp;startEngine();<br>
+&nbsp;&nbsp;&nbsp;virtual&nbsp;void&nbsp;fireNuclearMissle();<br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;int&nbsp;main()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;Car&nbsp;&nbsp;&nbsp;car;<br>
+&nbsp;&nbsp;&nbsp;Car*&nbsp;&nbsp;carPtr&nbsp;=&nbsp;&amp;car;<br>
+&nbsp;&nbsp;&nbsp;Car**&nbsp;carPtrPtr&nbsp;=&nbsp;&amp;carPtr;<br>
+&nbsp;&nbsp;&nbsp;Vehicle**&nbsp;vehiclePtrPtr&nbsp;=&nbsp;carPtrPtr;&nbsp;&nbsp;</tt><em>//&nbsp;This&nbsp;is&nbsp;an&nbsp;error&nbsp;in&nbsp;C++</em><tt><br>
+&nbsp;&nbsp;&nbsp;NuclearSubmarine&nbsp;&nbsp;sub;<br>
+&nbsp;&nbsp;&nbsp;NuclearSubmarine*&nbsp;subPtr&nbsp;=&nbsp;&amp;sub;<br>
+&nbsp;&nbsp;&nbsp;*vehiclePtrPtr&nbsp;=&nbsp;subPtr;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;This&nbsp;last&nbsp;line&nbsp;would&nbsp;have&nbsp;caused&nbsp;<tt>carPtr</tt>&nbsp;to&nbsp;point&nbsp;to&nbsp;<tt>sub</tt>&nbsp;!</em><tt><br>
+&nbsp;&nbsp;&nbsp;carPtr-&gt;openGasCap();&nbsp;&nbsp;</tt><em>//&nbsp;This&nbsp;might&nbsp;call&nbsp;<nobr><tt>fireNuclearMissle()</tt></nobr>!</em><tt><br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>In other words, if it was legal to convert <nobr><tt>Derived**</tt></nobr> <big>&#8594;</big> <nobr><tt>Base**</tt></nobr>, the
+<nobr><tt>Base**</tt></nobr> could be dereferenced (yielding a <nobr><tt>Base*</tt></nobr>), and the <nobr><tt>Base*</tt></nobr> could be
+made to point to an object of a <em>different</em> derived class, which could
+cause serious problems for national security (who knows what would happen if
+you invoked the <nobr><tt>openGasCap()</tt></nobr> member function on what you thought was a <tt>Car</tt>,
+but in reality it was a <tt>NuclearSubmarine</tt>!!  Try the above code out and see
+what it does &#151; on most compilers it will call
+<nobr><tt>NuclearSubmarine::fireNuclearMissle()</tt></nobr>!
+<p>(BTW you'll need to use a pointer cast to get it to compile.  Suggestion: try
+to compile it without a pointer cast to see what the compiler does.  If you're
+really quiet when the error message appears on the screen, you should be able
+to hear the muffled voice of your compiler pleading with you, &quot;Please don't
+use a pointer cast!  Pointer casts prevent me from telling you about errors in
+your code, but they don't make your errors go away!  Pointer casts are
+<a href="coding-standards.html#faq-27.10" title="[27.10] Why do people worry so much about pointer casts and/or reference casts?">evil<!--rawtext:[27.10]:rawtext--></a>!&quot; At least that's what my compiler says.)
+<p>(Note: this FAQ has to do with <tt>public</tt> inheritance;
+<a href="private-inheritance.html" title="[24] Inheritance -- private and protected inheritance"><tt>private</tt> and <tt>protected</tt>
+inheritance<!--rawtext:[24]:rawtext--></a> are different.)
+<p><small>[&nbsp;<a href="#top" title="Top of section [21] Inheritance -- proper inheritance and substitutability">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [21] Inheritance -- proper inheritance and substitutability">Bottom</a> |&nbsp;<a href="virtual-functions.html" title="[20] Inheritance -- virtual functions">Previous&nbsp;section</a> |&nbsp;<a href="abcs.html" title="[22] Inheritance -- abstract base classes (ABCs)">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-21.3"></a>
+<div class=FaqTitle><h3>[21.3] Is a parking-lot-of-<tt>Car</tt> a kind-of parking-lot-of-<tt>Vehicle</tt>?</h3></div>
+<p>Nope.
+<p>I know it sounds strange, but it's true.  You can think of this as a direct
+consequence of <a href="proper-inheritance.html#faq-21.2" title="[21.2] Converting Derived* &#8594; Base* works OK; why doesn't Derived** &#8594; Base** work?">the previous FAQ<!--rawtext:[21.2]:rawtext--></a>, or
+you can reason it this way: if the kind-of relationship were valid, then
+someone could point a parking-lot-of-<tt>Vehicle</tt> pointer at a
+parking-lot-of-<tt>Car</tt>, which would allow someone to add <em>any</em> kind of
+<tt>Vehicle</tt> to a parking-lot-of-<tt>Car</tt> (assuming parking-lot-of-<tt>Vehicle</tt> has a
+member function like <nobr><tt>add(Vehicle&amp;)</tt></nobr>).  In other words, you could park a
+<tt>Bicycle</tt>, <tt>SpaceShuttle</tt>, or even a <tt>NuclearSubmarine</tt> in a
+parking-lot-of-<tt>Car</tt>.  Certainly it would be surprising if someone accessed
+what they thought was a <tt>Car</tt> from the parking-lot-of-<tt>Car</tt>, only to find that
+it is actually a <tt>NuclearSubmarine</tt>.  Gee, I wonder what the
+<nobr><tt>openGasCap()</tt></nobr> method would do??
+<p>Perhaps this will help: a container of <tt>Thing</tt> is <em>not</em> a kind-of
+container of <tt>Anything</tt> even if a <tt>Thing</tt> is a kind-of an
+<tt>Anything</tt>.  Swallow hard; it's true.
+<p>You don't have to like it.  But you do have to accept it.
+<p>One last example which we use in our OO/C++ training courses: &quot;A
+<tt>Bag</tt>-of-<tt>Apple</tt> is <em>not</em> a kind-of <tt>Bag</tt>-of-<tt>Fruit</tt>.&quot; If a
+<tt>Bag</tt>-of-<tt>Apple</tt> <em>could</em> be passed as a <tt>Bag</tt>-of-<tt>Fruit</tt>, someone could
+put a <tt>Banana</tt> into the <tt>Bag</tt>, even though it is supposed to only contain
+<tt>Apple</tt>s!
+<p>(Note: this FAQ has to do with <tt>public</tt> inheritance;
+<a href="private-inheritance.html" title="[24] Inheritance -- private and protected inheritance"><tt>private</tt> and <tt>protected</tt>
+inheritance<!--rawtext:[24]:rawtext--></a> are different.)
+<p><small>[&nbsp;<a href="#top" title="Top of section [21] Inheritance -- proper inheritance and substitutability">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [21] Inheritance -- proper inheritance and substitutability">Bottom</a> |&nbsp;<a href="virtual-functions.html" title="[20] Inheritance -- virtual functions">Previous&nbsp;section</a> |&nbsp;<a href="abcs.html" title="[22] Inheritance -- abstract base classes (ABCs)">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-21.4"></a>
+<div class=FaqTitle><h3>[21.4] Is an array of <tt>Derived</tt> a kind-of array of <tt>Base</tt>?</h3></div>
+<p>Nope.
+<p>This is a corollary of the previous FAQ.  Unfortunately this one can get you
+into a <em>lot</em> of hot water.  Consider this:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Base&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;virtual&nbsp;void&nbsp;f();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;1</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Derived&nbsp;:&nbsp;public&nbsp;Base&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;private:<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;i_;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;2</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;void&nbsp;userCode(Base*&nbsp;arrayOfBase)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;arrayOfBase[1].f();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;3</em><tt><br>
+&nbsp;}<br>
+&nbsp;<br>
+&nbsp;int&nbsp;main()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;Derived&nbsp;arrayOfDerived[10];&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;4</em><tt><br>
+&nbsp;&nbsp;&nbsp;userCode(arrayOfDerived);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;5</em><tt><br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>The compiler thinks this is perfectly type-safe.  Line 5 converts a <nobr><tt>Derived*</tt></nobr>
+to a <nobr><tt>Base*</tt></nobr>.  But in reality it is horrendously evil: since <tt>Derived</tt> is
+larger than <tt>Base</tt>, the pointer arithmetic done on line 3 is incorrect: the
+compiler uses <nobr><tt>sizeof(Base)</tt></nobr> when computing the address for
+<nobr><tt>arrayOfBase[1]</tt></nobr>, yet the array is an array of <tt>Derived</tt>, which means the
+address computed on line 3 (and the subsequent invocation of member function
+<nobr><tt>f()</tt></nobr>) isn't even at the beginning of any object!  It's smack in the middle of
+a <tt>Derived</tt> object.  Assuming your compiler uses the usual approach to
+<a href="virtual-functions.html" title="[20] Inheritance -- virtual functions"><tt>virtual</tt><!--rawtext:[20]:rawtext--></a> functions, this will reinterpret the
+<nobr><tt>int i_</tt></nobr> of the first <tt>Derived</tt> as if it pointed to a virtual table, it
+will follow that &quot;pointer&quot; (which at this point means we're digging stuff out
+of a random memory location), and grab one of the first few words of memory at
+that location and interpret them as if they were the address of a C++ member
+function, then load that (random memory location) into the instruction pointer
+and begin grabbing machine instructions from that memory location.  The chances
+of this crashing are very high.
+<p>The root problem is that C++ can't distinguish between a pointer-to-a-thing and
+a pointer-to-an-array-of-things.  Naturally C++ &quot;inherited&quot; this feature from
+C.
+<p>NOTE: If we had used an array-like <em>class</em> (e.g., <nobr><tt>std::vector&lt;Derived&gt;</tt></nobr> from
+<a href="class-libraries.html#faq-36.1" title="[36.1] What is the &quot;STL&quot;?">the standard library<!--rawtext:[36.1]:rawtext--></a>) instead of using a raw array, this
+problem would have been properly trapped as an error at compile time rather
+than a run-time disaster.
+<p>(Note: this FAQ has to do with <tt>public</tt> inheritance;
+<a href="private-inheritance.html" title="[24] Inheritance -- private and protected inheritance"><tt>private</tt> and <tt>protected</tt>
+inheritance<!--rawtext:[24]:rawtext--></a> are different.)
+<p><small>[&nbsp;<a href="#top" title="Top of section [21] Inheritance -- proper inheritance and substitutability">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [21] Inheritance -- proper inheritance and substitutability">Bottom</a> |&nbsp;<a href="virtual-functions.html" title="[20] Inheritance -- virtual functions">Previous&nbsp;section</a> |&nbsp;<a href="abcs.html" title="[22] Inheritance -- abstract base classes (ABCs)">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-21.5"></a>
+<div class=FaqTitle><h3>[21.5] Does array-of-<tt>Derived</tt> is-<em>not</em>-a-kind-of array-of-<tt>Base</tt> mean arrays are bad?</h3></div>
+<p>Yes, <a href="containers-and-templates.html#faq-34.1" title="[34.1] Why should I use container classes rather than simple arrays?">arrays are evil<!--rawtext:[34.1]:rawtext--></a>.  (only half kidding).
+<p>Seriously, arrays are very closely related to pointers, and pointers are
+notoriously difficult to deal with.  But if you have a complete grasp of why
+the above few FAQs were a problem from a design perspective (e.g., if you
+really know why a container of <tt>Thing</tt> is not a kind-of container of
+<tt>Anything</tt>), and if you think everyone else who will be maintaining your
+code also has a full grasp on these OO design truths, then you should feel free
+to use arrays.  But if you're like most people, you should use a template
+container class such as <nobr><tt>std::vector&lt;T&gt;</tt></nobr> from <a href="class-libraries.html#faq-36.1" title="[36.1] What is the &quot;STL&quot;?">the standard library<!--rawtext:[36.1]:rawtext--></a>
+rather than raw arrays.
+<p>(Note: this FAQ has to do with <tt>public</tt> inheritance;
+<a href="private-inheritance.html" title="[24] Inheritance -- private and protected inheritance"><tt>private</tt> and <tt>protected</tt>
+inheritance<!--rawtext:[24]:rawtext--></a> are different.)
+<p><small>[&nbsp;<a href="#top" title="Top of section [21] Inheritance -- proper inheritance and substitutability">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [21] Inheritance -- proper inheritance and substitutability">Bottom</a> |&nbsp;<a href="virtual-functions.html" title="[20] Inheritance -- virtual functions">Previous&nbsp;section</a> |&nbsp;<a href="abcs.html" title="[22] Inheritance -- abstract base classes (ABCs)">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-21.6"></a>
+<div class=FaqTitle><h3>[21.6] Is a <tt>Circle</tt> a kind-of an <tt>Ellipse</tt>?</h3></div>
+<p>Depends.  But not if <tt>Ellipse</tt> guarantees it can change its size
+asymmetrically.
+<p>For example, if <tt>Ellipse</tt> has a <nobr><tt>setSize(x,y)</tt></nobr> member function that promises
+the object's <nobr><tt>width()</tt></nobr> will be <tt>x</tt> and its <nobr><tt>height()</tt></nobr> will be <tt>y</tt>, <tt>Circle</tt>
+can't be a kind-of <tt>Ellipse</tt>.  Simply put, if <tt>Ellipse</tt> can do something
+<tt>Circle</tt> can't, then <tt>Circle</tt> can't be a kind of <tt>Ellipse</tt>.
+<p>This leaves two valid relationships between <tt>Circle</tt> and <tt>Ellipse</tt>:
+<ul>
+<li>Make <tt>Circle</tt> and <tt>Ellipse</tt> completely unrelated
+classes</li>
+<li>Derive <tt>Circle</tt> and <tt>Ellipse</tt> from a base class representing
+&quot;Ellipses that can't <em>necessarily</em> perform an unequal-<nobr><tt>setSize()</tt></nobr>
+operation&quot;</li>
+</ul>
+<p>In the first case, Ellipse could be derived from <tt>class</tt> <tt>AsymmetricShape</tt>, and
+<nobr><tt>setSize(x,y)</tt></nobr> could be introduced in <tt>AsymmetricShape</tt>.  However <tt>Circle</tt>
+could be derived from <tt>SymmetricShape</tt> which has a <nobr><tt>setSize(size)</tt></nobr> member
+function.
+<p>In the second case, <tt>class</tt> <tt>Oval</tt> could only have <nobr><tt>setSize(size)</tt></nobr> which sets
+both the <nobr><tt>width()</tt></nobr> and the <nobr><tt>height()</tt></nobr> to <tt>size</tt>.  <tt>Ellipse</tt> and <tt>Circle</tt>
+could both inherit from <tt>Oval</tt>.  <tt>Ellipse</tt> &#151;but not <tt>Circle</tt>&#151; could add the
+<nobr><tt>setSize(x,y)</tt></nobr> operation (but beware of the <a href="strange-inheritance.html#faq-23.6" title="[23.6] What's the meaning of, Warning: Derived::f(float) hides Base::f(int)?">hiding rule<!--rawtext:[23.6]:rawtext--></a>
+if the same member function name <nobr><tt>setSize()</tt></nobr> is used for both operations).
+<p>(Note: this FAQ has to do with <tt>public</tt> inheritance;
+<a href="private-inheritance.html" title="[24] Inheritance -- private and protected inheritance"><tt>private</tt> and <tt>protected</tt>
+inheritance<!--rawtext:[24]:rawtext--></a> are different.)
+<p>(Note: <nobr><tt>setSize(x,y)</tt></nobr> isn't sacred.  Depending on your goals, it may be okay to
+prevent users from changing the dimensions of an <tt>Ellipse</tt>, in which case it
+would be a valid design choice to not have a <nobr><tt>setSize(x,y)</tt></nobr> method in
+<tt>Ellipse</tt>.  However this series of FAQs discusses what to do when you want to
+create a derived class of a <em>pre-existing</em> base class that has an
+&quot;unacceptable&quot; method in it.  Of course the ideal situation is to discover this
+problem when the base class doesn't yet exist.  But life isn't always ideal...)
+<p><small>[&nbsp;<a href="#top" title="Top of section [21] Inheritance -- proper inheritance and substitutability">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [21] Inheritance -- proper inheritance and substitutability">Bottom</a> |&nbsp;<a href="virtual-functions.html" title="[20] Inheritance -- virtual functions">Previous&nbsp;section</a> |&nbsp;<a href="abcs.html" title="[22] Inheritance -- abstract base classes (ABCs)">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-21.7"></a>
+<div class=FaqTitle><h3>[21.7] Are there other options to the &quot;<tt>Circle</tt> is/isnot kind-of <tt>Ellipse</tt>&quot; dilemma?</h3></div>
+<p>If you claim that all <tt>Ellipse</tt>s can be squashed asymmetrically, and you
+claim that <tt>Circle</tt> is a kind-of <tt>Ellipse</tt>, and you claim that
+<tt>Circle</tt> can't be squashed asymmetrically, clearly you've got to revoke
+one of your claims.  You can get rid of <nobr><tt>Ellipse::setSize(x,y)</tt></nobr>, get rid
+of the inheritance relationship between <tt>Circle</tt> and <tt>Ellipse</tt>, or
+admit that your <tt>Circle</tt>s aren't necessarily circular.  You can also get
+rid of <tt>Circle</tt> completely, where circleness is just a temporary state
+of an <tt>Ellipse</tt> object rather than a permanent quality of the object.
+<p>Here are the two most common traps new OO/C++ programmers regularly fall into.
+They attempt to use coding hacks to cover up a broken design, e.g., they might
+redefine <nobr><tt>Circle::setSize(x,y)</tt></nobr> to throw an exception, call
+<nobr><tt>abort()</tt></nobr>, choose the average of the two parameters, or to be a no-op.
+Unfortunately all these hacks will surprise users, since users are expecting
+<nobr><tt>width() == x</tt></nobr> and <nobr><tt>height() == y</tt></nobr>.  The one thing you must not do
+is surprise your users.
+<p>If it is important to you to retain the &quot;<tt>Circle</tt> is a kind-of <tt>Ellipse</tt>&quot;
+inheritance relationship, you can weaken the promise made by <tt>Ellipse</tt>'s
+<nobr><tt>setSize(x,y)</tt></nobr>.  E.g., you could change the promise to, &quot;This member function
+<em>might</em> set <nobr><tt>width()</tt></nobr> to <tt>x</tt> and/or it <em>might</em> set <nobr><tt>height()</tt></nobr> to
+<tt>y</tt>, or it might do <em>nothing</em>&quot;.  Unfortunately this dilutes the contract
+into dribble, since the user can't rely on any meaningful behavior.  The whole
+hierarchy therefore begins to be worthless (it's hard to convince someone to
+use an object if you have to shrug your shoulders when asked what the object
+does for them).
+<p>(Note: this FAQ has to do with <tt>public</tt> inheritance;
+<a href="private-inheritance.html" title="[24] Inheritance -- private and protected inheritance"><tt>private</tt> and <tt>protected</tt>
+inheritance<!--rawtext:[24]:rawtext--></a> are different.)
+<p>(Note: <nobr><tt>setSize(x,y)</tt></nobr> isn't sacred.  Depending on your goals, it may be okay to
+prevent users from changing the dimensions of an <tt>Ellipse</tt>, in which case it
+would be a valid design choice to not have a <nobr><tt>setSize(x,y)</tt></nobr> method in
+<tt>Ellipse</tt>.  However this series of FAQs discusses what to do when you want to
+create a derived class of a <em>pre-existing</em> base class that has an
+&quot;unacceptable&quot; method in it.  Of course the ideal situation is to discover this
+problem when the base class doesn't yet exist.  But life isn't always ideal...)
+<p><small>[&nbsp;<a href="#top" title="Top of section [21] Inheritance -- proper inheritance and substitutability">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [21] Inheritance -- proper inheritance and substitutability">Bottom</a> |&nbsp;<a href="virtual-functions.html" title="[20] Inheritance -- virtual functions">Previous&nbsp;section</a> |&nbsp;<a href="abcs.html" title="[22] Inheritance -- abstract base classes (ABCs)">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-21.8"></a>
+<div class=FaqTitle><h3>[21.8] But I have a Ph.D. in Mathematics, and I'm <em>sure</em> a Circle is a kind of an Ellipse! Does this mean Marshall Cline is stupid? Or that C++ is stupid? Or that OO is stupid?</h3></div>
+<p>Actually, it doesn't mean any of these things.  But I'll tell you what it does
+mean &#151; you may not like what I'm about to say: it means your intuitive notion
+of &quot;kind of&quot; is leading you to make bad inheritance decisions.  Your tummy is
+lying to you about what good inheritance really means &#151; stop believing those
+lies.
+<p>Look, I have received and answered dozens of passionate e-mail messages about
+this subject.  I have taught it hundreds of times to thousands of software
+professionals all over the place.  I know it goes against your intuition.  But
+trust me; your intuition is wrong, where &quot;wrong&quot; means &quot;will cause you to make
+bad inheritance decisions in OO design/programming.&quot;
+<p>Here's how to make good inheritance decisions in OO design/programming:
+recognize that the derived class objects must be <em>substitutable</em> for the
+base class objects.  That means objects of the derived class must
+<em>behave</em> in a manner consistent with the promises made in the base
+class' contract.  Once you believe this, and I fully recognize that you might
+not yet but you will if you work at it with an open mind, you'll see that
+<nobr><tt>setSize(x,y)</tt></nobr> violates this substitutability.
+<p>There are three ways to fix this problem:
+<ol>
+<li>Soften the promises made by <nobr><tt>setSize(x,y)</tt></nobr> in base class
+<tt>Ellipse</tt>, or perhaps remove that method completely, at the risk of
+breaking existing code that calls <nobr><tt>setSize(x,y)</tt></nobr>.</li>
+<li>Strengthen the promises made by <nobr><tt>setSize(x,y)</tt></nobr> in the derived class
+<tt>Circle</tt>, which really means allowing a <tt>Circle</tt> to have a
+different height than width &#151; an asymmetrical circle; hmmm.</li>
+<li>Drop the inheritance relationship, possibly getting rid of class
+<tt>Circle</tt> completely (in which case circleness would simply be a
+temporary state of an <tt>Ellipse</tt> rather than a permanent constraint on
+the object).</li>
+</ol>
+<p>Sorry, but there simply are no other choices.
+<p>You must make the base class weaker (weaken <tt>Ellipse</tt> to the point that
+it no longer guarantees you can set its width and height to different values),
+make the derived class stronger (empower a <tt>Circle</tt> with the ability to
+be both symmetric and, ahem, asymmetric), or admit that a <tt>Circle</tt> is
+not substitutable for <tt>Ellipse</tt>.
+<p>Important: there really are no other choices than the above three.  In
+particular:
+<ol>
+<li><em>PLEASE</em> don't write me and tell me that a fourth option is
+to derive both <tt>Circle</tt> and <tt>Ellipse</tt> from a third common base class.  That's
+<em>not</em> a fourth solution.  That's just a repackaging of solution #3: it
+works precisely because it removes the inheritance relationship between
+<tt>Circle</tt> and <tt>Ellipse</tt>.</li>
+<li><em>PLEASE</em> don't write me and tell me that a fourth option is
+to prevent users from changing the dimensions of an &quot;Ellipse.&quot; That is
+<em>not</em> a fourth solution.  That's just a repackaging of solution #1: it
+works precisely because it removes that guarantee that <nobr><tt>setSize(x,y)</tt></nobr> actually
+sets the width and height.</li>
+<li><em>PLEASE</em> don't write me and tell me that you've decided one of these
+three is &quot;the best&quot; solution.  Doing that would show you had missed the whole
+point of this FAQ, specifically that bad inheritance is subtle but fortunately
+you have three (not one; not two; but three) possible ways to dig yourself
+out.  So when you run into bad inheritance, please try all three of these
+techniques and select the best, perhaps &quot;least bad,&quot; of the three.  Don't
+throw out two of these tools ahead of time: try them all.</li>
+</ol>
+<p>(Note: this FAQ has to do with <tt>public</tt> inheritance;
+<a href="private-inheritance.html" title="[24] Inheritance -- private and protected inheritance"><tt>private</tt> and <tt>protected</tt>
+inheritance<!--rawtext:[24]:rawtext--></a> are different.)
+<p><small>[&nbsp;<a href="#top" title="Top of section [21] Inheritance -- proper inheritance and substitutability">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [21] Inheritance -- proper inheritance and substitutability">Bottom</a> |&nbsp;<a href="virtual-functions.html" title="[20] Inheritance -- virtual functions">Previous&nbsp;section</a> |&nbsp;<a href="abcs.html" title="[22] Inheritance -- abstract base classes (ABCs)">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-21.9"></a>
+<div class=FaqTitle><h3>[21.9] Perhaps Ellipse should inherit from Circle then?</h3></div>
+<p>If <tt>Circle</tt> is the base class and <tt>Ellipse</tt> is the derived class,
+then you run into a whole new set of problems.  For example, suppose
+<tt>Circle</tt> has a <nobr><tt>radius()</tt></nobr> method.  Then <tt>Ellipse</tt> will also
+need to have a <nobr><tt>radius()</tt></nobr> method, but that doesn't make much sense: what
+does it even mean for a possibly assymetric ellipse to have a radius?
+<p>If you get over that hurdle, such as by having <nobr><tt>Ellipse::radius()</tt></nobr>
+return the average of the major and minor axes or whatever, then there is a
+problem with the relationship between <nobr><tt>radius()</tt></nobr> and <nobr><tt>area()</tt></nobr>.
+Suppose <tt>Circle</tt> has an <nobr><tt>area()</tt></nobr> method that promises to return
+3.14159<small><em>[etc]</em></small> times the square whatever <nobr><tt>radius()</tt></nobr>
+returns.  Then either <nobr><tt>Ellipse::area()</tt></nobr> will not return the true area of
+the ellipse, or you'll have to stand on your head to get <nobr><tt>radius()</tt></nobr> to
+return something that matches the above formula.
+<p>Even if you get past that one, such as by having <nobr><tt>Ellipse::radius()</tt></nobr>
+return the square root of the ellipse's area divided by pi, you'll get stuck
+by the <nobr><tt>circumference()</tt></nobr> method.  Suppose <tt>Circle</tt> has a
+<nobr><tt>circumference()</tt></nobr> method that promises to return two times pi times
+whatever is returned by <nobr><tt>radius()</tt></nobr>.  Now you're stuck: there's no way to
+make all those constraints work out for <tt>Ellipse</tt>: the <tt>Ellipse</tt>
+class will have to lie about its area, its circumference, or both.
+<p>Bottom line: you can make anything inherit from anything <em>provided</em> the
+methods in the derived class abide by the promises made in the base class.
+But you ought not to use inheritance just because you feel like it, or just
+because you want to get code reuse.  You should use inheritance (a) only if
+the derived class's methods can abide by all the promises made in the base
+class, and (b) only if you don't think you'll confuse your users, and (c) only
+if there's something to be gained by using the inheritance &#151; some real,
+measurable improvement in time, money or risk.
+<p><small>[&nbsp;<a href="#top" title="Top of section [21] Inheritance -- proper inheritance and substitutability">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [21] Inheritance -- proper inheritance and substitutability">Bottom</a> |&nbsp;<a href="virtual-functions.html" title="[20] Inheritance -- virtual functions">Previous&nbsp;section</a> |&nbsp;<a href="abcs.html" title="[22] Inheritance -- abstract base classes (ABCs)">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-21.10"></a>
+<div class=FaqTitle><h3>[21.10] But my problem doesn't have anything to do with circles and ellipses, so what good is that silly example to me?</h3></div>
+<p>Ahhh, there's the rub.  You <em>think</em> the <tt>Circle</tt>/<tt>Ellipse</tt> example is
+just a silly example.  But in reality, <em>your</em> problem is an isomorphism
+to that example.
+<p>I don't care what your inheritance problem is, but all &#151;yes <em>all</em>&#151;
+bad inheritances boil down to the
+<tt>Circle</tt>-is-not-a-kind-of-<tt>Ellipse</tt> example.
+<p>Here's why: Bad inheritances always have a base class with an extra
+capability (often an extra member function or two; sometimes an extra promise
+made by one or a combination of member functions) that a derived class can't
+satisfy.  You've either got to make the base class weaker, make the derived
+class stronger, or eliminate the proposed inheritance relationship.  I've
+seen lots and lots and lots of these bad inheritance proposals, and believe me,
+they all boil down to the <tt>Circle</tt>/<tt>Ellipse</tt> example.
+<p>Therefore, if you truly understand the <tt>Circle</tt>/<tt>Ellipse</tt> example, you'll be
+able to recognize bad inheritance everywhere.  If you don't understand what's
+going on with the <tt>Circle</tt>/<tt>Ellipse</tt> problem, the chances are high that you'll
+make some very serious and very expensive inheritance mistakes.
+<p>Sad but true.
+<p>(Note: this FAQ has to do with <tt>public</tt> inheritance;
+<a href="private-inheritance.html" title="[24] Inheritance -- private and protected inheritance"><tt>private</tt> and <tt>protected</tt>
+inheritance<!--rawtext:[24]:rawtext--></a> are different.)
+<p><small>[&nbsp;<a href="#top" title="Top of section [21] Inheritance -- proper inheritance and substitutability">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [21] Inheritance -- proper inheritance and substitutability">Bottom</a> |&nbsp;<a href="virtual-functions.html" title="[20] Inheritance -- virtual functions">Previous&nbsp;section</a> |&nbsp;<a href="abcs.html" title="[22] Inheritance -- abstract base classes (ABCs)">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-21.11"></a>
+<div class=FaqTitle><h3>[21.11] How could &quot;it depend&quot;??!? Aren't terms like &quot;Circle&quot; and &quot;Ellipse&quot; defined mathematically?</h3></div>
+<p>It's irrelevant that those terms are defined mathematically.  That irrelevance
+is why &quot;it depends.&quot;
+<p>The first step in any rational discussion is to define terms.  In this case,
+the first step is to define the terms <tt>Circle</tt> and <tt>Ellipse</tt>.
+Believe it or not, most heated disagreements over whether class <tt>Circle</tt>
+should/shouldn't inherit from class <tt>Ellipse</tt> are caused by incompatible
+definitions of those terms.
+<p>The key insight is to forget mathematics and &quot;the real world,&quot; and instead
+accept as final the only definitions that are relevant for answering the
+question: the classes themselves.  Take <tt>Ellipse</tt>.  You created a class
+with that name, so the one and only final arbiter of what you meant by that
+term is your class.  People who try to mix &quot;the real world&quot; into the
+discussion get hopelessly confused, and often get into heated (and, sadly,
+meaningless) arguments.
+<p>Since so many people just don't get it, here's an example.  Suppose your
+program says <nobr><tt>class Foo : public Bar { </tt>...<tt> }</tt></nobr>.  This <em>defines</em>
+what you mean by the term <tt>Foo</tt>: the one, final, unambiguous, precise
+definition of <tt>Foo</tt> is given by unioning the public parts of <tt>Foo</tt>
+with the public parts of its base class, <tt>Bar</tt>.  Now suppose you decide
+to rename <tt>Bar</tt> to <tt>Ellipse</tt> and <tt>Foo</tt> to <tt>Circle</tt>.
+This means that you (yes you; not &quot;mathematics&quot;; not &quot;history&quot;; not
+&quot;precedence&quot; nor Euclid nor Euler nor any other famous mathematician; little
+old you) have <em>defined</em> the meaning of the term <tt>Circle</tt> within
+your program.  If you defined it in a way that didn't correspond to people's
+intuitive notion of circles, then you probably should have chosen a better
+label for your class, but nonetheless your definition is the one, final,
+unambiguous, precise definition of the term <tt>Circle</tt> in your program.
+If somebody else outside your program defines the same term differently, that
+other definition is irrelevant to questions about your program, even if the
+&quot;somebody else&quot; is Euclid.  <em>Within your program,</em> you define the terms,
+and the term <tt>Circle</tt> is defined by your class named <tt>Circle</tt>.
+<p>Simply put, when we are asking questions about words defined in <em>your</em>
+program, we must use <em>your</em> definitions of those terms, not Euclid's.
+That is why the ultimate answer to the question is &quot;it depends.&quot; It depends
+because the answer to whether the thing your program calls <tt>Circle</tt> is
+properly substitutable for the thing your program calls <tt>Ellipse</tt>
+depends on exactly how <em>your</em> <em>program</em> defines those terms.  It's
+ridiculous and misleading to use Euclid's definition when trying to answer
+questions about your classes in your program; we <em>must</em> use your
+definitions.
+<p>When someone gets heated about this, I always suggest changing the labels to
+terms that have no predetermined connotations, such as <tt>Foo</tt> and
+<tt>Bar</tt>.  Since those terms do not evoke any mathematical relationships,
+people naturally go to the class definition to find out exactly what the
+programmer had in mind.  But as soon as we rename the class from <tt>Foo</tt>
+to <tt>Circle</tt>, some people suddenly think <em>they</em> can control the
+meaning of the term; they're wrong and silly.  The definition of the term is
+still spelled out exclusively by the class itself, not by any outside entity.
+<p>Next insight: inheritance means &quot;is substitutable for.&quot; It does <em>not</em>
+mean &quot;is a&quot; (since that is ill defined) and it does <em>not</em> mean &quot;is a
+kind of&quot; (also ill defined).  Substitutability is well defined: to be
+substitutable, the derived class is allowed (not required) to add (not remove)
+public methods, and for each public method inherited from the base class, the
+derived class is allowed (not required) to weaken preconditions and/or
+strengthen postconditions (not the other way around).  Further the derived
+class is allowed to have completely different constructors, static methods,
+and non-public methods.
+<p>Back to <tt>Ellipse</tt> and <tt>Circle</tt>: <em>if</em> you define the term
+<tt>Ellipse</tt> to mean something that can be resized asymmetrically (e.g.,
+its methods let you change the width and height independently <em>and</em>
+guarantee that the width and height will actually change to the specified
+values), then that is the final, precise definition of the term
+<tt>Ellipse</tt>.  <em>If</em> you define the thing called <tt>Circle</tt> as
+something that cannot be resized asymmetrically, then that is also your
+prerogative, and it is the final, precise definition of the term
+<tt>Circle</tt>.  <em>If</em> you defined those terms in that way, then
+obviously the thing you called <tt>Circle</tt> is not substitutable for the
+thing you called <tt>Ellipse</tt>, therefore the inheritance would be improper.
+QED.
+<p>So the answer is <em>always</em> &quot;it depends.&quot; In particular, it depends on
+the <em>behaviors</em> of the base and derived classes.  It does not depend on
+the <em>name</em> of the base and derived classes, since those are arbitrary
+labels.  (I'm not advocating sloppy names; I am, however, saying that you must
+not use your intuitive connotation of a name to assume you know what a class
+does.  A class does what it does, not what you think it ought to do based on
+its name.)
+<p>It bothers (some) people that the thing you called <tt>Circle</tt> might not be
+substitutable for the thing you called <tt>Ellipse</tt>, and to those people I
+have only two things to say: (a) get over it, and (b) change the labels of the
+classes if that makes you feel more comfortable.  For example, rename
+<tt>Ellipse</tt> to <tt>ThingThatCanBeResizedAssymetrically</tt> and
+<tt>Circle</tt> to <tt>ThingThatCannotBeResizedAssymetrically</tt>.
+<p>Unfortunately I honestly believe that people who feel better after renaming
+the things are missing the point.  The point is this: in OO, a thing is
+defined by how it <em>behaves</em>, not by the label used to name it.
+Obviously it's important to choose good names, but even so, the name chosen
+does not define the thing.  The definition of the thing is specified by the
+public methods, including the contracts (preconditions and postconditions) of
+those methods.  Inheritance is proper or improper based on the classes'
+behaviors, not their names.
+<p><small>[&nbsp;<a href="#top" title="Top of section [21] Inheritance -- proper inheritance and substitutability">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [21] Inheritance -- proper inheritance and substitutability">Bottom</a> |&nbsp;<a href="virtual-functions.html" title="[20] Inheritance -- virtual functions">Previous&nbsp;section</a> |&nbsp;<a href="abcs.html" title="[22] Inheritance -- abstract base classes (ABCs)">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-21.12"></a>
+<div class=FaqTitle><h3>[21.12] If <tt>SortedList</tt> has <em>exactly</em> the same public interface as <tt>List</tt>, is <tt>SortedList</tt> a kind-of <tt>List</tt>?</h3></div>
+<p>Probably not.
+<p>The most important insight is that the answer depends on the details of the
+base class's contract.  It is not enough to know that the public interfaces /
+method signatures are compatible; one also needs to know if the contracts /
+behaviors are compatible.
+<p>The important part of the previous sentence are the words &quot;contracts /
+behaviors.&quot; That phrase goes well beyond the public interface = method
+signatures = method names and parameter types and <tt>const</tt>ness.  A
+method's contract means its advertised behavior = advertised requirements and
+promises = advertised preconditions and postconditions.  So if the base class
+has a method <nobr><tt>void insert(const Foo&amp; x)</tt></nobr>, the contract of that method
+includes the signature (meaning the name <tt>insert</tt> and the parameter
+<nobr><tt>const Foo&amp;</tt></nobr>), but goes well beyond that to include the method's
+advertised preconditions and postconditions.
+<p>The other important word is <em>advertised</em>.  The intention here is to
+differentiate between the code inside the method (assuming the base class's
+method <em>has</em> code; i.e., assuming it's not an unimplemented pure virtual
+function) and the promises made outside the method.  This is where things get
+tricky.  Suppose <nobr><tt>List::insert(const Foo&amp; x)</tt></nobr> inserts a copy of <tt>x</tt> at
+the end of <tt>this</tt> <tt>List</tt>, and the override of that method in <tt>SortedList</tt>
+inserts <tt>x</tt> in the proper sort-order.  Even though the override behaves in a
+way that is incompatible with the base class's code, the inheritance might
+still be proper <em>if</em> the base class makes a &quot;weak&quot; or &quot;adaptable&quot;
+promise.  For example, if the advertised promise of <nobr><tt>List::insert(const
+Foo&amp; x)</tt></nobr> is something vague like, &quot;Promises a copy of <tt>x</tt> will be inserted
+somewhere within <tt>this</tt> <tt>List</tt>,&quot; then the inheritance is probably okay since
+the override abides by the advertised behavior even though it is incompatible
+with the implemented behavior.
+<p><blockquote>
+<p>The derived class must do what the base class <em>promises</em>, not what it
+actually does.
+<p></blockquote>
+<p>The key is that we've separated the advertised behavior (&quot;specification&quot;) from
+implemented behavior (&quot;implementation&quot;), and we rely on the specification
+rather than the implementation.  This is very important because in a large
+percentage of the cases the base class's method is an unimplemented pure
+virtual &#151; the only thing that can be relied on is the specification &#151;
+there simply is no implementation on which to rely.
+<p>Back to <tt>SortedList</tt> and <tt>List</tt>: it seems likely that <tt>List</tt> has one or more
+methods that have contracts which guarantee order, and therefore <tt>SortedList</tt>
+is probably not a kind-of <tt>List</tt>.  For example, if <tt>List</tt> has a method that
+lets you reorder things, prepend things, append things, or change the <tt>i</tt>th
+element, and if those methods make the typical advertised promise, then
+<tt>SortedList</tt> would need to violate that advertised behavior and the
+inheritance would be improper.  But it all depends on what the base class
+advertises &#151; on the base class's contract.
+<p><small>[&nbsp;<a href="#top" title="Top of section [21] Inheritance -- proper inheritance and substitutability">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [21] Inheritance -- proper inheritance and substitutability">Bottom</a> |&nbsp;<a href="virtual-functions.html" title="[20] Inheritance -- virtual functions">Previous&nbsp;section</a> |&nbsp;<a href="abcs.html" title="[22] Inheritance -- abstract base classes (ABCs)">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="bottom"></a>
+<a href="mailto:cline@parashift.com" title="cline@parashift.com"><img src="mbox.gif" height=26 width=89 alt="E-Mail">&nbsp;E-mail the author</a><br>
+[&nbsp;<a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>
+|&nbsp;<a href="index.html#table-of-contents" title="Table of contents">Table&nbsp;of&nbsp;contents</a>
+|&nbsp;<a href="subject-index.html" title="Subject index; 3706 links to 2361 topics">Subject&nbsp;index</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.1" title="[1.1] Author">About&nbsp;the&nbsp;author</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">&copy;</a>
+|&nbsp;<a href="on-line-availability.html#faq-2.2" title="[2.2] How can I get a copy of all the HTML files of C++ FAQ Lite so I can read them Off-Line?">Download&nbsp;your&nbsp;own&nbsp;copy</a>&nbsp;]<br>
+<small>Revised May 2, 2003</small>
+</body>
+</html>
