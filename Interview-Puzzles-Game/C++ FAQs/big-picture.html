@@ -1,0 +1,393 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"
+	"http://www.w3.org/TR/REC-html40/strict.dtd">
+<html>
+<head>
+<title>[6] Big Picture issues, C++ FAQ Lite</title>
+<meta name="FILENAME" content="big-picture.html">
+<meta name="ABSTRACT" content="[6] Big Picture issues, C++ FAQ Lite">
+<meta name="OWNER"    content="cline@parashift.com">
+<meta name="AUTHOR"   content="Marshall Cline, cline@parashift.com">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rev=made href="mailto:cline@parashift.com">
+<style type='text/css'>
+  <!--
+  body       { font-family: arial; color: black; background: white }
+  .CodeBlock { color: black; background-color: #dfdfdf; margin-left: 30px; margin-right: 30px; padding: 5pt }
+  .FaqTitle  { color: black; background-color: gold }
+  .Updated   { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #ffff00; border: solid #e0e000 1px; }
+  .New       { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #00ff00; border: solid #00d000 1px; }
+  ul         { margin-bottom: 1px; margin-top: 1px }
+  ol         { margin-bottom: 1px; margin-top: 1px }
+  li         { margin-bottom: 4px; margin-top: 4px }
+  a          { color: blue }
+  a:hover    { color: red }
+  -->
+</style>
+</head>
+<body>
+<h1><a name="top"></a>[6] Big Picture issues<br>
+<small><small>(Part of <a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>, <a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">Copyright&nbsp;&copy; 1991-2003</a>, <a href="http://www.parashift.com/" title="www.parashift.com/" target='_blank'>Marshall Cline</a>, <a href="mailto:cline@parashift.com" title="cline@parashift.com"><tt>cline@parashift.com</tt></a>)</small></small></h1>
+<hr>
+<h3>FAQs in section [6]:</h3>
+<ul>
+<li><a href="big-picture.html#faq-6.1" title="[6.1] Is C++ a practical language?">[6.1] Is C++ a practical language?</a></li>
+<li><a href="big-picture.html#faq-6.2" title="[6.2] Is C++ a perfect language?">[6.2] Is C++ a perfect language?</a></li>
+<li><a href="big-picture.html#faq-6.3" title="[6.3] What's the big deal with OO?">[6.3] What's the big deal with OO?</a></li>
+<li><a href="big-picture.html#faq-6.4" title="[6.4] Is C++ better than Ada? (or Visual Basic, C, FORTRAN, Pascal, Smalltalk, or any other language?)">[6.4] Is C++ better than Ada? (or Visual Basic, C, FORTRAN, Pascal, Smalltalk, or any other language?)</a></li>
+<li><a href="big-picture.html#faq-6.5" title="[6.5] Who uses C++?">[6.5] Who uses C++?</a></li>
+<li><a href="big-picture.html#faq-6.6" title="[6.6] How long does it take to learn OO/C++?">[6.6] How long does it take to learn OO/C++?</a></li>
+<li><a href="big-picture.html#faq-6.7" title="[6.7] What are some features of C++ from a business perspective?">[6.7] What are some features of C++ from a business perspective?</a></li>
+<li><a href="big-picture.html#faq-6.8" title="[6.8] Are virtual functions (dynamic binding) central to OO/C++?">[6.8] Are <tt>virtual</tt> functions (dynamic binding) central to OO/C++?</a></li>
+<li><a href="big-picture.html#faq-6.9" title="[6.9] I'm from Missouri. Can you give me a simple reason why virtual functions (dynamic binding) make a big difference?">[6.9] I'm from Missouri. Can you give me a simple reason why <tt>virtual</tt> functions (dynamic binding) make a big difference?</a></li>
+<li><a href="big-picture.html#faq-6.10" title="[6.10] Is C++ backward compatible with ANSI/ISO C?">[6.10] Is C++ backward compatible with ANSI/ISO C?</a></li>
+<li><a href="big-picture.html#faq-6.11" title="[6.11] Is C++ standardized?">[6.11] Is C++ standardized?</a></li>
+<li><a href="big-picture.html#faq-6.12" title="[6.12] Where can I get a copy of the ANSI/ISO C++ standard?">[6.12] Where can I get a copy of the ANSI/ISO C++ standard?</a></li>
+<li><a href="big-picture.html#faq-6.13" title="[6.13] What are some &quot;interview questions&quot; I could ask that would let me know if candidates really know their stuff?">[6.13] What are some &quot;interview questions&quot; I could ask that would let me know if candidates really know their stuff?</a></li>
+<li><a href="big-picture.html#faq-6.14" title="[6.14] What does the FAQ mean by &quot;such-in-such is evil&quot;?">[6.14] What does the FAQ mean by &quot;such-in-such is <em>evil</em>&quot;?</a></li>
+<li><a href="big-picture.html#faq-6.15" title="[6.15] Will I sometimes use any so-called &quot;evil&quot; constructs?">[6.15] Will I sometimes use any so-called &quot;evil&quot; constructs?</a></li>
+</ul>
+<p><hr>
+<p><a name="faq-6.1"></a>
+<div class=FaqTitle><h3>[6.1] Is C++ a practical language?</h3></div>
+<p>Yes.
+<p>C++ is a practical tool.  <a href="big-picture.html#faq-6.2" title="[6.2] Is C++ a perfect language?">It's not perfect<!--rawtext:[6.2]:rawtext--></a>, but
+it's useful.
+<p>In the world of industrial software, C++ is viewed as a solid, mature,
+mainstream tool.  It has widespread industry support which makes it &quot;good&quot; from
+an overall business perspective.
+<p><small>[&nbsp;<a href="#top" title="Top of section [6] Big Picture issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [6] Big Picture issues">Bottom</a> |&nbsp;<a href="how-to-post.html" title="[5] Netiquette when posting to comp.lang.c++">Previous&nbsp;section</a> |&nbsp;<a href="classes-and-objects.html" title="[7] Classes and objects">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-6.2"></a>
+<div class=FaqTitle><h3>[6.2] Is C++ a perfect language?</h3></div>
+<p>Nope.
+<p>C++ wasn't designed to demonstrate what a perfect OO language looks like.  It
+was designed to be a practical tool for solving real world problems.  It has a
+few warts, but the only place where it's appropriate to keep fiddling with
+something until it's perfect is in a pure academic setting.  That wasn't C++'s
+goal.
+<p><small>[&nbsp;<a href="#top" title="Top of section [6] Big Picture issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [6] Big Picture issues">Bottom</a> |&nbsp;<a href="how-to-post.html" title="[5] Netiquette when posting to comp.lang.c++">Previous&nbsp;section</a> |&nbsp;<a href="classes-and-objects.html" title="[7] Classes and objects">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-6.3"></a>
+<div class=FaqTitle><h3>[6.3] What's the big deal with OO?</h3></div>
+<p>Object-oriented techniques are the best way we know of to develop large,
+complex software applications and systems.
+<p>OO hype: the software industry is &quot;failing&quot; to meet demands for large, complex
+software systems.  But this failure is actually due to our <em>successes:</em>
+our successes have propelled users to ask for more.  Unfortunately we created a
+market hunger that Structured Analysis, Design and Programming techniques
+couldn't satisfy.  This required us to create a better paradigm.
+<p>C++ supports OO programming.  C++ can also be used as a traditional
+programming language (as &quot;as a better C&quot;).  However if you use it &quot;as a better
+C,&quot; don't expect to get the benefits of object-oriented programming.
+<p><small>[&nbsp;<a href="#top" title="Top of section [6] Big Picture issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [6] Big Picture issues">Bottom</a> |&nbsp;<a href="how-to-post.html" title="[5] Netiquette when posting to comp.lang.c++">Previous&nbsp;section</a> |&nbsp;<a href="classes-and-objects.html" title="[7] Classes and objects">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-6.4"></a>
+<div class=FaqTitle><h3>[6.4] Is C++ better than Ada? (or Visual Basic, C, FORTRAN, Pascal, Smalltalk, or any other language?)</h3></div>
+<p>This question generates much <em>much</em> more heat than light.  Please read
+the following before posting some variant of this question.
+<p>In 99% of the cases, programming language selection is dominated by business
+considerations, <em>not</em> by technical considerations.  Things that
+<em>really</em> end up mattering are things like availability of a programming
+environment for the development machine, availability of runtime environment(s)
+for the deployment machine(s), licensing/legal issues of the runtime and/or
+development environments, availability of trained developers, availability of
+consulting services, and corporate culture/politics.  These business
+considerations generally play a much greater role than compile time
+performance, runtime performance, static <em>vs.</em> dynamic typing, static <em>vs.</em> dynamic
+binding, etc.
+<p>Anyone who argues in favor of one language over another in a purely technical
+manner (i.e., who ignores the dominant business issues) exposes themself as a
+techie weenie, and deserves not to be heard.
+<p><small>[&nbsp;<a href="#top" title="Top of section [6] Big Picture issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [6] Big Picture issues">Bottom</a> |&nbsp;<a href="how-to-post.html" title="[5] Netiquette when posting to comp.lang.c++">Previous&nbsp;section</a> |&nbsp;<a href="classes-and-objects.html" title="[7] Classes and objects">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-6.5"></a>
+<div class=FaqTitle><h3>[6.5] Who uses C++?</h3></div>
+<p>Lots and lots of companies and government sites.  Lots.
+<p>The large number of developers (and therefore the large amount of available
+support infrastructure including vendors, tools, training, etc.) is one of
+several <a href="big-picture.html#faq-6.7" title="[6.7] What are some features of C++ from a business perspective?">critical features of C++<!--rawtext:[6.7]:rawtext--></a>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [6] Big Picture issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [6] Big Picture issues">Bottom</a> |&nbsp;<a href="how-to-post.html" title="[5] Netiquette when posting to comp.lang.c++">Previous&nbsp;section</a> |&nbsp;<a href="classes-and-objects.html" title="[7] Classes and objects">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-6.6"></a>
+<div class=FaqTitle><h3>[6.6] How long does it take to learn OO/C++?</h3></div>
+<p>Companies successfully teach standard industry &quot;short courses,&quot; where a
+university semester course is compressed into one 40 hour work week.  But
+regardless of where you get your training, make sure the courses have a
+hands-on element, since most people learn best when they have projects to help
+the concepts &quot;gel.&quot; But even if they have the <em>best</em> training, they're
+not ready yet.
+<p>It takes 6-12 months to become proficient in OO/C++.  Less if the developers
+have easy access to a &quot;local&quot; body of experts, more if there isn't a &quot;good&quot;
+general purpose C++ class library available.  To become one of these experts
+who can mentor others takes around 3 years.
+<p>Some people never make it.  You don't have a chance unless you are teachable
+and have personal drive.  As a bare minimum on &quot;teachability,&quot; you have to be
+able to admit when you've been wrong.  As a bare minimum on &quot;drive,&quot; you must be
+willing to put in some extra hours (it's a <em>lot</em> easier to learn some new
+facts than it is to change your paradigm [i.e., to change the <em>way</em> you
+think; to change your notion of goodness; to change your mental model of the
+world of technology]).
+<p>Two things you <em>should</em> do:
+<ul>
+<li>Bring in <a href="how-to-learn-cpp.html#faq-28.1" title="[28.1] What is mentoring?">a &quot;mentor&quot;<!--rawtext:[28.1]:rawtext--></a></li>
+<li>Get your people two books: one <a href="how-to-learn-cpp.html#faq-28.6" title="[28.6] What are some best-of-breed C++ legality guides?">to tell them
+what is legal<!--rawtext:[28.6]:rawtext--></a>, another <a href="how-to-learn-cpp.html#faq-28.5" title="[28.5] What are some best-of-breed C++ morality guides?">to tell them what is
+moral<!--rawtext:[28.5]:rawtext--></a></li>
+</ul>
+<p>Two things you <em>should not</em> do:
+<ul>
+<li><a href="how-to-learn-cpp.html#faq-28.2" title="[28.2] Should I learn C before I learn OO/C++?">You should <em>not</em> bother having your
+people trained in C as a stepping-stone to learning OO/C++<!--rawtext:[28.2]:rawtext--></a></li>
+<li><a href="how-to-learn-cpp.html#faq-28.3" title="[28.3] Should I learn Smalltalk before I learn OO/C++?">You should <em>not</em> bother
+having your people trained in Smalltalk as a stepping-stone to learning
+OO/C++<!--rawtext:[28.3]:rawtext--></a></li>
+</ul>
+<p><small>[&nbsp;<a href="#top" title="Top of section [6] Big Picture issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [6] Big Picture issues">Bottom</a> |&nbsp;<a href="how-to-post.html" title="[5] Netiquette when posting to comp.lang.c++">Previous&nbsp;section</a> |&nbsp;<a href="classes-and-objects.html" title="[7] Classes and objects">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-6.7"></a>
+<div class=FaqTitle><h3>[6.7] What are some features of C++ from a business perspective?</h3></div>
+<p>Here are a few features of OO/C++ from a business perspective:
+<ul>
+<li>C++ has a <a href="big-picture.html#faq-6.5" title="[6.5] Who uses C++?">huge installed base<!--rawtext:[6.5]:rawtext--></a>, which means
+you'll have <a href="big-picture.html#faq-6.4" title="[6.4] Is C++ better than Ada? (or Visual Basic, C, FORTRAN, Pascal, Smalltalk, or any other language?)">multi-vendor support for tools,
+environments, consulting services, etc.<!--rawtext:[6.4]:rawtext--></a>, plus you'll have a very valuable
+line-item on your resume</li>
+<li>C++ lets developers provide <a href="classes-and-objects.html#faq-7.3" title="[7.3] When is an interface &quot;good&quot;?">simplified
+interfaces<!--rawtext:[7.3]:rawtext--></a> to software chunks, which improves the
+defect-rate when those chunks are (re)used</li>
+<li>C++ lets you exploit developer's intuition through
+<a href="operator-overloading.html#faq-13.2" title="[13.2] What are the benefits of operator overloading?">operator overloading<!--rawtext:[13.2]:rawtext--></a>, which reduces the learning
+curve for (re)users</li>
+<li>C++ <a href="classes-and-objects.html#faq-7.4" title="[7.4] What is encapsulation?">localizes access<!--rawtext:[7.4]:rawtext--></a> to a software chunk,
+which reduces the cost of changes.</li>
+<li>C++ reduces the <a href="classes-and-objects.html#faq-7.5" title="[7.5] How does C++ help with the tradeoff of safety vs. usability?">safety-<em>vs.</em>-usability tradeoff<!--rawtext:[7.5]:rawtext--></a>, which improves the cost of
+(re)using a chunk of software.</li>
+<li>C++ reduces the <a href="inline-functions.html#faq-9.4" title="[9.4] How can inline functions help with the tradeoff of safety vs. speed?">safety-<em>vs.</em>-speed
+tradeoff<!--rawtext:[9.4]:rawtext--></a>, which improves defect rates without degrading
+performance.</li>
+<li>C++ gives you <a href="big-picture.html#faq-6.8" title="[6.8] Are virtual functions (dynamic binding) central to OO/C++?">inheritance and dynamic
+binding<!--rawtext:[6.8]:rawtext--></a> which let <a href="big-picture.html#faq-6.9" title="[6.9] I'm from Missouri. Can you give me a simple reason why virtual functions (dynamic binding) make a big difference?">old code call new
+code<!--rawtext:[6.9]:rawtext--></a>, making it possible to quickly
+extend/adapt your software to hit narrow market windows.</li>
+</ul>
+<p><small>[&nbsp;<a href="#top" title="Top of section [6] Big Picture issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [6] Big Picture issues">Bottom</a> |&nbsp;<a href="how-to-post.html" title="[5] Netiquette when posting to comp.lang.c++">Previous&nbsp;section</a> |&nbsp;<a href="classes-and-objects.html" title="[7] Classes and objects">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-6.8"></a>
+<div class=FaqTitle><h3>[6.8] Are <tt>virtual</tt> functions (dynamic binding) central to OO/C++?</h3></div>
+<p><em>Yes!</em>
+<p>Without <a href="virtual-functions.html" title="[20] Inheritance -- virtual functions">virtual functions<!--rawtext:[20]:rawtext--></a>, C++ wouldn't be
+object-oriented.  <a href="operator-overloading.html" title="[13] Operator overloading">Operator overloading<!--rawtext:[13]:rawtext--></a> and
+non-<tt>virtual</tt> member functions are great, but they are, after all, just
+syntactic sugar for the more typical C notion of passing a pointer to a
+<tt>struct</tt> to a function.  The <a href="class-libraries.html#faq-36.1" title="[36.1] What is the &quot;STL&quot;?">standard library<!--rawtext:[36.1]:rawtext--></a> contains numerous
+templates that illustrate &quot;generic programming&quot; techniques, which are also
+great, but <tt>virtual</tt> functions are still at the heart of object-oriented
+programming using C++.
+<p>From a business perspective, there is very little reason to switch from
+straight C to C++ without <tt>virtual</tt> functions (for now we'll ignore generic
+programming and <a href="class-libraries.html#faq-36.1" title="[36.1] What is the &quot;STL&quot;?">the standard library<!--rawtext:[36.1]:rawtext--></a>).  Technical
+people often think that there is a large difference between C and non-OO C++,
+but without OO, the difference usually isn't enough to justify the cost of
+training developers, new tools, etc.  In other words, if I were to advise a
+manager regarding whether to switch from C to non-OO C++ (i.e., to switch
+languages but not paradigms), I'd probably discourage him or her unless there
+were compelling tool-oriented reasons.  From a business perspective, OO can
+help make systems extensible and adaptable, but just the syntax of C++ classes
+without OO may not even reduce the maintenance cost, and it surely adds to the
+training cost significantly.
+<p>Bottom line: C++ without <tt>virtual</tt> is not OO.  Programming with classes but
+without dynamic binding is called &quot;object based,&quot; but not &quot;object oriented.&quot;
+Throwing out <tt>virtual</tt> functions is the same as throwing out OO.  All you have
+left is object-based programming, similar to the original Ada language (the new
+Ada language, by the way, supports true OO rather than just object-based
+programming).
+<p><small>[&nbsp;<a href="#top" title="Top of section [6] Big Picture issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [6] Big Picture issues">Bottom</a> |&nbsp;<a href="how-to-post.html" title="[5] Netiquette when posting to comp.lang.c++">Previous&nbsp;section</a> |&nbsp;<a href="classes-and-objects.html" title="[7] Classes and objects">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-6.9"></a>
+<div class=FaqTitle><h3>[6.9] I'm from Missouri. Can you give me a simple reason why <tt>virtual</tt> functions (dynamic binding) make a big difference?</h3></div>
+<p>Dynamic binding can improve reuse by letting <em>old</em> code call
+<em>new</em> code.
+<p>Before OO came along, reuse was accomplished by having new code call old code.
+For example, a programmer might write some code that called some reusable code
+such as <nobr><tt>printf()</tt></nobr>.
+<p>With OO, reuse can also be accomplished by having <em>old</em> code call
+<em>new</em> code.  For example, a programmer might write some code that is
+called by a framework that was written by their great, great grandfather.
+There's no need to change great-great-grandpa's code.  In fact, it doesn't even
+need to be recompiled.  Even if all you have left is the object file and the
+source code that great-great-grandpa wrote was lost 25 years ago, that ancient
+object file will call the new extension without anything falling apart.
+<p><em>That</em> is extensibility, and <em>that</em> is OO.
+<p><small>[&nbsp;<a href="#top" title="Top of section [6] Big Picture issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [6] Big Picture issues">Bottom</a> |&nbsp;<a href="how-to-post.html" title="[5] Netiquette when posting to comp.lang.c++">Previous&nbsp;section</a> |&nbsp;<a href="classes-and-objects.html" title="[7] Classes and objects">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-6.10"></a>
+<div class=FaqTitle><h3>[6.10] Is C++ backward compatible with ANSI/ISO C?</h3></div>
+<p>Almost.
+<p>C++ is as close as possible to compatible with C, but no closer.  In practice,
+the major difference is that C++ requires prototypes, and that <nobr><tt>f()</tt></nobr> declares
+a function that takes no parameters (in C, a function declared using <nobr><tt>f()</tt></nobr> can
+be passed an arbitrary number of parameters of arbitrary types).
+<p>There are some very subtle differences as well, like <nobr><tt>sizeof('x')</tt></nobr> is equal to
+<nobr><tt>sizeof(char)</tt></nobr> in C++ but is equal to <nobr><tt>sizeof(int)</tt></nobr> in C.  Also, C++ puts
+structure &quot;tags&quot; in the same namespace as other names, whereas C requires an
+explicit <tt>struct</tt> (e.g., the <nobr><tt>typedef struct Fred Fred;</tt></nobr> technique still
+works, but is redundant in C++).
+<p><small>[&nbsp;<a href="#top" title="Top of section [6] Big Picture issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [6] Big Picture issues">Bottom</a> |&nbsp;<a href="how-to-post.html" title="[5] Netiquette when posting to comp.lang.c++">Previous&nbsp;section</a> |&nbsp;<a href="classes-and-objects.html" title="[7] Classes and objects">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-6.11"></a>
+<div class=FaqTitle><h3>[6.11] Is C++ standardized?</h3></div>
+<p>Yes.
+<p>The C++ standard was finalized and adopted by ISO (International Organization
+for Standardization) as well as several national standards organizations such
+as ANSI (The American National Standards Institute), BSI (The British Standards
+Institute), DIN (The German National Standards Organization).  The ISO standard
+was finalized and adopted by unanimous vote November 14, 1997.
+<p>The ANSI C++ committee is called &quot;X3J16&quot;.  The ISO C++ standards group is
+called &quot;WG21&quot;.  The major players in the ANSI/ISO C++ standards process
+include just about everyone: representatives from Australia, Canada, Denmark,
+France, Germany, Ireland, Japan, the Netherlands, New Zealand, Sweden, the UK,
+and the USA, along with representatives from about a hundred companies and many
+interested individuals.  Major players include AT&amp;T, Ericsson, Digital,
+Borland, Hewlett Packard, IBM, Mentor Graphics, Microsoft, Silicon Graphics,
+Sun Microsystems, and Siemens.  After about 8 years of work, this standard is
+now complete.  On November 14, 1997, the standard was approved by a unanimous
+vote of the countries that had representatives present in Morristown.
+<p><small>[&nbsp;<a href="#top" title="Top of section [6] Big Picture issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [6] Big Picture issues">Bottom</a> |&nbsp;<a href="how-to-post.html" title="[5] Netiquette when posting to comp.lang.c++">Previous&nbsp;section</a> |&nbsp;<a href="classes-and-objects.html" title="[7] Classes and objects">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-6.12"></a>
+<div class=FaqTitle><h3>[6.12] Where can I get a copy of the ANSI/ISO C++ standard?</h3></div>
+<p>There are at least three ways to get a soft-copy of this document:
+<ul>
+<li>$18 [published by ANSI]: go to
+<a href="http://webstore.ansi.org/ansidocstore/product.asp?sku=ISO%2FIEC+14882%2D1998" title="webstore.ansi.org/ansidocstore/product.asp?sku=ISO%2FIEC+14882%2D1998" target='_blank'>this page</a> and click &quot;Add to Basket.&quot;</li>
+<li>$34 [published by ANSI]: go to
+<a href="http://www.techstreet.com/cgi-bin/detail?product_id=49964" title="www.techstreet.com/cgi-bin/detail?product_id=49964" target='_blank'>this
+page</a>, select &quot;PDF file&quot; from the pull-down, and click &quot;Place this in
+your shopping basket.&quot;</li>
+<li>$245 [published by ISO]: go to
+<a href="http://webstore.ansi.org/ansidocstore/product.asp?sku=ISO%2FIEC+14882%3A1998" title="webstore.ansi.org/ansidocstore/product.asp?sku=ISO%2FIEC+14882%3A1998" target='_blank'>this page</a> and click &quot;Add to Basket.&quot;</li>
+</ul>
+<p>Note: The ISO document is well over ten times more expensive than the ANSI
+document, however the technical content is the same.  The ISO document has a
+different title page, but the technical material is identical to the ANSI
+document.  Please don't email asking me why ISO charges so much more for
+fundamentally the same thing; that's ISO's business decision; you'll have to
+take it up with ISO's publishing/sales department.
+<p>There are at least two ways to get a hard-copy of this document:
+<ul>
+<li>$175 [published by ANSI]: go to
+<a href="http://www.techstreet.com/cgi-bin/detail?product_id=49964" title="www.techstreet.com/cgi-bin/detail?product_id=49964" target='_blank'>this
+page</a>, select &quot;Hardcopy&quot; from the pull-down, and click &quot;Place this in
+your shopping basket.&quot;</li>
+<li>Unknown price [published by ANSI]: call NCITS (National Committee
+for Information Technology Standards; this is the new name of the organization
+that used to be called &quot;X3&quot;).  The contact person is Monica Vega, 202-626-5739
+or 202-626-5738.  Ask for document FDC 14882.  Be prepared to spend some money
+&#151; the document is certainly not free.</li>
+</ul>
+<p>There are two other potentially interesting (and free) documents you might
+want to look at:
+<ul>
+<li>$0: If you're willing to put up with a (free) document that's
+non-authorative, out-of-date, and partially incorrect, you can get &quot;committee
+draft #2&quot; <a href="ftp://ftp.maths.warwick.ac.uk/pub/c++/std/cd2/" title="ftp.maths.warwick.ac.uk/pub/c++/std/cd2/" target='_blank'>here</a>
+and/or <a href="ftp://ftp.research.att.com/dist/c++std/WP/CD2/" title="ftp.research.att.com/dist/c++std/WP/CD2/" target='_blank'>here</a>.</li>
+<li>$0: The ISO committee's press release (<em>not</em> a copy of the
+ANSI or ISO standards!) is
+<a href="http://www.research.att.com/~bs/iso_release.html" title="www.research.att.com/~bs/iso_release.html" target='_blank'>here</a>.  This
+press release is readable by non-programmers.</li>
+</ul>
+<p><small>[&nbsp;<a href="#top" title="Top of section [6] Big Picture issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [6] Big Picture issues">Bottom</a> |&nbsp;<a href="how-to-post.html" title="[5] Netiquette when posting to comp.lang.c++">Previous&nbsp;section</a> |&nbsp;<a href="classes-and-objects.html" title="[7] Classes and objects">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-6.13"></a>
+<div class=FaqTitle><h3>[6.13] What are some &quot;interview questions&quot; I could ask that would let me know if candidates really know their stuff?</h3></div>
+<p>This answer is primarily for non-technical managers and HR folks who are
+trying to do a good job at interviewing C++ candidates.  If you're a C++
+programmer about to be interviewed, and if you're lurking in this FAQ hoping
+to know the questions they'll ask you ahead of time so you can avoid having to
+<em>really</em> learn C++, shame on you: spend your time becoming technically
+competent and you won't have to try to &quot;cheat&quot; your way through life!
+<p>Back to the non-technical manager / HR person: obviously you are eminently
+qualified to judge whether a candidate is a good &quot;fit&quot; with your company's
+culture.  However there are enough charlatans, wannabes, and posers out there
+that you really need to team up with someone who is technically competent in
+order to make sure the candidate has the right level of technical skill.  A
+lot of companies have been burned by hiring nice but incompetent duds &#151;
+people who were incompetent in spite of the fact that they knew the answers to
+a few obscure questions.  The only way to smoke out the posers and wannabes is
+to get someone in with you who can ask penetrating technical questions.  You
+have no hope whatsoever of doing that yourself.  Even if I gave you a bunch of
+&quot;tricky questions,&quot; they wouldn't smoke out the bad guys.
+<p>Your technical sidekick might not be (and often isn't) qualified to judge the
+candidate on personality or soft skills, so please don't abdicate your role as
+the final arbiter in the decision making process.  But please don't think you
+can ask a half dozen C++ questions and have the slightest clue if the
+candidate <em>really</em> knows what they're talking about from a technical
+perspective.
+<p>Having said all that, <em>if</em> you're technical enough to read the C++ FAQ,
+you can dig up a lot of good interview questions here.  The FAQ has a
+<em>lot</em> of goodies that will separate the wheat from the chaff.  The FAQ
+focuses on what programmers should do, as opposed to merely what the compiler
+will let them do.  There are things that can be done in C++ but shouldn't be
+done.  The FAQ helps people separate those two.
+<p><small>[&nbsp;<a href="#top" title="Top of section [6] Big Picture issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [6] Big Picture issues">Bottom</a> |&nbsp;<a href="how-to-post.html" title="[5] Netiquette when posting to comp.lang.c++">Previous&nbsp;section</a> |&nbsp;<a href="classes-and-objects.html" title="[7] Classes and objects">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-6.14"></a>
+<div class=FaqTitle><h3>[6.14] What does the FAQ mean by &quot;such-in-such is <em>evil</em>&quot;?</h3></div>
+<p>It means <em>such-in-such</em> is something you should avoid most of the time,
+but <em>not</em> something you should avoid <em>all</em> the time.  For example,
+you will end up using these &quot;evil&quot; things whenever they are &quot;the least evil of
+the evil alternatives.&quot; It's a joke, okay?  Don't take it too seriously.
+<p>The real purpose of the term (<em>&quot;Ah ha,&quot;</em> I hear you saying, <em>&quot;there
+really <b>is</b> a hidden motive!&quot;</em>; you're right: there is) is to
+shake new C++ programmers free from some of their old thinking.  For example,
+C programmers who are new to C++ often use pointers, arrays and/or <nobr><tt>#define</tt></nobr>
+more than they should.  The FAQ lists those as &quot;evil&quot; to give new C++
+programmers a vigorous (and droll!) shove in the right direction.  The goal of
+farcical things like &quot;pointers are evil&quot; is to convince new C++ programmers
+that C++ really isn't &quot;just like C except for those silly <nobr><tt>//</tt></nobr> comments.&quot;
+<p>Now let's get real here.  I'm not suggesting macros or arrays or pointers are
+right up there with murder or kidnapping.  Well, maybe pointers.  (Just
+kidding!) So don't get all hyper about the word &quot;evil&quot;: it's supposed to
+sound a little outrageous.  So don't look for a technically precise definition
+of exactly when something is or isn't &quot;evil&quot;: there isn't one.
+<p>Another thing: things labeled as &quot;evil&quot; (macros, arrays, pointers, etc.)
+aren't <em>always</em> bad in <em>all</em> situations.  When they are the
+&quot;least bad&quot; of the alternatives, <a href="big-picture.html#faq-6.15" title="[6.15] Will I sometimes use any so-called &quot;evil&quot; constructs?">use
+them<!--rawtext:[6.15]:rawtext--></a>!
+<p><small>[&nbsp;<a href="#top" title="Top of section [6] Big Picture issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [6] Big Picture issues">Bottom</a> |&nbsp;<a href="how-to-post.html" title="[5] Netiquette when posting to comp.lang.c++">Previous&nbsp;section</a> |&nbsp;<a href="classes-and-objects.html" title="[7] Classes and objects">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-6.15"></a>
+<div class=FaqTitle><h3>[6.15] Will I sometimes use any so-called &quot;evil&quot; constructs?</h3></div>
+<p>Of <em>course</em> you will!
+<p>One size does not fit all.  Stop.  Right now, take out a fine-point marker and
+write on the inside of your glasses: <em>Software Development <b>Is</b>
+Decision Making</em>.  &quot;Think&quot; is not a four-letter word.  There are very few
+if any &quot;never...&quot; and &quot;always...&quot; rules in software &#151; rules that you can
+apply without thinking &#151; rules that always work in all situations in all
+markets &#151; one-size-fits-all rules.
+<p>In plain English, you <em>will</em> have to make decisions, and the quality of
+your decisions <em>will</em> effect the business value of your software.  And
+sometimes you will have to choose between a bunch of bad options.  When that
+happens, the best you can hope for is to choose the <em>least bad</em> of the
+alternatives, the lesser of the &quot;evils.&quot;
+<p>So you <em>will</em> end up using approaches and techniques labeled as &quot;evil.&quot;
+If that makes you uncomfortable, mentally change the word &quot;evil&quot; to
+&quot;frequently undesirable&quot; (but don't quit your day job to become an author:
+<a href="http://www.dictionary.com/search?q=milquetoast" title="www.dictionary.com/search?q=milquetoast" target='_blank'>milquetoast</a>
+terms like that put people to sleep :-)
+<p><small>[&nbsp;<a href="#top" title="Top of section [6] Big Picture issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [6] Big Picture issues">Bottom</a> |&nbsp;<a href="how-to-post.html" title="[5] Netiquette when posting to comp.lang.c++">Previous&nbsp;section</a> |&nbsp;<a href="classes-and-objects.html" title="[7] Classes and objects">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="bottom"></a>
+<a href="mailto:cline@parashift.com" title="cline@parashift.com"><img src="mbox.gif" height=26 width=89 alt="E-Mail">&nbsp;E-mail the author</a><br>
+[&nbsp;<a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>
+|&nbsp;<a href="index.html#table-of-contents" title="Table of contents">Table&nbsp;of&nbsp;contents</a>
+|&nbsp;<a href="subject-index.html" title="Subject index; 3706 links to 2361 topics">Subject&nbsp;index</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.1" title="[1.1] Author">About&nbsp;the&nbsp;author</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">&copy;</a>
+|&nbsp;<a href="on-line-availability.html#faq-2.2" title="[2.2] How can I get a copy of all the HTML files of C++ FAQ Lite so I can read them Off-Line?">Download&nbsp;your&nbsp;own&nbsp;copy</a>&nbsp;]<br>
+<small>Revised May 2, 2003</small>
+</body>
+</html>

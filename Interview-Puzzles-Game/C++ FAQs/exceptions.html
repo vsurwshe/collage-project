@@ -1,0 +1,261 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"
+	"http://www.w3.org/TR/REC-html40/strict.dtd">
+<html>
+<head>
+<title>[17] Exceptions and error handling, C++ FAQ Lite</title>
+<meta name="FILENAME" content="exceptions.html">
+<meta name="ABSTRACT" content="[17] Exceptions and error handling, C++ FAQ Lite">
+<meta name="OWNER"    content="cline@parashift.com">
+<meta name="AUTHOR"   content="Marshall Cline, cline@parashift.com">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rev=made href="mailto:cline@parashift.com">
+<style type='text/css'>
+  <!--
+  body       { font-family: arial; color: black; background: white }
+  .CodeBlock { color: black; background-color: #dfdfdf; margin-left: 30px; margin-right: 30px; padding: 5pt }
+  .FaqTitle  { color: black; background-color: gold }
+  .Updated   { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #ffff00; border: solid #e0e000 1px; }
+  .New       { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #00ff00; border: solid #00d000 1px; }
+  ul         { margin-bottom: 1px; margin-top: 1px }
+  ol         { margin-bottom: 1px; margin-top: 1px }
+  li         { margin-bottom: 4px; margin-top: 4px }
+  a          { color: blue }
+  a:hover    { color: red }
+  -->
+</style>
+</head>
+<body>
+<h1><a name="top"></a>[17] Exceptions and error handling<br>
+<small><small>(Part of <a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>, <a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">Copyright&nbsp;&copy; 1991-2003</a>, <a href="http://www.parashift.com/" title="www.parashift.com/" target='_blank'>Marshall Cline</a>, <a href="mailto:cline@parashift.com" title="cline@parashift.com"><tt>cline@parashift.com</tt></a>)</small></small></h1>
+<hr>
+<h3>FAQs in section [17]:</h3>
+<ul>
+<li><a href="exceptions.html#faq-17.1" title="[17.1] What are some ways try / catch / throw can improve software quality?">[17.1] What are some ways <tt>try</tt> / <tt>catch</tt> / <tt>throw</tt> can improve software quality?</a></li>
+<li><a href="exceptions.html#faq-17.2" title="[17.2] How can I handle a constructor that fails?">[17.2] How can I handle a constructor that fails?</a></li>
+<li><a href="exceptions.html#faq-17.3" title="[17.3] How can I handle a destructor that fails?">[17.3] How can I handle a destructor that fails?</a></li>
+<li><a href="exceptions.html#faq-17.4" title="[17.4] How should I handle resources if my constructors may throw exceptions?">[17.4] How should I handle resources if my constructors may throw exceptions?</a></li>
+<li><a href="exceptions.html#faq-17.5" title="[17.5] How do I change the string-length of an array of char to prevent memory leaks even if/when someone throws an exception?">[17.5] How do I change the string-length of an array of <tt>char</tt> to prevent memory leaks even if/when someone throws an exception?</a></li>
+</ul>
+<p><hr>
+<p><a name="faq-17.1"></a>
+<div class=FaqTitle><h3>[17.1] What are some ways <tt>try</tt> / <tt>catch</tt> / <tt>throw</tt> can improve software quality?</h3></div>
+<p>By eliminating one of the reasons for <tt>if</tt> statements.
+<p>The commonly used alternative to <tt>try</tt> / <tt>catch</tt> / <tt>throw</tt> is to
+return a <em>return code</em> (sometimes called an <em>error code</em>)
+that the caller explicitly tests via some conditional statement such
+as <tt>if</tt>.  For example, <nobr><tt>printf()</tt></nobr>, <nobr><tt>scanf()</tt></nobr> and
+<nobr><tt>malloc()</tt></nobr> work this way: the caller is supposed to test the
+return value to see if the function succeeded.
+<p>Although the return code technique is sometimes the most appropriate error
+handling technique, there are some nasty side effects to adding unnecessary
+<tt>if</tt> statements:
+<ul>
+<li><b>Degrade quality:</b> It is well known that conditional
+statements are approximately ten times more likely to contain errors than any
+other kind of statement.  So all other things being equal, if you can
+eliminate conditionals / conditional statements from your code, you will
+likely have more robust code.</li>
+<li><b>Slow down time-to-market:</b> Since conditional statements
+are branch points which are related to the number of test cases that are
+needed for white-box testing, unnecessary conditional statements increase the
+amount of time that needs to be devoted to testing.  Basically if you don't
+exercise every branch point, there will be instructions in your code that will
+<em>never</em> have been executed under test conditions until they are seen by
+your users/customers.  That's bad.</li>
+<li><b>Increase development cost:</b> Bug finding, bug fixing, and
+testing are all increased by unnecessary control flow complexity.</li>
+</ul>
+<p>So compared to error reporting via return-codes and <tt>if</tt>, using <tt>try</tt> /
+<tt>catch</tt> / <tt>throw</tt> is likely to result in code that has fewer bugs, is less
+expensive to develop, and has faster time-to-market.  Of course if your
+organization doesn't have any experiential knowledge of <tt>try</tt> / <tt>catch</tt> /
+<tt>throw</tt>, you might want to use it on a toy project first just to make sure you
+know what you're doing &#151; you should always get used to a weapon on the
+firing range before you bring it to the front lines of a shooting war.
+<p><small>[&nbsp;<a href="#top" title="Top of section [17] Exceptions and error handling">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [17] Exceptions and error handling">Bottom</a> |&nbsp;<a href="freestore-mgmt.html" title="[16] Freestore management">Previous&nbsp;section</a> |&nbsp;<a href="const-correctness.html" title="[18] Const correctness">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-17.2"></a>
+<div class=FaqTitle><h3>[17.2] How can I handle a constructor that fails?</h3></div>
+<p>Throw an exception.
+<p>Constructors don't have a return type, so it's not possible to use return
+codes.  The best way to signal constructor failure is therefore to throw an
+exception.  If you don't have the option of using exceptions, the &quot;least bad&quot;
+work-around is to put the object into a &quot;zombie&quot; state by setting an internal
+status bit so the object acts sort of like it's dead even though it is
+technically still alive.
+<p>The idea of a &quot;zombie&quot; object has a lot of down-side.  You need to add a query
+(&quot;inspector&quot;) member function to check this &quot;zombie&quot; bit so users of your
+class can find out if their object is truly alive, or if it's a zombie (i.e.,
+a &quot;living dead&quot; object), and just about every place you construct one of your
+objects (including within a larger object or an array of objects) you need to
+check that status flag via an <tt>if</tt> statement.  You'll also want to add
+an <tt>if</tt> to your other member functions: if the object is a zombie, do a
+no-op or perhaps something more obnoxious.
+<p>In practice the &quot;zombie&quot; thing gets pretty ugly.  Certainly you should prefer
+exceptions over zombie objects, but if you do not have the option of using
+exceptions, zombie objects might be the &quot;least bad&quot; alternative.
+<p><small>[&nbsp;<a href="#top" title="Top of section [17] Exceptions and error handling">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [17] Exceptions and error handling">Bottom</a> |&nbsp;<a href="freestore-mgmt.html" title="[16] Freestore management">Previous&nbsp;section</a> |&nbsp;<a href="const-correctness.html" title="[18] Const correctness">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-17.3"></a>
+<div class=FaqTitle><h3>[17.3] How can I handle a destructor that fails?</h3></div>
+<p>Write a message to a log-file.  Or call Aunt Tilda.  But do <em>not</em> throw
+an exception!
+<p>Here's why (buckle your seat-belts):
+<p>The C++ rule is that you must never throw an exception from a destructor that
+is being called during the &quot;stack unwinding&quot; process of another exception.
+For example, if someone says <nobr><tt>throw&nbsp;Foo()</tt></nobr>, the stack will be unwound
+so all the stack frames between the <nobr><tt>throw&nbsp;Foo()</tt></nobr> and the
+<nobr><tt>} catch (Foo e) {</tt></nobr> will get popped.  This is called
+<em>stack unwinding</em>.
+<p>During stack unwinding, all the local objects in all those stack frames are
+destructed.  If one of <em>those</em> destructors throws an exception (say it
+throws a <tt>Bar</tt> object), the C++ runtime system is in a no-win situation:
+should it ignore the <tt>Bar</tt> and end up in the
+<nobr><tt>} catch (Foo e) {</tt></nobr> where it was originally headed?  Should
+it ignore the <tt>Foo</tt> and look for a <nobr><tt>} catch (Bar e) {</tt></nobr>
+handler?  There is no good answer &#151; either choice loses information.
+<p>So the C++ language guarantees that it will call <nobr><tt>terminate()</tt></nobr> at this
+point, and <nobr><tt>terminate()</tt></nobr> kills the process.  Bang you're dead.
+<p>The easy way to prevent this is <em>never throw an exception from a
+destructor</em>.  But if you really want to be clever, you can say <em>never
+throw an exception from a destructor <u>while processing another
+exception</u></em>.  But in this second case, you're in a difficult
+situation: the destructor itself needs code to handle both throwing an
+exception and doing &quot;something else&quot;, and the caller has no guarantees as to
+what might happen when the destructor detects an error (it might throw an
+exception, it might do &quot;something else&quot;).  So the whole solution is harder to
+write.  So the easy thing to do is <em>always</em> do &quot;something else&quot;.  That
+is, <em>never throw an exception from a destructor</em>.
+<p>Of course the word <em>never</em> should be &quot;in quotes&quot; since there is always
+some situation somewhere where the rule won't hold.  But certainly at least
+99% of the time this is a good rule of thumb.
+<p><small>[&nbsp;<a href="#top" title="Top of section [17] Exceptions and error handling">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [17] Exceptions and error handling">Bottom</a> |&nbsp;<a href="freestore-mgmt.html" title="[16] Freestore management">Previous&nbsp;section</a> |&nbsp;<a href="const-correctness.html" title="[18] Const correctness">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-17.4"></a>
+<div class=FaqTitle><h3>[17.4] How should I handle resources if my constructors may throw exceptions?</h3></div>
+<p>Every data member inside your object should clean up its own mess.
+<p>If a constructor throws an exception, the object's destructor is <em>not</em>
+run.  If your object has already done something that needs to be undone (such
+as allocating some memory, opening a file, or locking a semaphore), this &quot;stuff
+that needs to be undone&quot; <em>must</em> be remembered by a data member inside the
+object.
+<p>For example, rather than allocating memory into a raw <nobr><tt>Fred*</tt></nobr> data member, put
+the allocated memory into a &quot;smart pointer&quot; member object, and the destructor
+of this smart pointer will <tt>delete</tt> the <tt>Fred</tt> object when the smart pointer
+dies.  The template <nobr><tt>std::auto_ptr</tt></nobr> is an example of such as &quot;smart pointer.&quot;
+You can also <a href="freestore-mgmt.html#faq-16.21" title="[16.21] How do I do simple reference counting?">write your own reference counting smart
+pointer<!--rawtext:[16.21]:rawtext--></a>.  You can also <a href="operator-overloading.html#faq-13.3" title="[13.3] What are some examples of operator overloading?">use smart pointers to
+&quot;point&quot; to disk records or objects on other machines<!--rawtext:[13.3]:rawtext--></a>.
+<p>By the way, if you think your <tt>Fred</tt> class is going to be allocated into a
+smart pointer, be nice to your users and create a <tt>typedef</tt> within your <tt>Fred</tt>
+class:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#include&nbsp;&lt;memory&gt;<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Fred&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;typedef&nbsp;std::auto_ptr&lt;Fred&gt;&nbsp;Ptr;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;};
+</tt>
+</div>
+<p>That <tt>typedef</tt> simplifies the syntax of all the code that uses your objects:
+your users can say <nobr><tt>Fred::Ptr</tt></nobr> instead of <nobr><tt>std::auto_ptr&lt;Fred&gt;</tt></nobr>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#include&nbsp;&quot;Fred.h&quot;<br>
+&nbsp;<br>
+&nbsp;void&nbsp;f(std::auto_ptr&lt;Fred&gt;&nbsp;p);&nbsp;&nbsp;</tt><em>//&nbsp;explicit&nbsp;but&nbsp;verbose</em><tt><br>
+&nbsp;void&nbsp;f(Fred::Ptr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p);&nbsp;&nbsp;</tt><em>//&nbsp;simpler</em><tt><br>
+&nbsp;<br>
+&nbsp;void&nbsp;g()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::auto_ptr&lt;Fred&gt;&nbsp;p1(&nbsp;new&nbsp;Fred()&nbsp;);&nbsp;&nbsp;</tt><em>//&nbsp;explicit&nbsp;but&nbsp;verbose</em><tt><br>
+&nbsp;&nbsp;&nbsp;Fred::Ptr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p2(&nbsp;new&nbsp;Fred()&nbsp;);&nbsp;&nbsp;</tt><em>//&nbsp;simpler</em><tt><br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p><small>[&nbsp;<a href="#top" title="Top of section [17] Exceptions and error handling">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [17] Exceptions and error handling">Bottom</a> |&nbsp;<a href="freestore-mgmt.html" title="[16] Freestore management">Previous&nbsp;section</a> |&nbsp;<a href="const-correctness.html" title="[18] Const correctness">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-17.5"></a>
+<div class=FaqTitle><h3>[17.5] How do I change the string-length of an array of <tt>char</tt> to prevent memory leaks even if/when someone throws an exception?</h3></div>
+<p>If what you really want to do is work with strings, don't use an array of
+<tt>char</tt> in the first place, since <a href="containers-and-templates.html#faq-34.1" title="[34.1] Why should I use container classes rather than simple arrays?">arrays are evil<!--rawtext:[34.1]:rawtext--></a>.
+Instead use an object of some <tt>string</tt>-like class.
+<p>For example, suppose you want to get a copy of a string, fiddle with the copy,
+then append another string to the end of the fiddled copy.  The array-of-<tt>char</tt>
+approach would look something like this:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;userCode(const&nbsp;char*&nbsp;s1,&nbsp;const&nbsp;char*&nbsp;s2)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;char*&nbsp;copy&nbsp;=&nbsp;new&nbsp;char[strlen(s1)&nbsp;+&nbsp;1];&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;make&nbsp;a&nbsp;copy</em><tt><br>
+&nbsp;&nbsp;&nbsp;strcpy(copy,&nbsp;s1);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;&nbsp;&nbsp;of&nbsp;<tt>s1</tt>...</em><tt><br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;use&nbsp;a&nbsp;<tt>try</tt>&nbsp;block&nbsp;to&nbsp;prevent&nbsp;memory&nbsp;leaks&nbsp;if&nbsp;we&nbsp;get&nbsp;an&nbsp;exception</em><tt><br>
+&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;note:&nbsp;we&nbsp;need&nbsp;the&nbsp;<tt>try</tt>&nbsp;block&nbsp;because&nbsp;we&nbsp;used&nbsp;a&nbsp;&quot;dumb&quot;&nbsp;<nobr><tt>char*</tt></nobr>&nbsp;above</em><tt><br>
+&nbsp;&nbsp;&nbsp;try&nbsp;{<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>...insert&nbsp;code&nbsp;here&nbsp;that&nbsp;fiddles&nbsp;with&nbsp;<tt>copy</tt>...</em><tt><br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;char*&nbsp;copy2&nbsp;=&nbsp;new&nbsp;char[strlen(copy)&nbsp;+&nbsp;strlen(s2)&nbsp;+&nbsp;1];&nbsp;&nbsp;</tt><em>//&nbsp;append&nbsp;<tt>s2</tt></em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;strcpy(copy2,&nbsp;copy);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;&nbsp;&nbsp;onto&nbsp;the</em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;strcpy(copy2&nbsp;+&nbsp;strlen(copy),&nbsp;s2);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;&nbsp;&nbsp;end&nbsp;of</em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delete[]&nbsp;copy;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;&nbsp;&nbsp;<tt>copy</tt>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;copy&nbsp;=&nbsp;copy2;<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>...insert&nbsp;code&nbsp;here&nbsp;that&nbsp;fiddles&nbsp;with&nbsp;<tt>copy</tt>&nbsp;again...</em><tt><br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;}&nbsp;catch&nbsp;(...)&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delete[]&nbsp;copy;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;we&nbsp;got&nbsp;an&nbsp;exception;&nbsp;prevent&nbsp;a&nbsp;memory&nbsp;leak</em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;re-<tt>throw</tt>&nbsp;the&nbsp;current&nbsp;exception</em><tt><br>
+&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;delete[]&nbsp;copy;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;we&nbsp;did&nbsp;not&nbsp;get&nbsp;an&nbsp;exception;&nbsp;prevent&nbsp;a&nbsp;memory&nbsp;leak</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>Using <nobr><tt>char*</tt></nobr>s like this is tedious and error prone.  Why not just use an
+object of some <tt>string</tt> class?  Your compiler probably supplies a <tt>string</tt>-like
+class, and it's probably just as fast and certainly it's a lot simpler and
+safer than the <nobr><tt>char*</tt></nobr> code that you would have to write yourself.  For
+example, if you're using the <nobr><tt>std::string</tt></nobr> class from the <a href="big-picture.html#faq-6.12" title="[6.12] Where can I get a copy of the ANSI/ISO C++ standard?">standardization committee<!--rawtext:[6.12]:rawtext--></a>, your code might look something like this:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#include&nbsp;&lt;string&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Let&nbsp;the&nbsp;compiler&nbsp;see&nbsp;<nobr><tt>std::string</tt></nobr></em><tt><br>
+&nbsp;<br>
+&nbsp;void&nbsp;userCode(const&nbsp;std::string&amp;&nbsp;s1,&nbsp;const&nbsp;std::string&amp;&nbsp;s2)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::string&nbsp;copy&nbsp;=&nbsp;s1;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;make&nbsp;a&nbsp;copy&nbsp;of&nbsp;<tt>s1</tt></em><tt><br>
+&nbsp;&nbsp;&nbsp;</tt><em>...insert&nbsp;code&nbsp;here&nbsp;that&nbsp;fiddles&nbsp;with&nbsp;<tt>copy</tt>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;copy&nbsp;+=&nbsp;s2;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;append&nbsp;<tt>s2</tt>&nbsp;onto&nbsp;the&nbsp;end&nbsp;of&nbsp;<tt>copy</tt></em><tt><br>
+&nbsp;&nbsp;&nbsp;</tt><em>...insert&nbsp;code&nbsp;here&nbsp;that&nbsp;fiddles&nbsp;with&nbsp;<tt>copy</tt>&nbsp;again...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>The <nobr><tt>char*</tt></nobr> version requires you to write around three times more code than
+you would have to write with the <nobr><tt>std::string</tt></nobr> version.  Most of the savings
+came from <nobr><tt>std::string</tt></nobr>'s automatic memory management: in the <nobr><tt>std::string</tt></nobr>
+version, we didn't need to write any code...
+<ul>
+<li>to reallocate memory when we grow the string.</li>
+<li>to <nobr><tt>delete[]</tt></nobr> anything at the end of the function.</li>
+<li>to <tt>catch</tt> and re-<tt>throw</tt> any exceptions.</li>
+</ul>
+<p><small>[&nbsp;<a href="#top" title="Top of section [17] Exceptions and error handling">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [17] Exceptions and error handling">Bottom</a> |&nbsp;<a href="freestore-mgmt.html" title="[16] Freestore management">Previous&nbsp;section</a> |&nbsp;<a href="const-correctness.html" title="[18] Const correctness">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="bottom"></a>
+<a href="mailto:cline@parashift.com" title="cline@parashift.com"><img src="mbox.gif" height=26 width=89 alt="E-Mail">&nbsp;E-mail the author</a><br>
+[&nbsp;<a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>
+|&nbsp;<a href="index.html#table-of-contents" title="Table of contents">Table&nbsp;of&nbsp;contents</a>
+|&nbsp;<a href="subject-index.html" title="Subject index; 3706 links to 2361 topics">Subject&nbsp;index</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.1" title="[1.1] Author">About&nbsp;the&nbsp;author</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">&copy;</a>
+|&nbsp;<a href="on-line-availability.html#faq-2.2" title="[2.2] How can I get a copy of all the HTML files of C++ FAQ Lite so I can read them Off-Line?">Download&nbsp;your&nbsp;own&nbsp;copy</a>&nbsp;]<br>
+<small>Revised May 2, 2003</small>
+</body>
+</html>

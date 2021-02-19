@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"
+	"http://www.w3.org/TR/REC-html40/strict.dtd">
+<html>
+<head>
+<title>[14] Friends, C++ FAQ Lite</title>
+<meta name="FILENAME" content="friends.html">
+<meta name="ABSTRACT" content="[14] Friends, C++ FAQ Lite">
+<meta name="OWNER"    content="cline@parashift.com">
+<meta name="AUTHOR"   content="Marshall Cline, cline@parashift.com">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rev=made href="mailto:cline@parashift.com">
+<style type='text/css'>
+  <!--
+  body       { font-family: arial; color: black; background: white }
+  .CodeBlock { color: black; background-color: #dfdfdf; margin-left: 30px; margin-right: 30px; padding: 5pt }
+  .FaqTitle  { color: black; background-color: gold }
+  .Updated   { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #ffff00; border: solid #e0e000 1px; }
+  .New       { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #00ff00; border: solid #00d000 1px; }
+  ul         { margin-bottom: 1px; margin-top: 1px }
+  ol         { margin-bottom: 1px; margin-top: 1px }
+  li         { margin-bottom: 4px; margin-top: 4px }
+  a          { color: blue }
+  a:hover    { color: red }
+  -->
+</style>
+</head>
+<body>
+<h1><a name="top"></a>[14] Friends<br>
+<small><small>(Part of <a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>, <a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">Copyright&nbsp;&copy; 1991-2003</a>, <a href="http://www.parashift.com/" title="www.parashift.com/" target='_blank'>Marshall Cline</a>, <a href="mailto:cline@parashift.com" title="cline@parashift.com"><tt>cline@parashift.com</tt></a>)</small></small></h1>
+<hr>
+<h3>FAQs in section [14]:</h3>
+<ul>
+<li><a href="friends.html#faq-14.1" title="[14.1] What is a friend?">[14.1] What is a <tt>friend</tt>?</a></li>
+<li><a href="friends.html#faq-14.2" title="[14.2] Do friends violate encapsulation?">[14.2] Do friends violate encapsulation?</a></li>
+<li><a href="friends.html#faq-14.3" title="[14.3] What are some advantages/disadvantages of using friend functions?">[14.3] What are some advantages/disadvantages of using <tt>friend</tt> functions?</a></li>
+<li><a href="friends.html#faq-14.4" title="[14.4] What does it mean that &quot;friendship isn't inherited, transitive, or reciprocal&quot;?">[14.4] What does it mean that &quot;friendship isn't inherited, transitive, or reciprocal&quot;?</a></li>
+<li><a href="friends.html#faq-14.5" title="[14.5] Should my class declare a member function or a friend function?">[14.5] Should my class declare a member function or a <tt>friend</tt> function?</a></li>
+</ul>
+<p><hr>
+<p><a name="faq-14.1"></a>
+<div class=FaqTitle><h3>[14.1] What is a <tt>friend</tt>?</h3></div>
+<p>Something to allow your class to grant access to another class or function.
+<p>Friends can be either functions or other classes.  A class grants access
+privileges to its friends.  Normally a developer has political and technical
+control over both the <tt>friend</tt> and member functions of a class (else you may
+need to get permission from the owner of the other pieces when you want to
+update your own class).
+<p><small>[&nbsp;<a href="#top" title="Top of section [14] Friends">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [14] Friends">Bottom</a> |&nbsp;<a href="operator-overloading.html" title="[13] Operator overloading">Previous&nbsp;section</a> |&nbsp;<a href="input-output.html" title="[15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-14.2"></a>
+<div class=FaqTitle><h3>[14.2] Do friends violate encapsulation?</h3></div>
+<p>No!  If they're used properly, they <em>enhance</em> encapsulation.
+<p>You often need to split a class in half when the two halves will have
+different numbers of instances or different lifetimes.  In these cases, the two
+halves usually need direct access to each other (the two halves <em>used</em> to
+be in the same class, so you haven't <em>increased</em> the amount of code
+that needs direct access to a data structure; you've simply <em>reshuffled</em>
+the code into two classes instead of one).  The safest way to implement this
+is to make the two halves friends of each other.
+<p>If you use friends like just described, you'll keep <tt>private</tt> things
+<tt>private</tt>.  People who don't understand this often make naive efforts to avoid
+using friendship in situations like the above, and often they actually destroy
+encapsulation.  They either use <tt>public</tt> data (grotesque!), or they make the
+data accessible between the halves via <tt>public</tt> <nobr><tt>get()</tt></nobr> and <nobr><tt>set()</tt></nobr> member
+functions.  Having a <tt>public</tt> <nobr><tt>get()</tt></nobr> and <nobr><tt>set()</tt></nobr> member function for a
+<tt>private</tt> datum is OK only when the <tt>private</tt> datum &quot;makes sense&quot; from outside
+the class (from a user's perspective).  In many cases, these <nobr><tt>get()</tt></nobr>/<nobr><tt>set()</tt></nobr>
+member functions are almost as bad as <tt>public</tt> data: they hide (only) the
+<em>name</em> of the <tt>private</tt> datum, but they don't hide the existence of the
+<tt>private</tt> datum.
+<p>Similarly, if you use friend functions as a syntactic variant of a class's
+<tt>public</tt> access functions, they don't violate encapsulation any more than a
+member function violates encapsulation.  In other words, a class's friends
+don't violate the encapsulation barrier: along with the class's member
+functions, they <em>are</em> the encapsulation barrier.
+<p>(Many people think of a friend function as something outside the class.
+Instead, try thinking of a friend function as part of the class's public
+interface.  A friend function in the class declaration doesn't violate
+encapsulation any more than a public member function violates encapsulation:
+both have exactly the same authority with respect to accessing the class's
+non-public parts.)
+<p><small>[&nbsp;<a href="#top" title="Top of section [14] Friends">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [14] Friends">Bottom</a> |&nbsp;<a href="operator-overloading.html" title="[13] Operator overloading">Previous&nbsp;section</a> |&nbsp;<a href="input-output.html" title="[15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-14.3"></a>
+<div class=FaqTitle><h3>[14.3] What are some advantages/disadvantages of using <tt>friend</tt> functions?</h3></div>
+<p>They provide a degree of freedom in the interface design options.
+<p>Member functions and <tt>friend</tt> functions are equally privileged (100% vested).
+The major difference is that a <tt>friend</tt> function is called like <nobr><tt>f(x)</tt></nobr>,
+while a member function is called like <nobr><tt>x.f()</tt></nobr>.  Thus the ability to
+choose between member functions (<nobr><tt>x.f()</tt></nobr>) and <tt>friend</tt> functions
+(<nobr><tt>f(x)</tt></nobr>) allows a designer to select the syntax that is deemed most
+readable, which lowers maintenance costs.
+<p>The major disadvantage of <tt>friend</tt> functions is that they require an extra line
+of code when you want dynamic binding.  To get the effect of a <tt>virtual</tt>
+<tt>friend</tt>, the <tt>friend</tt> function should call a hidden (usually <tt>protected</tt>)
+<a href="virtual-functions.html" title="[20] Inheritance -- virtual functions"><tt>virtual</tt><!--rawtext:[20]:rawtext--></a> member function.  This is called the
+<a href="input-output.html#faq-15.11" title="[15.11] How can I provide printing for an entire hierarchy of classes?">Virtual Friend Function Idiom<!--rawtext:[15.11]:rawtext--></a>.  For example:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Base&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;friend&nbsp;void&nbsp;f(Base&amp;&nbsp;b);<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;protected:<br>
+&nbsp;&nbsp;&nbsp;virtual&nbsp;void&nbsp;do_f();<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;inline&nbsp;void&nbsp;f(Base&amp;&nbsp;b)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;b.do_f();<br>
+&nbsp;}<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Derived&nbsp;:&nbsp;public&nbsp;Base&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;protected:<br>
+&nbsp;&nbsp;&nbsp;virtual&nbsp;void&nbsp;do_f();&nbsp;&nbsp;</tt><em>//&nbsp;&quot;Override&quot;&nbsp;the&nbsp;behavior&nbsp;of&nbsp;<nobr><tt>f(Base&amp;&nbsp;b)</tt></nobr></em><tt><br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;void&nbsp;userCode(Base&amp;&nbsp;b)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;f(b);<br>
+&nbsp;}
+</tt>
+</div>
+<p>The statement <nobr><tt>f(b)</tt></nobr> in <nobr><tt>userCode(Base&amp;)</tt></nobr> will invoke
+<nobr><tt>b.do_f()</tt></nobr>, which is <a href="virtual-functions.html" title="[20] Inheritance -- virtual functions"><tt>virtual</tt><!--rawtext:[20]:rawtext--></a>.  This means
+that <nobr><tt>Derived::do_f()</tt></nobr> will get control if <tt>b</tt> is actually a object
+of <tt>class</tt> <tt>Derived</tt>.  Note that <tt>Derived</tt> overrides the behavior of the
+<tt>protected</tt> <a href="virtual-functions.html" title="[20] Inheritance -- virtual functions"><tt>virtual</tt><!--rawtext:[20]:rawtext--></a> member function <nobr><tt>do_f()</tt></nobr>;
+it does <em>not</em> have its own variation of the <tt>friend</tt> function,
+<nobr><tt>f(Base&amp;)</tt></nobr>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [14] Friends">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [14] Friends">Bottom</a> |&nbsp;<a href="operator-overloading.html" title="[13] Operator overloading">Previous&nbsp;section</a> |&nbsp;<a href="input-output.html" title="[15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-14.4"></a>
+<div class=FaqTitle><h3>[14.4] What does it mean that &quot;friendship isn't inherited, transitive, or reciprocal&quot;?</h3></div>
+<p>Just because I grant you friendship access to me doesn't automatically
+grant your kids access to me, doesn't automatically grant your friends
+access to me, and doesn't automatically grant me access to you.
+<ul>
+<li>I don't necessarily trust the kids of my friends.  The privileges of
+friendship aren't inherited.  Derived classes of a friend aren't necessarily
+friends.  If <tt>class</tt> <tt>Fred</tt> declares that <tt>class</tt> <tt>Base</tt> is a <tt>friend</tt>,
+classes derived from <tt>Base</tt> don't have any automatic special access rights to
+<tt>Fred</tt> objects.</li>
+<li>I don't necessarily trust the friends of my friends.  The privileges
+of friendship aren't transitive.  A friend of a friend isn't necessarily a
+friend.  If <tt>class</tt> <tt>Fred</tt> declares <tt>class</tt> <tt>Wilma</tt> as a friend, and <tt>class</tt>
+<tt>Wilma</tt> declares <tt>class</tt> <tt>Betty</tt> as a friend, <tt>class</tt> <tt>Betty</tt> doesn't
+necessarily have any special access rights to <tt>Fred</tt> objects.</li>
+<li>You don't necessarily trust me simply because I declare you my
+friend.  The privileges of friendship aren't reciprocal.  If class <tt>Fred</tt>
+declares that class <tt>Wilma</tt> is a friend, <tt>Wilma</tt> objects have special access
+to <tt>Fred</tt> objects but <tt>Fred</tt> objects do not automatically have special access
+to <tt>Wilma</tt> objects.</li>
+</ul>
+<p><small>[&nbsp;<a href="#top" title="Top of section [14] Friends">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [14] Friends">Bottom</a> |&nbsp;<a href="operator-overloading.html" title="[13] Operator overloading">Previous&nbsp;section</a> |&nbsp;<a href="input-output.html" title="[15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-14.5"></a>
+<div class=FaqTitle><h3>[14.5] Should my class declare a member function or a <tt>friend</tt> function?</h3></div>
+<p>Use a member when you can, and a <tt>friend</tt> when you have to.
+<p>Sometimes friends are syntactically better (e.g., in <tt>class</tt> <tt>Fred</tt>, friend
+functions allow the <tt>Fred</tt> parameter to be second, while members require it to
+be first).  Another good use of <tt>friend</tt> functions are the binary infix
+arithmetic operators.  E.g., <nobr><tt>aComplex + aComplex</tt></nobr> should be defined as a
+friend rather than a member if you want to allow <nobr><tt>aFloat + aComplex</tt></nobr> as
+well (member functions don't allow promotion of the left hand argument, since
+that would change the class of the object that is the recipient of the member
+function invocation).
+<p>In other cases, choose a member function over a <tt>friend</tt> function.
+<p><small>[&nbsp;<a href="#top" title="Top of section [14] Friends">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [14] Friends">Bottom</a> |&nbsp;<a href="operator-overloading.html" title="[13] Operator overloading">Previous&nbsp;section</a> |&nbsp;<a href="input-output.html" title="[15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="bottom"></a>
+<a href="mailto:cline@parashift.com" title="cline@parashift.com"><img src="mbox.gif" height=26 width=89 alt="E-Mail">&nbsp;E-mail the author</a><br>
+[&nbsp;<a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>
+|&nbsp;<a href="index.html#table-of-contents" title="Table of contents">Table&nbsp;of&nbsp;contents</a>
+|&nbsp;<a href="subject-index.html" title="Subject index; 3706 links to 2361 topics">Subject&nbsp;index</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.1" title="[1.1] Author">About&nbsp;the&nbsp;author</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">&copy;</a>
+|&nbsp;<a href="on-line-availability.html#faq-2.2" title="[2.2] How can I get a copy of all the HTML files of C++ FAQ Lite so I can read them Off-Line?">Download&nbsp;your&nbsp;own&nbsp;copy</a>&nbsp;]<br>
+<small>Revised May 2, 2003</small>
+</body>
+</html>

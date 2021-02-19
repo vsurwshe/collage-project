@@ -1,0 +1,248 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"
+	"http://www.w3.org/TR/REC-html40/strict.dtd">
+<html>
+<head>
+<title>[26] Built-in / intrinsic / primitive data types &nbsp;Updated!&nbsp;, C++ FAQ Lite</title>
+<meta name="FILENAME" content="intrinsic-types.html">
+<meta name="ABSTRACT" content="[26] Built-in / intrinsic / primitive data types [Updated!], C++ FAQ Lite">
+<meta name="OWNER"    content="cline@parashift.com">
+<meta name="AUTHOR"   content="Marshall Cline, cline@parashift.com">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rev=made href="mailto:cline@parashift.com">
+<style type='text/css'>
+  <!--
+  body       { font-family: arial; color: black; background: white }
+  .CodeBlock { color: black; background-color: #dfdfdf; margin-left: 30px; margin-right: 30px; padding: 5pt }
+  .FaqTitle  { color: black; background-color: gold }
+  .Updated   { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #ffff00; border: solid #e0e000 1px; }
+  .New       { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #00ff00; border: solid #00d000 1px; }
+  ul         { margin-bottom: 1px; margin-top: 1px }
+  ol         { margin-bottom: 1px; margin-top: 1px }
+  li         { margin-bottom: 4px; margin-top: 4px }
+  a          { color: blue }
+  a:hover    { color: red }
+  -->
+</style>
+</head>
+<body>
+<h1><a name="top"></a>[26] Built-in / intrinsic / primitive data types <span class=Updated>&nbsp;Updated!&nbsp;</span><br>
+<small><small>(Part of <a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>, <a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">Copyright&nbsp;&copy; 1991-2003</a>, <a href="http://www.parashift.com/" title="www.parashift.com/" target='_blank'>Marshall Cline</a>, <a href="mailto:cline@parashift.com" title="cline@parashift.com"><tt>cline@parashift.com</tt></a>)</small></small></h1>
+<hr>
+<h3>FAQs in section [26]:</h3>
+<ul>
+<li><a href="intrinsic-types.html#faq-26.1" title="[26.1] Can sizeof(char) be 2 on some machines? For example, what about double-byte characters?">[26.1] Can <nobr><tt>sizeof(char)</tt></nobr> be 2 on some machines? For example, what about double-byte characters?</a></li>
+<li><a href="intrinsic-types.html#faq-26.2" title="[26.2] What are the units of sizeof?">[26.2] What are the units of <tt>sizeof</tt>?</a></li>
+<li><a href="intrinsic-types.html#faq-26.3" title="[26.3] Whoa, but what about machines or compilers that support multibyte characters. Are you saying that a &quot;character&quot; and a char might be different?!?">[26.3] Whoa, but what about machines or compilers that support multibyte characters. Are you saying that a &quot;character&quot; and a <tt>char</tt> might be different?!?</a></li>
+<li><a href="intrinsic-types.html#faq-26.4" title="[26.4] But, but, but what about machines where a char has more than 8 bits? Surely you're not saying a C++ byte might have more than 8 bits, are you?!?">[26.4] But, but, but what about machines where a <tt>char</tt> has more than 8 bits? Surely you're not saying a C++ byte might have more than 8 bits, are you?!?</a></li>
+<li><a href="intrinsic-types.html#faq-26.5" title="[26.5] Okay, I could imagine a machine with 9-bit bytes. But surely not 16-bit bytes or 32-bit bytes, right?">[26.5] Okay, I could imagine a machine with 9-bit bytes. But surely not 16-bit bytes or 32-bit bytes, right?</a></li>
+<li><a href="intrinsic-types.html#faq-26.6" title="[26.6] I'm sooooo confused. Would you please go over the rules about bytes, chars, and characters one more time?">[26.6] I'm sooooo confused. Would you please go over the rules about bytes, <tt>char</tt>s, and characters one more time?</a> <span class=Updated>&nbsp;Updated!&nbsp;</span></li>
+<li><a href="intrinsic-types.html#faq-26.7" title="[26.7] What is a &quot;POD type&quot;?">[26.7] What is a &quot;POD type&quot;?</a> <span class=Updated>&nbsp;Updated!&nbsp;</span></li>
+<li><a href="intrinsic-types.html#faq-26.8" title="[26.8] When initializing non-static data members of built-in / intrinsic / primitive types, should I use the &quot;initialization list&quot; or assignment?">[26.8] When initializing non-static data members of built-in / intrinsic / primitive types, should I use the &quot;initialization list&quot; or assignment?</a></li>
+<li><a href="intrinsic-types.html#faq-26.9" title="[26.9] When initializing static data members of built-in / intrinsic / primitive types, should I worry about the &quot;static initialization order fiasco&quot;?">[26.9] When initializing static data members of built-in / intrinsic / primitive types, should I worry about the &quot;<tt>static</tt> initialization order fiasco&quot;?</a></li>
+<li><a href="intrinsic-types.html#faq-26.10" title="[26.10] Can I define an operator overload that works with built-in / intrinsic / primitive types?">[26.10] Can I define an operator overload that works with built-in / intrinsic / primitive types?</a></li>
+<li><a href="intrinsic-types.html#faq-26.11" title="[26.11] When I delete an array of some built-in / intrinsic / primitive type, why can't I just say delete a instead of delete[] a?">[26.11] When I <tt>delete</tt> an array of some built-in / intrinsic / primitive type, why can't I just say <nobr><tt>delete a</tt></nobr> instead of <nobr><tt>delete[] a</tt></nobr>?</a></li>
+<li><a href="intrinsic-types.html#faq-26.12" title="[26.12] How can I tell if an integer is a power of two without looping?">[26.12] How can I tell if an integer is a power of two without looping?</a></li>
+</ul>
+<p><hr>
+<p><a name="faq-26.1"></a>
+<div class=FaqTitle><h3>[26.1] Can <nobr><tt>sizeof(char)</tt></nobr> be 2 on some machines? For example, what about double-byte characters?</h3></div>
+<p>No, <nobr><tt>sizeof(char)</tt></nobr> is always 1.  Always.  It is never 2.  Never, never, never.
+<p>Even if you think of a &quot;character&quot; as a multi-byte thingy, <tt>char</tt> is not.
+<nobr><tt>sizeof(char)</tt></nobr> is always exactly 1.  No exceptions, ever.
+<p>Look, I know this is going to hurt your head, so please, <em>please</em> just
+read the next few FAQs in sequence and hopefully the pain will go away by
+sometime next week.
+<p><small>[&nbsp;<a href="#top" title="Top of section [26] Built-in / intrinsic / primitive data types">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [26] Built-in / intrinsic / primitive data types">Bottom</a> |&nbsp;<a href="multiple-inheritance.html" title="[25] Inheritance -- multiple and virtual inheritance">Previous&nbsp;section</a> |&nbsp;<a href="coding-standards.html" title="[27] Coding standards">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-26.2"></a>
+<div class=FaqTitle><h3>[26.2] What are the units of <tt>sizeof</tt>?</h3></div>
+<p>Bytes.
+<p>For example, if <nobr><tt>sizeof(Fred)</tt></nobr> is 8, the distance between two <tt>Fred</tt> objects
+in an array of <tt>Fred</tt>s will be exactly 8 <em>bytes</em>.
+<p>As another example, this means <a href="intrinsic-types.html#faq-26.1" title="[26.1] Can sizeof(char) be 2 on some machines? For example, what about double-byte characters?"><nobr><tt>sizeof(char)</tt></nobr> is one<!--rawtext:[26.1]:rawtext--></a>
+<em>byte</em>.  That's right: one byte.  One, one, one, exactly one byte,
+always one byte.  Never two bytes.  No exceptions.
+<p><small>[&nbsp;<a href="#top" title="Top of section [26] Built-in / intrinsic / primitive data types">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [26] Built-in / intrinsic / primitive data types">Bottom</a> |&nbsp;<a href="multiple-inheritance.html" title="[25] Inheritance -- multiple and virtual inheritance">Previous&nbsp;section</a> |&nbsp;<a href="coding-standards.html" title="[27] Coding standards">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-26.3"></a>
+<div class=FaqTitle><h3>[26.3] Whoa, but what about machines or compilers that support multibyte characters. Are you saying that a &quot;character&quot; and a <tt>char</tt> might be different?!?</h3></div>
+<p>Yes that's right: the thing commonly referred to as a &quot;character&quot; might be
+different from the thing C++ calls a <tt>char</tt>.
+<p>I'm really sorry if that hurts, but believe me, it's better to get all the
+pain over with at once.  Take a deep breath and repeat after me: &quot;character
+and <tt>char</tt> might be different.&quot; There, doesn't that feel better?  No?  Well
+keep reading &#151; it gets worse.
+<p><small>[&nbsp;<a href="#top" title="Top of section [26] Built-in / intrinsic / primitive data types">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [26] Built-in / intrinsic / primitive data types">Bottom</a> |&nbsp;<a href="multiple-inheritance.html" title="[25] Inheritance -- multiple and virtual inheritance">Previous&nbsp;section</a> |&nbsp;<a href="coding-standards.html" title="[27] Coding standards">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-26.4"></a>
+<div class=FaqTitle><h3>[26.4] But, but, but what about machines where a <tt>char</tt> has more than 8 bits? Surely you're not saying a C++ byte might have more than 8 bits, are you?!?</h3></div>
+<p>Yep, that's right: a C++ byte might have more than 8 bits.
+<p>The C++ language guarantees a byte must always have <em>at least</em> 8 bits.
+But there are implementations of C++ that have more than 8 bits per byte.
+<p><small>[&nbsp;<a href="#top" title="Top of section [26] Built-in / intrinsic / primitive data types">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [26] Built-in / intrinsic / primitive data types">Bottom</a> |&nbsp;<a href="multiple-inheritance.html" title="[25] Inheritance -- multiple and virtual inheritance">Previous&nbsp;section</a> |&nbsp;<a href="coding-standards.html" title="[27] Coding standards">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-26.5"></a>
+<div class=FaqTitle><h3>[26.5] Okay, I could imagine a machine with 9-bit bytes. But surely not 16-bit bytes or 32-bit bytes, right?</h3></div>
+<p>Wrong.
+<p>I have heard of one implementation of C++ that has 64-bit &quot;bytes.&quot; You read
+that right: a byte on that implementation has 64 bits.  64 bits per byte.  64.
+As in 8 times 8.
+<p>And yes, you're right, combining with <a href="intrinsic-types.html#faq-26.1" title="[26.1] Can sizeof(char) be 2 on some machines? For example, what about double-byte characters?">the above<!--rawtext:[26.1]:rawtext--></a> would
+mean that a <tt>char</tt> on that implementation would have 64 bits.
+<p><small>[&nbsp;<a href="#top" title="Top of section [26] Built-in / intrinsic / primitive data types">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [26] Built-in / intrinsic / primitive data types">Bottom</a> |&nbsp;<a href="multiple-inheritance.html" title="[25] Inheritance -- multiple and virtual inheritance">Previous&nbsp;section</a> |&nbsp;<a href="coding-standards.html" title="[27] Coding standards">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-26.6"></a>
+<div class=FaqTitle><h3>[26.6] I'm sooooo confused. Would you please go over the rules about bytes, <tt>char</tt>s, and characters one more time? <span class=Updated>&nbsp;Updated!&nbsp;</span></h3></div>
+<small><em>[Recently reworded the fifth bullet (so it doesn't use &quot;effect&quot;) thanks to <a href="mailto:mal.morrow@intec.co.za" title="mal.morrow@intec.co.za">Mal Morrow</a> and <a href="mailto:chuck.pahlmeyer@computer.org" title="chuck.pahlmeyer@computer.org">Chuck Pahlmeyer</a> (in 4/03).  <a href="intrinsic-types.html#faq-26.7" title="[26.7] What is a &quot;POD type&quot;?">Click here to go to the next FAQ in the &quot;chain&quot; of recent changes<!--rawtext:[26.7]:rawtext--></a>.]</em></small>
+<p>Here are the rules:
+<ul>
+<li>The C++ language gives the programmer the impression that memory is
+laid out as a sequence of something C++ calls &quot;bytes.&quot;</li>
+<li>Each of these things that the C++ language calls a byte has at
+least 8 bits, but might have more than 8 bits.</li>
+<li>The C++ language guarantees that a <nobr><tt>char*</tt></nobr> (<tt>char</tt> pointers) can
+address individual bytes.</li>
+<li>The C++ language guarantees there are no bits <em>between</em> two
+bytes.  This means every bit in memory is part of a byte.  If you grind your
+way through memory via a <nobr><tt>char*</tt></nobr>, you will be able to see every
+bit.</li>
+<li>The C++ language guarantees there are no bits that are part of two
+distinct bytes.  This means a change to one byte will never cause a change
+to a different byte.</li>
+<li>The C++ language gives you a way to find out how many bits are in a
+byte in your particular implementation: include the header <nobr><tt>&lt;climits&gt;</tt></nobr>,
+then the actual number of bits per byte will be given by the <tt>CHAR_BIT</tt>
+macro.</li>
+</ul>
+<p>Let's work an example to illustrate these rules.  The PDP-10 has 36-bit words
+with no hardware facility to address anything within one of those words.  That
+means a pointer can point only at things on a 36-bit boundary: it is not
+possible for a pointer to point 8 bits to the right of where some other
+pointer points.
+<p>One way to abide by all the above rules is for a PDP-10 C++ compiler to define
+a &quot;byte&quot; as 36 bits.  Another valid approach would be to define a &quot;byte&quot; as 9
+bits, and simulate a <nobr><tt>char*</tt></nobr> by two words of memory: the first could point to
+the 36-bit word, the second could be a bit-offset within that word.  In that
+case, the C++ compiler would need to add extra instructions when compiling
+code using <nobr><tt>char*</tt></nobr> pointers.  For example, the code generated for <nobr><tt>*p =
+'x'</tt></nobr> might read the word into a register, then use bit-masks and bit-shifts
+to change the appopriate 9-bit byte within that word.  An <nobr><tt>int*</tt></nobr> could
+still be implemented as a single hardware pointer, since C++ allows
+<nobr><tt>sizeof(char*) != sizeof(int*)</tt></nobr>.
+<p>Using the same logic, it would also be possible to define a PDP-10 C++ &quot;byte&quot;
+as 12-bits or 18-bits.  However the above technique wouldn't allow us to
+define a PDP-10 C++ &quot;byte&quot; as 8-bits, since 8*4 is 32, meaning every 4th byte
+we would <em>skip</em> 4 bits.  A more complicated approach could be used for
+those 4 bits, e.g., by packing nine bytes (of 8-bits each) into two adjacent
+36-bit words.  The important point here is that <nobr><tt>memcpy()</tt></nobr> has to be
+able to see every bit of memory: there can't be any bits between two adjacent
+bytes.
+<p>Note: one of the popular non-C/C++ approaches on the PDP-10 was to pack 5
+bytes (of 7-bits each) into each 36-bit word.  However this won't work in C or
+C++ since 5*7 = 35, meaning using <nobr><tt>char*</tt></nobr>s to walk through memory would &quot;skip&quot;
+a bit every fifth byte (and also because C++ requires bytes to have at least 8
+bits).
+<p><small>[&nbsp;<a href="#top" title="Top of section [26] Built-in / intrinsic / primitive data types">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [26] Built-in / intrinsic / primitive data types">Bottom</a> |&nbsp;<a href="multiple-inheritance.html" title="[25] Inheritance -- multiple and virtual inheritance">Previous&nbsp;section</a> |&nbsp;<a href="coding-standards.html" title="[27] Coding standards">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-26.7"></a>
+<div class=FaqTitle><h3>[26.7] What is a &quot;POD type&quot;? <span class=Updated>&nbsp;Updated!&nbsp;</span></h3></div>
+<small><em>[Recently fixed a misspelling (equialent <big>&#8594;</big> equivalent) thanks to <a href="mailto:mal.morrow@intec.co.za" title="mal.morrow@intec.co.za">Mal Morrow</a> (in 4/03).  <a href="containers-and-templates.html#faq-34.3" title="[34.3] Is the storage for a std::vector&lt;T&gt; guaranteed to be contiguous?">Click here to go to the next FAQ in the &quot;chain&quot; of recent changes<!--rawtext:[34.3]:rawtext--></a>.]</em></small>
+<p>A type that consists of nothing but <b>P</b>lain <b>O</b>ld
+<b>D</b>ata.
+<p>A POD type is a C++ type that has an equivalent in C, and that uses the same
+rules as C uses for initialization, copying, layout, and addressing.
+<p>As an example, the C declaration <nobr><tt>struct Fred x;</tt></nobr> does not initialize the
+members of the <tt>Fred</tt> variable <tt>x</tt>.  To make this same behavior happen in C++,
+<tt>Fred</tt> would need to <em>not</em> have any constructors.  Similarly to make the
+C++ version of copying the same as the C version, the C++ <tt>Fred</tt> must not have
+overloaded the assignment operator.  To make sure the other rules match, the
+C++ version must not have virtual functions, base classes, non-static members
+that are <tt>private</tt> or <tt>protected</tt>, or a destructor.  It can, however, have
+static data members, static member functions, and non-static non-virtual
+member functions.
+<p>The actual definition of a POD type is recursive and gets a little gnarly.
+Here's a <em>slightly</em> simplified definition of POD: a POD type's
+non-static data members must be <tt>public</tt> and can be of any of these types:
+<tt>bool</tt>, any numeric type including the various <tt>char</tt> variants, any
+enumeration type, any data-pointer type (that is, any type convertible to
+<nobr><tt>void*</tt></nobr>), any pointer-to-function type, or any POD type, including arrays of
+any of these.  Note: data-pointers and pointers-to-function are okay, but
+<a href="pointers-to-members.html" title="[33] Pointers to member functions">pointers-to-member<!--rawtext:[33]:rawtext--></a> are not.  Also note that
+references are not allowed.  In addition, a POD type can't have constructors,
+virtual functions, base classes, or an overloaded assignment operator.
+<p><small>[&nbsp;<a href="#top" title="Top of section [26] Built-in / intrinsic / primitive data types">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [26] Built-in / intrinsic / primitive data types">Bottom</a> |&nbsp;<a href="multiple-inheritance.html" title="[25] Inheritance -- multiple and virtual inheritance">Previous&nbsp;section</a> |&nbsp;<a href="coding-standards.html" title="[27] Coding standards">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-26.8"></a>
+<div class=FaqTitle><h3>[26.8] When initializing non-static data members of built-in / intrinsic / primitive types, should I use the &quot;initialization list&quot; or assignment?</h3></div>
+<p>For symmetry, it is usually best to initialize all non-static data members in
+the constructor's &quot;initialization list,&quot; even those that are of a built-in /
+intrinsic / primitive type.  The FAQ <a href="ctors.html#faq-10.6" title="[10.6] Should my constructors use &quot;initialization lists&quot; or &quot;assignment&quot;?">shows you why and
+how<!--rawtext:[10.6]:rawtext--></a>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [26] Built-in / intrinsic / primitive data types">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [26] Built-in / intrinsic / primitive data types">Bottom</a> |&nbsp;<a href="multiple-inheritance.html" title="[25] Inheritance -- multiple and virtual inheritance">Previous&nbsp;section</a> |&nbsp;<a href="coding-standards.html" title="[27] Coding standards">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-26.9"></a>
+<div class=FaqTitle><h3>[26.9] When initializing static data members of built-in / intrinsic / primitive types, should I worry about the &quot;<tt>static</tt> initialization order fiasco&quot;?</h3></div>
+<p>Yes, if you initialize your built-in / intrinsic / primitive variable by an
+expression that the compiler doesn't evaluate solely at compile-time.  The FAQ
+<a href="ctors.html#faq-10.15" title="[10.15] Do I need to worry about the &quot;static initialization order fiasco&quot; for variables of built-in/intrinsic types?">provides several solutions<!--rawtext:[10.15]:rawtext--></a> for
+this (subtle!) problem.
+<p><small>[&nbsp;<a href="#top" title="Top of section [26] Built-in / intrinsic / primitive data types">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [26] Built-in / intrinsic / primitive data types">Bottom</a> |&nbsp;<a href="multiple-inheritance.html" title="[25] Inheritance -- multiple and virtual inheritance">Previous&nbsp;section</a> |&nbsp;<a href="coding-standards.html" title="[27] Coding standards">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-26.10"></a>
+<div class=FaqTitle><h3>[26.10] Can I define an operator overload that works with built-in / intrinsic / primitive types?</h3></div>
+<p>No, the C++ language requires that your operator overloads take at least one
+operand of a &quot;class type.&quot; The C++ language will not let you define an
+operator all of whose operands / parameters are of primitive types.
+<p>For example, <a href="operator-overloading.html#faq-13.6" title="[13.6] Can I overload operator== so it lets me compare two char[] using a string comparison?">you can't define an
+<nobr><tt>operator==</tt></nobr> that takes two <nobr><tt>char*</tt></nobr>s and uses string comparison<!--rawtext:[13.6]:rawtext--></a>.  That's
+good news because if <tt>s1</tt> and <tt>s2</tt> are of type <nobr><tt>char*</tt></nobr>, the
+expression <nobr><tt>s1 == s2</tt></nobr> already has a well defined meaning: it compares
+the two <em>pointers</em>, not the two strings pointed to by those pointers.
+<a href="exceptions.html#faq-17.5" title="[17.5] How do I change the string-length of an array of char to prevent memory leaks even if/when someone throws an exception?">You shouldn't use pointers anyway.  Use
+<nobr><tt>std::string</tt></nobr> instead of <nobr><tt>char*</tt></nobr>.<!--rawtext:[17.5]:rawtext--></a>
+<p>If C++ let you redefine the meaning of operators on built-in types, you
+wouldn't ever know what <nobr><tt>1 + 1</tt></nobr> is: it would depend on which headers got
+included and whether one of those headers redefined addition to mean, for
+example, subtraction.
+<p><small>[&nbsp;<a href="#top" title="Top of section [26] Built-in / intrinsic / primitive data types">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [26] Built-in / intrinsic / primitive data types">Bottom</a> |&nbsp;<a href="multiple-inheritance.html" title="[25] Inheritance -- multiple and virtual inheritance">Previous&nbsp;section</a> |&nbsp;<a href="coding-standards.html" title="[27] Coding standards">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-26.11"></a>
+<div class=FaqTitle><h3>[26.11] When I <tt>delete</tt> an array of some built-in / intrinsic / primitive type, why can't I just say <nobr><tt>delete a</tt></nobr> instead of <nobr><tt>delete[] a</tt></nobr>?</h3></div>
+<p>Because you can't.
+<p>Look, <em>please</em> don't write me an email asking me why C++ is what it is.
+It just is.  If you really want a rationale, buy Bjarne Stroustrup's excellent
+book, &quot;Design and Evolution of C++&quot; (Addison-Wesley publishers).  But if your
+real goal is to write some code, don't waste too much time figuring out
+<em>why</em> C++ has these rules, and instead just abide by its rules.
+<p>So here's the rule: if <tt>a</tt> points to an array of thingies that was
+allocated via <nobr><tt>new T[n]</tt></nobr>, then <a href="freestore-mgmt.html#faq-16.12" title="[16.12] Can I drop the [] when deleteing array of some built-in type (char, int, etc)?">you must,
+must, <em>must</em><!--rawtext:[16.12]:rawtext--></a> <tt>delete</tt> it via <nobr><tt>delete[] a</tt></nobr>.  Even if the
+elements in the array are built-in types.  Even if they're of type <tt>char</tt> or
+<tt>int</tt> or <nobr><tt>void*</tt></nobr>.  Even if you don't understand why.
+<p><small>[&nbsp;<a href="#top" title="Top of section [26] Built-in / intrinsic / primitive data types">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [26] Built-in / intrinsic / primitive data types">Bottom</a> |&nbsp;<a href="multiple-inheritance.html" title="[25] Inheritance -- multiple and virtual inheritance">Previous&nbsp;section</a> |&nbsp;<a href="coding-standards.html" title="[27] Coding standards">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-26.12"></a>
+<div class=FaqTitle><h3>[26.12] How can I tell if an integer is a power of two without looping?</h3></div>
+<p><div class=CodeBlock>
+<tt>
+&nbsp;inline&nbsp;bool&nbsp;isPowerOf2(int&nbsp;i)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;return&nbsp;i&nbsp;&gt;&nbsp;0&nbsp;&amp;&amp;&nbsp;(i&nbsp;&amp;&nbsp;(i&nbsp;-&nbsp;1))&nbsp;==&nbsp;0;<br>
+&nbsp;}
+</tt>
+</div>
+<p><small>[&nbsp;<a href="#top" title="Top of section [26] Built-in / intrinsic / primitive data types">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [26] Built-in / intrinsic / primitive data types">Bottom</a> |&nbsp;<a href="multiple-inheritance.html" title="[25] Inheritance -- multiple and virtual inheritance">Previous&nbsp;section</a> |&nbsp;<a href="coding-standards.html" title="[27] Coding standards">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="bottom"></a>
+<a href="mailto:cline@parashift.com" title="cline@parashift.com"><img src="mbox.gif" height=26 width=89 alt="E-Mail">&nbsp;E-mail the author</a><br>
+[&nbsp;<a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>
+|&nbsp;<a href="index.html#table-of-contents" title="Table of contents">Table&nbsp;of&nbsp;contents</a>
+|&nbsp;<a href="subject-index.html" title="Subject index; 3706 links to 2361 topics">Subject&nbsp;index</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.1" title="[1.1] Author">About&nbsp;the&nbsp;author</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">&copy;</a>
+|&nbsp;<a href="on-line-availability.html#faq-2.2" title="[2.2] How can I get a copy of all the HTML files of C++ FAQ Lite so I can read them Off-Line?">Download&nbsp;your&nbsp;own&nbsp;copy</a>&nbsp;]<br>
+<small>Revised May 2, 2003</small>
+</body>
+</html>

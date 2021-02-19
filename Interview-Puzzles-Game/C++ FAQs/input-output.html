@@ -1,0 +1,702 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"
+	"http://www.w3.org/TR/REC-html40/strict.dtd">
+<html>
+<head>
+<title>[15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;, C++ FAQ Lite</title>
+<meta name="FILENAME" content="input-output.html">
+<meta name="ABSTRACT" content="[15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;, C++ FAQ Lite">
+<meta name="OWNER"    content="cline@parashift.com">
+<meta name="AUTHOR"   content="Marshall Cline, cline@parashift.com">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rev=made href="mailto:cline@parashift.com">
+<style type='text/css'>
+  <!--
+  body       { font-family: arial; color: black; background: white }
+  .CodeBlock { color: black; background-color: #dfdfdf; margin-left: 30px; margin-right: 30px; padding: 5pt }
+  .FaqTitle  { color: black; background-color: gold }
+  .Updated   { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #ffff00; border: solid #e0e000 1px; }
+  .New       { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #00ff00; border: solid #00d000 1px; }
+  ul         { margin-bottom: 1px; margin-top: 1px }
+  ol         { margin-bottom: 1px; margin-top: 1px }
+  li         { margin-bottom: 4px; margin-top: 4px }
+  a          { color: blue }
+  a:hover    { color: red }
+  -->
+</style>
+</head>
+<body>
+<h1><a name="top"></a>[15] Input/output via <nobr><tt>&lt;iostream&gt;</tt></nobr> and <nobr><tt>&lt;cstdio&gt;</tt></nobr><br>
+<small><small>(Part of <a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>, <a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">Copyright&nbsp;&copy; 1991-2003</a>, <a href="http://www.parashift.com/" title="www.parashift.com/" target='_blank'>Marshall Cline</a>, <a href="mailto:cline@parashift.com" title="cline@parashift.com"><tt>cline@parashift.com</tt></a>)</small></small></h1>
+<hr>
+<h3>FAQs in section [15]:</h3>
+<ul>
+<li><a href="input-output.html#faq-15.1" title="[15.1] Why should I use &lt;iostream&gt; instead of the traditional &lt;cstdio&gt;?">[15.1] Why should I use <nobr><tt>&lt;iostream&gt;</tt></nobr> instead of the traditional <nobr><tt>&lt;cstdio&gt;</tt></nobr>?</a></li>
+<li><a href="input-output.html#faq-15.2" title="[15.2] Why does my program go into an infinite loop when someone enters an invalid input character?">[15.2] Why does my program go into an infinite loop when someone enters an invalid input character?</a></li>
+<li><a href="input-output.html#faq-15.3" title="[15.3] How can I get std::cin to skip invalid input characters?">[15.3] How can I get <nobr><tt>std::cin</tt></nobr> to skip invalid input characters?</a></li>
+<li><a href="input-output.html#faq-15.4" title="[15.4] How does that funky while (std::cin &gt;&gt; foo) syntax work?">[15.4] How does that funky <nobr><tt>while (std::cin &gt;&gt; foo)</tt></nobr> syntax work?</a></li>
+<li><a href="input-output.html#faq-15.5" title="[15.5] Why does my input seem to process past the end of file?">[15.5] Why does my input seem to process past the end of file?</a></li>
+<li><a href="input-output.html#faq-15.6" title="[15.6] Why is my program ignoring my input request after the first iteration?">[15.6] Why is my program ignoring my input request after the first iteration?</a></li>
+<li><a href="input-output.html#faq-15.7" title="[15.7] Should I end my output lines with std::endl or '\n'?">[15.7] Should I end my output lines with <nobr><tt>std::endl</tt></nobr> or <nobr><tt>'\n'</tt></nobr>?</a></li>
+<li><a href="input-output.html#faq-15.8" title="[15.8] How can I provide printing for my class Fred?">[15.8] How can I provide printing for my <tt>class</tt> <tt>Fred</tt>?</a></li>
+<li><a href="input-output.html#faq-15.9" title="[15.9] But shouldn't I always use a printOn() method rather than a friend function?">[15.9] But shouldn't I always use a <nobr><tt>printOn()</tt></nobr> method rather than a <tt>friend</tt> function?</a></li>
+<li><a href="input-output.html#faq-15.10" title="[15.10] How can I provide input for my class Fred?">[15.10] How can I provide input for my <tt>class</tt> <tt>Fred</tt>?</a></li>
+<li><a href="input-output.html#faq-15.11" title="[15.11] How can I provide printing for an entire hierarchy of classes?">[15.11] How can I provide printing for an entire hierarchy of classes?</a></li>
+<li><a href="input-output.html#faq-15.12" title="[15.12] How can I open a stream in binary mode?">[15.12] How can I open a stream in binary mode?</a></li>
+<li><a href="input-output.html#faq-15.13" title="[15.13] How can I &quot;reopen&quot; std::cin and std::cout in binary mode?">[15.13] How can I &quot;reopen&quot; <nobr><tt>std::cin</tt></nobr> and <nobr><tt>std::cout</tt></nobr> in binary mode?</a></li>
+<li><a href="input-output.html#faq-15.14" title="[15.14] How can I write/read objects of my class to/from a data file?">[15.14] How can I write/read objects of my class to/from a data file?</a></li>
+<li><a href="input-output.html#faq-15.15" title="[15.15] How can I send objects of my class to another computer (e.g., via a socket, TCP/IP, FTP, email, a wireless link, etc.)?">[15.15] How can I send objects of my class to another computer (e.g., via a socket, TCP/IP, FTP, email, a wireless link, etc.)?</a></li>
+<li><a href="input-output.html#faq-15.16" title="[15.16] Why can't I open a file in a different directory such as &quot;..\test.dat&quot;?">[15.16] Why can't I open a file in a different directory such as <nobr><tt>&quot;..\test.dat&quot;</tt></nobr>?</a></li>
+<li><a href="input-output.html#faq-15.17" title="[15.17] How can I tell {if a key, which key} was pressed before the user presses the ENTER key?">[15.17] How can I tell {if a key, which key} was pressed before the user presses the ENTER key?</a></li>
+<li><a href="input-output.html#faq-15.18" title="[15.18] How can make it so keys pressed by users are not echoed on the screen?">[15.18] How can make it so keys pressed by users are not echoed on the screen?</a></li>
+<li><a href="input-output.html#faq-15.19" title="[15.19] How can I move the cursor around on the screen?">[15.19] How can I move the cursor around on the screen?</a></li>
+<li><a href="input-output.html#faq-15.20" title="[15.20] How can I clear the screen? Is there something like clrscr()?">[15.20] How can I clear the screen? Is there something like <nobr><tt>clrscr()</tt></nobr>?</a></li>
+<li><a href="input-output.html#faq-15.21" title="[15.21] How can I change the colors on the screen?">[15.21] How can I change the colors on the screen?</a></li>
+</ul>
+<p><hr>
+<p><a name="faq-15.1"></a>
+<div class=FaqTitle><h3>[15.1] Why should I use <nobr><tt>&lt;iostream&gt;</tt></nobr> instead of the traditional <nobr><tt>&lt;cstdio&gt;</tt></nobr>?</h3></div>
+<p>Increase type safety, reduce errors, allow extensibility, and provide
+inheritability.
+<p><nobr><tt>printf()</tt></nobr> is arguably not broken, and <nobr><tt>scanf()</tt></nobr> is perhaps livable despite
+being error prone, however both are limited with respect to what C++ I/O can
+do.  C++ I/O (using <nobr><tt>&lt;&lt;</tt></nobr> and <nobr><tt>&gt;&gt;</tt></nobr>) is, relative to C (using <nobr><tt>printf()</tt></nobr> and
+<nobr><tt>scanf()</tt></nobr>):
+<ul>
+<li><em>More type-safe:</em> With <nobr><tt>&lt;iostream&gt;</tt></nobr>, the type of object being
+I/O'd is known statically by the compiler.  In contrast, <nobr><tt>&lt;cstdio&gt;</tt></nobr> uses
+<nobr><tt>&quot;%&quot;</tt></nobr> fields to figure out the types dynamically.</li>
+<li><em>Less error prone:</em> With <nobr><tt>&lt;iostream&gt;</tt></nobr>, there are no
+redundant <nobr><tt>&quot;%&quot;</tt></nobr> tokens that have to be consistent with the actual objects
+being I/O'd.  Removing redundancy removes a class of errors.</li>
+<li><em>Extensible:</em> The C++ <nobr><tt>&lt;iostream&gt;</tt></nobr> mechanism allows new
+user-defined types to be I/O'd without breaking existing code.  Imagine the
+chaos if everyone was simultaneously adding new incompatible <nobr><tt>&quot;%&quot;</tt></nobr> fields
+to <nobr><tt>printf()</tt></nobr> and <nobr><tt>scanf()</tt></nobr>?!).</li>
+<li><em>Inheritable:</em> The C++ <nobr><tt>&lt;iostream&gt;</tt></nobr> mechanism is built from
+real classes such as <nobr><tt>std::ostream</tt></nobr> and <nobr><tt>std::istream</tt></nobr>.  Unlike <nobr><tt>&lt;cstdio&gt;</tt></nobr>'s
+<nobr><tt>FILE*</tt></nobr>, these are real classes and hence inheritable.  This means you
+can have other user-defined things that look and act like streams, yet that do
+whatever strange and wonderful things you want.  You automatically get to use
+the zillions of lines of I/O code written by users you don't even know, and
+they don't need to know about your &quot;extended stream&quot; class.</li>
+</ul>
+<p><small>[&nbsp;<a href="#top" title="Top of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Bottom</a> |&nbsp;<a href="friends.html" title="[14] Friends">Previous&nbsp;section</a> |&nbsp;<a href="freestore-mgmt.html" title="[16] Freestore management">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-15.2"></a>
+<div class=FaqTitle><h3>[15.2] Why does my program go into an infinite loop when someone enters an invalid input character?</h3></div>
+<p>For example, suppose you have the following code that reads integers from
+<nobr><tt>std::cin</tt></nobr>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#include&nbsp;&lt;iostream&gt;<br>
+&nbsp;<br>
+&nbsp;int&nbsp;main()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;Enter&nbsp;numbers&nbsp;separated&nbsp;by&nbsp;whitespace&nbsp;(use&nbsp;-1&nbsp;to&nbsp;quit):&nbsp;&quot;;<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;i&nbsp;=&nbsp;0;<br>
+&nbsp;&nbsp;&nbsp;while&nbsp;(i&nbsp;!=&nbsp;-1)&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;std::cin&nbsp;&gt;&gt;&nbsp;i;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;BAD&nbsp;FORM&nbsp;&#151;&nbsp;See&nbsp;comments&nbsp;below</em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;You&nbsp;entered&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;i&nbsp;&lt;&lt;&nbsp;'\n';<br>
+&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>The problem with this code is that it lacks any checking to see if someone
+entered an invalid input character.  In particular, if someone enters
+something that doesn't look like an integer (such as an 'x'), the stream <nobr><tt>std::cin</tt></nobr>
+goes into a &quot;failed state,&quot; and all subsequent input attempts return
+immediately without doing anything.  In other words, the program enters an
+infinite loop; if <tt>42</tt> was the last number that was successfully read,
+the program will print the message <nobr><tt>You entered 42</tt></nobr> over and over.
+<p>An easy way to check for invalid input is to move the input request from the
+body of the <tt>while</tt> loop into the control-expression of the <tt>while</tt> loop.
+E.g.,
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#include&nbsp;&lt;iostream&gt;<br>
+&nbsp;<br>
+&nbsp;int&nbsp;main()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;Enter&nbsp;a&nbsp;number,&nbsp;or&nbsp;-1&nbsp;to&nbsp;quit:&nbsp;&quot;;<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;i&nbsp;=&nbsp;0;<br>
+&nbsp;&nbsp;&nbsp;while&nbsp;(std::cin&nbsp;&gt;&gt;&nbsp;i)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;GOOD&nbsp;FORM</em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(i&nbsp;==&nbsp;-1)&nbsp;break;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;You&nbsp;entered&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;i&nbsp;&lt;&lt;&nbsp;'\n';<br>
+&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>This will cause the while loop to exit either when you hit end-of-file, or when
+you enter a bad integer, or when you enter <nobr><tt>-1</tt></nobr>.
+<p>(Naturally you can eliminate the <tt>break</tt> by changing the <tt>while</tt> loop
+expression from <nobr><tt>while&nbsp;(std::cin&nbsp;&gt;&gt;&nbsp;i)</tt></nobr> to
+<nobr><tt>while&nbsp;((std::cin&nbsp;&gt;&gt;&nbsp;i)&nbsp;&amp;&amp;&nbsp;(i&nbsp;!=&nbsp;-1))</tt></nobr>, but that's not
+really the point of this FAQ since this FAQ has to do with iostreams rather
+than generic structured programming guidelines.)
+<p><small>[&nbsp;<a href="#top" title="Top of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Bottom</a> |&nbsp;<a href="friends.html" title="[14] Friends">Previous&nbsp;section</a> |&nbsp;<a href="freestore-mgmt.html" title="[16] Freestore management">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-15.3"></a>
+<div class=FaqTitle><h3>[15.3] How can I get <nobr><tt>std::cin</tt></nobr> to skip invalid input characters?</h3></div>
+<p>Use <nobr><tt>std::cin.clear()</tt></nobr> and <nobr><tt>std::cin.ignore()</tt></nobr>.
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#include&nbsp;&lt;iostream&gt;<br>
+&nbsp;#include&nbsp;&lt;limits&gt;<br>
+&nbsp;<br>
+&nbsp;int&nbsp;main()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;age&nbsp;=&nbsp;0;<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;while&nbsp;((std::cout&nbsp;&lt;&lt;&nbsp;&quot;How&nbsp;old&nbsp;are&nbsp;you?&nbsp;&quot;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;&amp;&nbsp;!(std::cin&nbsp;&gt;&gt;&nbsp;age))&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;That's&nbsp;not&nbsp;a&nbsp;number;&nbsp;&quot;;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;std::cin.clear();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;std::cin.ignore(std::numeric_limits&lt;std::streamsize&gt;::max(),&nbsp;'\n');<br>
+&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;You&nbsp;are&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;age&nbsp;&lt;&lt;&nbsp;&quot;&nbsp;years&nbsp;old\n&quot;;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>Of course you can also print the error message when the input is out of range.
+For example, if you wanted the <tt>age</tt> to be between 1 and 200, you could
+change the <tt>while</tt> loop to:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;while&nbsp;((std::cout&nbsp;&lt;&lt;&nbsp;&quot;How&nbsp;old&nbsp;are&nbsp;you?&nbsp;&quot;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;&amp;&nbsp;(!(std::cin&nbsp;&gt;&gt;&nbsp;age)&nbsp;||&nbsp;age&nbsp;&lt;&nbsp;1&nbsp;||&nbsp;age&nbsp;&gt;&nbsp;200))&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;That's&nbsp;not&nbsp;a&nbsp;number&nbsp;between&nbsp;1&nbsp;and&nbsp;200;&nbsp;&quot;;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;std::cin.clear();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;std::cin.ignore(std::numeric_limits&lt;std::streamsize&gt;::max(),&nbsp;'\n');<br>
+&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt>
+</tt>
+</div>
+<p>Here's a sample run:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;How&nbsp;old&nbsp;are&nbsp;you?&nbsp;</tt><em>foo</em><tt><br>
+&nbsp;That's&nbsp;not&nbsp;a&nbsp;number&nbsp;between&nbsp;1&nbsp;and&nbsp;200;&nbsp;How&nbsp;old&nbsp;are&nbsp;you?&nbsp;</tt><em>bar</em><tt><br>
+&nbsp;That's&nbsp;not&nbsp;a&nbsp;number&nbsp;between&nbsp;1&nbsp;and&nbsp;200;&nbsp;How&nbsp;old&nbsp;are&nbsp;you?&nbsp;</tt><em>-3</em><tt><br>
+&nbsp;That's&nbsp;not&nbsp;a&nbsp;number&nbsp;between&nbsp;1&nbsp;and&nbsp;200;&nbsp;How&nbsp;old&nbsp;are&nbsp;you?&nbsp;</tt><em>0</em><tt><br>
+&nbsp;That's&nbsp;not&nbsp;a&nbsp;number&nbsp;between&nbsp;1&nbsp;and&nbsp;200;&nbsp;How&nbsp;old&nbsp;are&nbsp;you?&nbsp;</tt><em>201</em><tt><br>
+&nbsp;That's&nbsp;not&nbsp;a&nbsp;number&nbsp;between&nbsp;1&nbsp;and&nbsp;200;&nbsp;How&nbsp;old&nbsp;are&nbsp;you?&nbsp;</tt><em>2</em><tt><br>
+&nbsp;You&nbsp;are&nbsp;2&nbsp;years&nbsp;old
+</tt>
+</div>
+<p><small>[&nbsp;<a href="#top" title="Top of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Bottom</a> |&nbsp;<a href="friends.html" title="[14] Friends">Previous&nbsp;section</a> |&nbsp;<a href="freestore-mgmt.html" title="[16] Freestore management">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-15.4"></a>
+<div class=FaqTitle><h3>[15.4] How does that funky <nobr><tt>while (std::cin &gt;&gt; foo)</tt></nobr> syntax work?</h3></div>
+<p>See the <a href="input-output.html#faq-15.2" title="[15.2] Why does my program go into an infinite loop when someone enters an invalid input character?">previous FAQ<!--rawtext:[15.2]:rawtext--></a> for an example of the
+&quot;funky <nobr><tt>while (std::cin &gt;&gt; foo)</tt></nobr> syntax.&quot;
+<p>The expression <nobr><tt>(std::cin &gt;&gt; foo)</tt></nobr> calls the appropriate <nobr><tt>operator&gt;&gt;</tt></nobr>
+(for example, it calls the <nobr><tt>operator&gt;&gt;</tt></nobr> that takes an <nobr><tt>std::istream</tt></nobr> on
+the left and, if <tt>foo</tt> is of type <tt>int</tt>, an <nobr><tt>int&amp;</tt></nobr> on the right).  The
+<nobr><tt>std::istream</tt></nobr> <nobr><tt>operator&gt;&gt;</tt></nobr> functions return their left argument by
+convention, which in this case means it will return <nobr><tt>std::cin</tt></nobr>.  Next the compiler
+notices that the returned <nobr><tt>std::istream</tt></nobr> is in a boolean context, so it
+converts that <nobr><tt>std::istream</tt></nobr> into a boolean.
+<p>To convert an <nobr><tt>std::istream</tt></nobr> into a boolean, the compiler calls a member
+function called <nobr><tt>std::istream::operator void*()</tt></nobr>.  This returns a
+<nobr><tt>void*</tt></nobr> pointer, which is in turn converted to a boolean (<tt>NULL</tt>
+becomes <tt>false</tt>, any other pointer becomes <tt>true</tt>).  So in this
+case the compiler generates a call to <nobr><tt>std::cin.operator void*()</tt></nobr>, just as if
+you had casted it explicitly such as <nobr><tt>(void*) std::cin</tt></nobr>.
+<p>The <nobr><tt>operator void*()</tt></nobr> cast operator returns some non-<tt>NULL</tt>
+pointer if the stream is in a good state, or <tt>NULL</tt> if it's in a failed
+state.  For example, if you read one too many times (e.g., if you're already at
+end-of-file), or if the actual info on the input stream isn't valid for the
+type of <tt>foo</tt> (e.g., if <tt>foo</tt> is an <tt>int</tt> and the data is an 'x'
+character), the stream will go into a failed state and the cast operator will
+return <tt>NULL</tt>.
+<p>The reason <nobr><tt>operator&gt;&gt;</tt></nobr> doesn't simply return a <tt>bool</tt> (or <nobr><tt>void*</tt></nobr>) indicating
+whether it succeeded or failed is to support the &quot;cascading&quot; syntax:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;&nbsp;&nbsp;std::cin&nbsp;&gt;&gt;&nbsp;foo&nbsp;&gt;&gt;&nbsp;bar;
+</tt>
+</div>
+<p>The <nobr><tt>operator&gt;&gt;</tt></nobr> is left-associative, which means the above is parsed as:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;&nbsp;&nbsp;(std::cin&nbsp;&gt;&gt;&nbsp;foo)&nbsp;&gt;&gt;&nbsp;bar;
+</tt>
+</div>
+<p>In other words, if we replace <nobr><tt>operator&gt;&gt;</tt></nobr> with a normal function name such as
+<nobr><tt>readFrom()</tt></nobr>, this becomes the expression:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;&nbsp;&nbsp;readFrom(&nbsp;readFrom(std::cin,&nbsp;foo),&nbsp;bar);
+</tt>
+</div>
+<p>As always, we begin evaluating at the innermost expression.  Because of the
+left-associativity of <nobr><tt>operator&gt;&gt;</tt></nobr>, this happens to be the left-most
+expression, <nobr><tt>std::cin &gt;&gt; foo</tt></nobr>.  This expression returns <nobr><tt>std::cin</tt></nobr> (more precisely,
+it returns a reference to its left-hand argument) to the next expression.  The
+next expression also returns (a reference to) <nobr><tt>std::cin</tt></nobr>, but this second reference
+is ignored since it's the outermost expression in this &quot;expression statement.&quot;
+<p><small>[&nbsp;<a href="#top" title="Top of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Bottom</a> |&nbsp;<a href="friends.html" title="[14] Friends">Previous&nbsp;section</a> |&nbsp;<a href="freestore-mgmt.html" title="[16] Freestore management">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-15.5"></a>
+<div class=FaqTitle><h3>[15.5] Why does my input seem to process past the end of file?</h3></div>
+<p>Because the eof state may not get set until after a read is attempted past the
+end of file.  That is, reading the last byte from a file might not set the eof
+state.  E.g., suppose the input stream is mapped to a keyboard &#151; in that case
+it's not even theoretically possible for the C++ library to predict whether or
+not the character that the user just typed will be the last character.
+<p>For example, the following code might have an off-by-one error with the count
+<tt>i</tt>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;int&nbsp;i&nbsp;=&nbsp;0;<br>
+&nbsp;while&nbsp;(!&nbsp;std::cin.eof())&nbsp;{&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;WRONG!&nbsp;(not&nbsp;reliable)</em><tt><br>
+&nbsp;&nbsp;&nbsp;std::cin&nbsp;&gt;&gt;&nbsp;x;<br>
+&nbsp;&nbsp;&nbsp;++i;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Work&nbsp;with&nbsp;<tt>x</tt>&nbsp;...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>What you really need is:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;int&nbsp;i&nbsp;=&nbsp;0;<br>
+&nbsp;while&nbsp;(std::cin&nbsp;&gt;&gt;&nbsp;x)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;RIGHT!&nbsp;(reliable)</em><tt><br>
+&nbsp;&nbsp;&nbsp;++i;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Work&nbsp;with&nbsp;<tt>x</tt>&nbsp;...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p><small>[&nbsp;<a href="#top" title="Top of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Bottom</a> |&nbsp;<a href="friends.html" title="[14] Friends">Previous&nbsp;section</a> |&nbsp;<a href="freestore-mgmt.html" title="[16] Freestore management">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-15.6"></a>
+<div class=FaqTitle><h3>[15.6] Why is my program ignoring my input request after the first iteration?</h3></div>
+<p>Because the numerical extractor leaves non-digits behind in the input buffer.
+<p>If your code looks like this:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;char&nbsp;name[1000];<br>
+&nbsp;int&nbsp;age;<br>
+&nbsp;<br>
+&nbsp;for&nbsp;(;;)&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;Name:&nbsp;&quot;;<br>
+&nbsp;&nbsp;&nbsp;std::cin&nbsp;&gt;&gt;&nbsp;name;<br>
+&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;Age:&nbsp;&quot;;<br>
+&nbsp;&nbsp;&nbsp;std::cin&nbsp;&gt;&gt;&nbsp;age;<br>
+&nbsp;}
+</tt>
+</div>
+<p>What you really want is:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;for&nbsp;(;;)&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;Name:&nbsp;&quot;;<br>
+&nbsp;&nbsp;&nbsp;std::cin&nbsp;&gt;&gt;&nbsp;name;<br>
+&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;Age:&nbsp;&quot;;<br>
+&nbsp;&nbsp;&nbsp;std::cin&nbsp;&gt;&gt;&nbsp;age;<br>
+&nbsp;&nbsp;&nbsp;std::cin.ignore(std::numeric_limits&lt;std::streamsize&gt;::max(),&nbsp;'\n');<br>
+&nbsp;}
+</tt>
+</div>
+<p>Of course you might want to change the <nobr><tt>for (;;)</tt></nobr> statement to <nobr><tt>while
+(std::cin)</tt></nobr>, but don't confuse that with skipping the non-numeric
+characters at the end of the loop via the line: <nobr><tt>std::cin.ignore(</tt>...<tt>);</tt></nobr>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Bottom</a> |&nbsp;<a href="friends.html" title="[14] Friends">Previous&nbsp;section</a> |&nbsp;<a href="freestore-mgmt.html" title="[16] Freestore management">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-15.7"></a>
+<div class=FaqTitle><h3>[15.7] Should I end my output lines with <nobr><tt>std::endl</tt></nobr> or <nobr><tt>'\n'</tt></nobr>?</h3></div>
+<p>Using <nobr><tt>std::endl</tt></nobr> flushes the output buffer after sending a <nobr><tt>'\n'</tt></nobr>,
+which means <nobr><tt>std::endl</tt></nobr> is more expensive in performance.  Obviously if you
+need to flush the buffer after sending a <nobr><tt>'\n'</tt></nobr>, then use <nobr><tt>std::endl</tt></nobr>;
+but if you don't need to flush the buffer, the code will run faster if you use
+<nobr><tt>'\n'</tt></nobr>.
+<p>This code simply outputs a <nobr><tt>'\n'</tt></nobr>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;f()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;</tt><em>...stuff...</em><tt>&nbsp;&lt;&lt;&nbsp;'\n';<br>
+&nbsp;}
+</tt>
+</div>
+<p>This code outputs a <nobr><tt>'\n'</tt></nobr>, then flushes the output buffer:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;g()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;</tt><em>...stuff...</em><tt>&nbsp;&lt;&lt;&nbsp;std::endl;<br>
+&nbsp;}
+</tt>
+</div>
+<p>This code simply flushes the output buffer:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;h()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;</tt><em>...stuff...</em><tt>&nbsp;&lt;&lt;&nbsp;std::flush;<br>
+&nbsp;}
+</tt>
+</div>
+<p>Note: all three of the above examples require <nobr><tt>#include &lt;iostream&gt;</tt></nobr>
+<p><small>[&nbsp;<a href="#top" title="Top of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Bottom</a> |&nbsp;<a href="friends.html" title="[14] Friends">Previous&nbsp;section</a> |&nbsp;<a href="freestore-mgmt.html" title="[16] Freestore management">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-15.8"></a>
+<div class=FaqTitle><h3>[15.8] How can I provide printing for my <tt>class</tt> <tt>Fred</tt>?</h3></div>
+<p>Use <a href="operator-overloading.html" title="[13] Operator overloading"><tt>operator</tt> overloading<!--rawtext:[13]:rawtext--></a> to provide a
+<a href="friends.html" title="[14] Friends"><tt>friend</tt><!--rawtext:[14]:rawtext--></a> left-shift operator, <nobr><tt>operator&lt;&lt;</tt></nobr>.
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#include&nbsp;&lt;iostream&gt;<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Fred&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;friend&nbsp;std::ostream&amp;&nbsp;operator&lt;&lt;&nbsp;(std::ostream&amp;&nbsp;o,&nbsp;const&nbsp;Fred&amp;&nbsp;fred);<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;private:<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;i_;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Just&nbsp;for&nbsp;illustration</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;std::ostream&amp;&nbsp;operator&lt;&lt;&nbsp;(std::ostream&amp;&nbsp;o,&nbsp;const&nbsp;Fred&amp;&nbsp;fred)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;return&nbsp;o&nbsp;&lt;&lt;&nbsp;fred.i_;<br>
+&nbsp;}<br>
+&nbsp;<br>
+&nbsp;int&nbsp;main()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;Fred&nbsp;f;<br>
+&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;My&nbsp;Fred&nbsp;object:&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;f&nbsp;&lt;&lt;&nbsp;&quot;\n&quot;;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>We use a non-member function (a <a href="friends.html" title="[14] Friends"><tt>friend</tt><!--rawtext:[14]:rawtext--></a> in this case)
+since the <tt>Fred</tt> object is the right-hand operand of the <nobr><tt>&lt;&lt;</tt></nobr> operator.
+If the <tt>Fred</tt> object was supposed to be on the left hand side of the <nobr><tt>&lt;&lt;</tt></nobr>
+(that is, <nobr><tt>myFred &lt;&lt; std::cout</tt></nobr> rather than <nobr><tt>std::cout &lt;&lt; myFred</tt></nobr>), we could
+have used a member function named <nobr><tt>operator&lt;&lt;</tt></nobr>.
+<p>Note that <nobr><tt>operator&lt;&lt;</tt></nobr> returns the stream.  This is so the output operations
+can be <a href="input-output.html#faq-15.4" title="[15.4] How does that funky while (std::cin &gt;&gt; foo) syntax work?">cascaded<!--rawtext:[15.4]:rawtext--></a>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Bottom</a> |&nbsp;<a href="friends.html" title="[14] Friends">Previous&nbsp;section</a> |&nbsp;<a href="freestore-mgmt.html" title="[16] Freestore management">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-15.9"></a>
+<div class=FaqTitle><h3>[15.9] But shouldn't I always use a <nobr><tt>printOn()</tt></nobr> method rather than a <tt>friend</tt> function?</h3></div>
+<p>No.
+<p>The usual reason people want to <em>always</em> use a <nobr><tt>printOn()</tt></nobr> method rather
+than a <tt>friend</tt> function is because they wrongly believe that friends violate
+encapsulation and/or that friends are evil.  These beliefs are naive and
+wrong: when used properly, <a href="friends.html#faq-14.2" title="[14.2] Do friends violate encapsulation?">friends can actually
+enhance encapsulation<!--rawtext:[14.2]:rawtext--></a>.
+<p>This is not to say that the <nobr><tt>printOn()</tt></nobr> method approach is <em>never</em>
+useful.  For example, it is useful when <a href="input-output.html#faq-15.11" title="[15.11] How can I provide printing for an entire hierarchy of classes?">providing
+printing for an entire hierarchy of classes<!--rawtext:[15.11]:rawtext--></a>.  But if you use a
+<nobr><tt>printOn()</tt></nobr> method, it should normally be <tt>protected</tt>, not <tt>public</tt>.
+<p>For completeness, here is &quot;the <nobr><tt>printOn()</tt></nobr> method approach.&quot; The idea is to
+have a member function (often called <nobr><tt>printOn()</tt></nobr> that does the actual
+printing, then have <nobr><tt>operator&lt;&lt;</tt></nobr> call that <nobr><tt>printOn()</tt></nobr> method.  When it
+is done <em>wrongly</em>, the <nobr><tt>printOn()</tt></nobr> method is <tt>public</tt> so
+<nobr><tt>operator&lt;&lt;</tt></nobr> doesn't have to be a <tt>friend</tt> &#151; it can be a simple
+top-level function that is neither a <tt>friend</tt> nor a member of the class.
+Here's some sample code:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#include&nbsp;&lt;iostream&gt;<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Fred&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;void&nbsp;printOn(std::ostream&amp;&nbsp;o)&nbsp;const;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;</tt><em>//&nbsp;<nobr><tt>operator&lt;&lt;</tt></nobr>&nbsp;can&nbsp;be&nbsp;declared&nbsp;as&nbsp;a&nbsp;non-<tt>friend</tt>&nbsp;[NOT&nbsp;recommended!]</em><tt><br>
+&nbsp;std::ostream&amp;&nbsp;operator&lt;&lt;&nbsp;(std::ostream&amp;&nbsp;o,&nbsp;const&nbsp;Fred&amp;&nbsp;fred);<br>
+&nbsp;<br>
+&nbsp;</tt><em>//&nbsp;The&nbsp;actual&nbsp;printing&nbsp;is&nbsp;done&nbsp;inside&nbsp;the&nbsp;<nobr><tt>printOn()</tt></nobr>&nbsp;method&nbsp;[NOT&nbsp;recommended!]</em><tt><br>
+&nbsp;void&nbsp;Fred::printOn(std::ostream&amp;&nbsp;o)&nbsp;const<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}<br>
+&nbsp;<br>
+&nbsp;</tt><em>//&nbsp;<nobr><tt>operator&lt;&lt;</tt></nobr>&nbsp;calls&nbsp;<nobr><tt>printOn()</tt></nobr>&nbsp;[NOT&nbsp;recommended!]</em><tt><br>
+&nbsp;std::ostream&amp;&nbsp;operator&lt;&lt;&nbsp;(std::ostream&amp;&nbsp;o,&nbsp;const&nbsp;Fred&amp;&nbsp;fred)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;fred.printOn(o);<br>
+&nbsp;&nbsp;&nbsp;return&nbsp;o;<br>
+&nbsp;}
+</tt>
+</div>
+<p>People wrongly assume that this reduces maintenance cost &quot;since it avoids
+having a friend function.&quot; This is a wrong assumption because:
+<ol>
+<li><b>The member-called-by-top-level-function approach has
+<em>zero</em> benefit in terms of maintenance cost.</b> Let's say it takes
+<em>N</em> lines of code to do the actual printing.  In the case of a <tt>friend</tt>
+function, those <em>N</em> lines of code will have direct access to the class's
+<tt>private</tt>/<tt>protected</tt> parts, which means whenever someone changes the class's
+<tt>private</tt>/<tt>protected</tt> parts, those <em>N</em> lines of code will need to be
+scanned and possibly modified, which increases the maintenance cost.  However
+using the <nobr><tt>printOn()</tt></nobr> method doesn't change this at all: we still have
+<em>N</em> lines of code that have direct access to the class's
+<tt>private</tt>/<tt>protected</tt> parts.  Thus moving the code from a <tt>friend</tt> function
+into a member function does <em>not</em> reduce the maintenance cost <em>at
+all</em>.  Zero reduction.  No benefit in maintenance cost.  (If anything it's
+a bit worse with the <nobr><tt>printOn()</tt></nobr> method since you now have <em>more</em> lines
+of code to maintain since you have an extra function that you didn't have
+before.)</li>
+<li><b>The member-called-by-top-level-function approach makes the
+class harder to use, particularly by programmers who are not also class
+designers.</b> The approach exposes a <tt>public</tt> method that programmers are
+not supposed to call.  When a programmer reads the <tt>public</tt> methods of the
+class, they'll see two ways to do the same thing.  The documentation would
+need to say something like, &quot;This does exactly the same as that, but don't use
+this; instead use that.&quot; And the average programmer will say, &quot;Huh? Why make
+the method <tt>public</tt> if I'm not supposed to use it?&quot; In reality the only
+reason the <nobr><tt>printOn()</tt></nobr> method is <tt>public</tt> is to avoid granting friendship
+status to <nobr><tt>operator&lt;&lt;</tt></nobr>, and that is a notion that is somewhere between subtle
+and incomprehensible to a programmer who simply wants to use the
+class.</li>
+</ol>
+<p>Net: the member-called-by-top-level-function approach has a cost but no
+benefit.  Therefore it is, in general, a bad idea.
+<p>Note: if the <nobr><tt>printOn()</tt></nobr> method is <tt>protected</tt> or <tt>private</tt>, the second
+objection doesn't apply.  There are cases when that approach is reasonable,
+such as when <a href="input-output.html#faq-15.11" title="[15.11] How can I provide printing for an entire hierarchy of classes?">providing printing for an entire
+hierarchy of classes<!--rawtext:[15.11]:rawtext--></a>.  Note also that when the <nobr><tt>printOn()</tt></nobr> method is
+non-<tt>public</tt>, <nobr><tt>operator&lt;&lt;</tt></nobr> needs to be a <tt>friend</tt>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Bottom</a> |&nbsp;<a href="friends.html" title="[14] Friends">Previous&nbsp;section</a> |&nbsp;<a href="freestore-mgmt.html" title="[16] Freestore management">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-15.10"></a>
+<div class=FaqTitle><h3>[15.10] How can I provide input for my <tt>class</tt> <tt>Fred</tt>?</h3></div>
+<p>Use <a href="operator-overloading.html" title="[13] Operator overloading"><tt>operator</tt> overloading<!--rawtext:[13]:rawtext--></a> to provide a
+<a href="friends.html" title="[14] Friends"><tt>friend</tt><!--rawtext:[14]:rawtext--></a> right-shift operator, <nobr><tt>operator&gt;&gt;</tt></nobr>.  This is
+similar to the <a href="input-output.html#faq-15.8" title="[15.8] How can I provide printing for my class Fred?">output operator<!--rawtext:[15.8]:rawtext--></a>, except the
+parameter doesn't have a <a href="const-correctness.html" title="[18] Const correctness"><tt>const</tt><!--rawtext:[18]:rawtext--></a>: &quot;<nobr><tt>Fred&amp;</tt></nobr>&quot;
+rather than &quot;<nobr><tt>const Fred&amp;</tt></nobr>&quot;.
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#include&nbsp;&lt;iostream&gt;<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Fred&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;friend&nbsp;std::istream&amp;&nbsp;operator&gt;&gt;&nbsp;(std::istream&amp;&nbsp;i,&nbsp;Fred&amp;&nbsp;fred);<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;private:<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;i_;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Just&nbsp;for&nbsp;illustration</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;std::istream&amp;&nbsp;operator&gt;&gt;&nbsp;(std::istream&amp;&nbsp;i,&nbsp;Fred&amp;&nbsp;fred)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;return&nbsp;i&nbsp;&gt;&gt;&nbsp;fred.i_;<br>
+&nbsp;}<br>
+&nbsp;<br>
+&nbsp;int&nbsp;main()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;Fred&nbsp;f;<br>
+&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;Enter&nbsp;a&nbsp;Fred&nbsp;object:&nbsp;&quot;;<br>
+&nbsp;&nbsp;&nbsp;std::cin&nbsp;&gt;&gt;&nbsp;f;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>Note that <nobr><tt>operator&gt;&gt;</tt></nobr> returns the stream.  This is so the input operations can
+be <a href="input-output.html#faq-15.4" title="[15.4] How does that funky while (std::cin &gt;&gt; foo) syntax work?">cascaded and/or used in a <tt>while</tt> loop or <tt>if</tt>
+statement<!--rawtext:[15.4]:rawtext--></a>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Bottom</a> |&nbsp;<a href="friends.html" title="[14] Friends">Previous&nbsp;section</a> |&nbsp;<a href="freestore-mgmt.html" title="[16] Freestore management">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-15.11"></a>
+<div class=FaqTitle><h3>[15.11] How can I provide printing for an entire hierarchy of classes?</h3></div>
+<p>Provide a <a href="friends.html" title="[14] Friends"><tt>friend</tt><!--rawtext:[14]:rawtext--></a> <a href="input-output.html#faq-15.8" title="[15.8] How can I provide printing for my class Fred?"><nobr><tt>operator&lt;&lt;</tt></nobr><!--rawtext:[15.8]:rawtext--></a>
+that calls a <tt>protected</tt> <a href="virtual-functions.html" title="[20] Inheritance -- virtual functions"><tt>virtual</tt><!--rawtext:[20]:rawtext--></a> function:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Base&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;friend&nbsp;std::ostream&amp;&nbsp;operator&lt;&lt;&nbsp;(std::ostream&amp;&nbsp;o,&nbsp;const&nbsp;Base&amp;&nbsp;b);<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;protected:<br>
+&nbsp;&nbsp;&nbsp;virtual&nbsp;void&nbsp;printOn(std::ostream&amp;&nbsp;o)&nbsp;const;<br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;inline&nbsp;std::ostream&amp;&nbsp;operator&lt;&lt;&nbsp;(std::ostream&amp;&nbsp;o,&nbsp;const&nbsp;Base&amp;&nbsp;b)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;b.printOn(o);<br>
+&nbsp;&nbsp;&nbsp;return&nbsp;o;<br>
+&nbsp;}<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Derived&nbsp;:&nbsp;public&nbsp;Base&nbsp;{<br>
+&nbsp;protected:<br>
+&nbsp;&nbsp;&nbsp;virtual&nbsp;void&nbsp;printOn(std::ostream&amp;&nbsp;o)&nbsp;const;<br>
+&nbsp;};
+</tt>
+</div>
+<p>The end result is that <nobr><tt>operator&lt;&lt;</tt></nobr> <em>acts</em> as if it was dynamically
+bound, even though it's a <a href="friends.html" title="[14] Friends"><tt>friend</tt><!--rawtext:[14]:rawtext--></a> function.  This is
+called the Virtual Friend Function Idiom.
+<p>Note that derived classes override <nobr><tt>printOn(std::ostream&amp;)</tt></nobr> <tt>const</tt>.  In
+particular, they do <em>not</em> provide their own <nobr><tt>operator&lt;&lt;</tt></nobr>.
+<p>Naturally if <tt>Base</tt> is an <a href="abcs.html#faq-22.3" title="[22.3] What is an ABC?">ABC<!--rawtext:[22.3]:rawtext--></a>,
+<nobr><tt>Base::printOn(std::ostream&amp;)</tt></nobr> <tt>const</tt> can be declared
+<a href="abcs.html#faq-22.4" title="[22.4] What is a &quot;pure virtual&quot; member function?">pure <tt>virtual</tt><!--rawtext:[22.4]:rawtext--></a> using the &quot;<nobr><tt>= 0</tt></nobr>&quot; syntax.
+<p><small>[&nbsp;<a href="#top" title="Top of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Bottom</a> |&nbsp;<a href="friends.html" title="[14] Friends">Previous&nbsp;section</a> |&nbsp;<a href="freestore-mgmt.html" title="[16] Freestore management">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-15.12"></a>
+<div class=FaqTitle><h3>[15.12] How can I open a stream in binary mode?</h3></div>
+<p>Use <nobr><tt>std::ios::binary</tt></nobr>.
+<p>Some operating systems differentiate between <em>text</em> and <em>binary</em>
+modes.  In text mode, end-of-line sequences and possibly other things are
+translated; in binary mode, they are not.  For example, in text mode under
+Windows, <nobr><tt>&quot;\r\n&quot;</tt></nobr> is translated into <nobr><tt>&quot;\n&quot;</tt></nobr> on input, and the
+reverse on output.
+<p>To read a file in binary mode, use something like this:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#include&nbsp;&lt;string&gt;<br>
+&nbsp;#include&nbsp;&lt;iostream&gt;<br>
+&nbsp;#include&nbsp;&lt;fstream&gt;<br>
+&nbsp;<br>
+&nbsp;void&nbsp;readBinaryFile(const&nbsp;std::string&amp;&nbsp;filename)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::ifstream&nbsp;input(filename.c_str(),&nbsp;std::ios::in&nbsp;|&nbsp;std::ios::binary);<br>
+&nbsp;&nbsp;&nbsp;char&nbsp;c;<br>
+&nbsp;&nbsp;&nbsp;while&nbsp;(input.get(c))&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>...do&nbsp;something&nbsp;with&nbsp;<tt>c</tt>&nbsp;here...</em><tt><br>
+&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;}
+</tt>
+</div>
+<p>Note: <nobr><tt>input &gt;&gt; c</tt></nobr> discards leading whitespace, so you won't normally use
+that when reading binary files.
+<p><small>[&nbsp;<a href="#top" title="Top of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Bottom</a> |&nbsp;<a href="friends.html" title="[14] Friends">Previous&nbsp;section</a> |&nbsp;<a href="freestore-mgmt.html" title="[16] Freestore management">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-15.13"></a>
+<div class=FaqTitle><h3>[15.13] How can I &quot;reopen&quot; <nobr><tt>std::cin</tt></nobr> and <nobr><tt>std::cout</tt></nobr> in binary mode?</h3></div>
+<p>This is implementation dependent.  Check with your compiler's documentation.
+<p>For example, suppose you want to do <a href="input-output.html#faq-15.12" title="[15.12] How can I open a stream in binary mode?">binary
+I/O<!--rawtext:[15.12]:rawtext--></a> using <nobr><tt>std::cin</tt></nobr> and <nobr><tt>std::cout</tt></nobr>.
+<p>Unfortunately there is no standard way to cause <nobr><tt>std::cin</tt></nobr>, <nobr><tt>std::cout</tt></nobr>, and/or
+<nobr><tt>std::cerr</tt></nobr> to be opened in binary mode.  Closing the streams and attempting to
+reopen them in binary mode might have unexpected or undesirable results.
+<p>On systems <a href="input-output.html#faq-15.12" title="[15.12] How can I open a stream in binary mode?">where it makes a difference<!--rawtext:[15.12]:rawtext--></a>,
+the implementation might provide a way to make them binary streams, but you
+would have to <a href="misc-environmental-issues.html#faq-39.5" title="[39.5] Where can I get OS-specific questions answered (e.g., BC++, Windows, etc)?">check the implementation specifics<!--rawtext:[39.5]:rawtext--></a>
+to find out.
+<p><small>[&nbsp;<a href="#top" title="Top of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Bottom</a> |&nbsp;<a href="friends.html" title="[14] Friends">Previous&nbsp;section</a> |&nbsp;<a href="freestore-mgmt.html" title="[16] Freestore management">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-15.14"></a>
+<div class=FaqTitle><h3>[15.14] How can I write/read objects of my class to/from a data file?</h3></div>
+<p>Read the section on <a href="serialization.html" title="[35] Serialization and Unserialization">object serialization<!--rawtext:[35]:rawtext--></a>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Bottom</a> |&nbsp;<a href="friends.html" title="[14] Friends">Previous&nbsp;section</a> |&nbsp;<a href="freestore-mgmt.html" title="[16] Freestore management">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-15.15"></a>
+<div class=FaqTitle><h3>[15.15] How can I send objects of my class to another computer (e.g., via a socket, TCP/IP, FTP, email, a wireless link, etc.)?</h3></div>
+<p>Read the section on <a href="serialization.html" title="[35] Serialization and Unserialization">object serialization<!--rawtext:[35]:rawtext--></a>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Bottom</a> |&nbsp;<a href="friends.html" title="[14] Friends">Previous&nbsp;section</a> |&nbsp;<a href="freestore-mgmt.html" title="[16] Freestore management">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-15.16"></a>
+<div class=FaqTitle><h3>[15.16] Why can't I open a file in a different directory such as <nobr><tt>&quot;..\test.dat&quot;</tt></nobr>?</h3></div>
+<p>Because <nobr><tt>&quot;\t&quot;</tt></nobr> is a tab character.
+<p>You should use forward slashes in your filenames, even on operating systems
+that use backslashes (DOS, Windows, OS/2, etc.).  For example:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#include&nbsp;&lt;iostream&gt;<br>
+&nbsp;#include&nbsp;&lt;fstream&gt;<br>
+&nbsp;<br>
+&nbsp;int&nbsp;main()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;#if&nbsp;1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;std::ifstream&nbsp;file(&quot;../test.dat&quot;);&nbsp;&nbsp;</tt><em>//&nbsp;RIGHT!</em><tt><br>
+&nbsp;&nbsp;&nbsp;#else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;std::ifstream&nbsp;file(&quot;..\test.dat&quot;);&nbsp;&nbsp;</tt><em>//&nbsp;WRONG!</em><tt><br>
+&nbsp;&nbsp;&nbsp;#endif<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>Remember, the backslash (<nobr><tt>&quot;\&quot;</tt></nobr>) is used in string literals to create
+special characters: <nobr><tt>&quot;\n&quot;</tt></nobr> is a newline, <nobr><tt>&quot;\b&quot;</tt></nobr> is a backspace,
+and <nobr><tt>&quot;\t&quot;</tt></nobr> is a tab, <nobr><tt>&quot;\a&quot;</tt></nobr> is an &quot;alert&quot;, <nobr><tt>&quot;\v&quot;</tt></nobr> is a
+vertical-tab, etc.  Therefore the file name
+<nobr><tt>&quot;\version\next\alpha\beta\test.dat&quot;</tt></nobr> is interpreted as a bunch of very
+funny characters.  To be safe, use <nobr><tt>&quot;/version/next/alpha/beta/test.dat&quot;</tt></nobr>
+instead, even on systems that use a <nobr><tt>&quot;\&quot;</tt></nobr> as the directory separator.
+This is because the library routines on these operating systems handle
+<nobr><tt>&quot;/&quot;</tt></nobr> and <nobr><tt>&quot;\&quot;</tt></nobr> interchangeably.
+<p>Of course you <em>could</em> use
+<nobr><tt>&quot;\\version\\next\\alpha\\beta\\test.dat&quot;</tt></nobr>, but that might hurt you
+(there's a non-zero chance you'll forget one of the <nobr><tt>&quot;\&quot;</tt></nobr>s, a rather
+subtle bug since most people don't notice it) and it can't help you (there's
+no benefit for using <nobr><tt>&quot;\\&quot;</tt></nobr> over <nobr><tt>&quot;/&quot;</tt></nobr>).  Besides <nobr><tt>&quot;/&quot;</tt></nobr> is
+more portable since it works on all flavors of Unix, Plan 9, Inferno, all
+Windows, OS/2, etc., but <nobr><tt>&quot;\\&quot;</tt></nobr> works only on a subset of that list.  So
+<nobr><tt>&quot;\\&quot;</tt></nobr> costs you something and gains you nothing: use <nobr><tt>&quot;/&quot;</tt></nobr>
+instead.
+<p><small>[&nbsp;<a href="#top" title="Top of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Bottom</a> |&nbsp;<a href="friends.html" title="[14] Friends">Previous&nbsp;section</a> |&nbsp;<a href="freestore-mgmt.html" title="[16] Freestore management">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-15.17"></a>
+<div class=FaqTitle><h3>[15.17] How can I tell {if a key, which key} was pressed before the user presses the ENTER key?</h3></div>
+<p>This is not a standard C++ feature &#151; C++ doesn't even require your system to
+<em>have a keyboard!</em>.  That means every operating system and vendor does
+it somewhat differently.
+<p>Please read the documentation that came with your compiler for details on your
+particular installation.
+<p>(By the way, the process on UNIX typically has two steps: first
+<a href="http://www.faqs.org/faqs/unix-faq/programmer/faq/" title="www.faqs.org/faqs/unix-faq/programmer/faq/" target='_blank'>set the terminal to
+single-character mode</a>, then use either <nobr><tt>select()</tt></nobr> or
+<nobr><tt>poll()</tt></nobr> to test if a key was pressed.  You might be able to adapt
+<a href="http://ccwf.cc.utexas.edu/~apoc/programs/c/kbhit.c" title="ccwf.cc.utexas.edu/~apoc/programs/c/kbhit.c" target='_blank'>this code</a>.)
+<p><small>[&nbsp;<a href="#top" title="Top of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Bottom</a> |&nbsp;<a href="friends.html" title="[14] Friends">Previous&nbsp;section</a> |&nbsp;<a href="freestore-mgmt.html" title="[16] Freestore management">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-15.18"></a>
+<div class=FaqTitle><h3>[15.18] How can make it so keys pressed by users are not echoed on the screen?</h3></div>
+<p>This is not a standard C++ feature &#151; C++ doesn't even require your system to
+have a keyboard or a screen.  That means every operating system and vendor
+does it somewhat differently.
+<p>Please read the documentation that came with your compiler for details on your
+particular installation.
+<p><small>[&nbsp;<a href="#top" title="Top of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Bottom</a> |&nbsp;<a href="friends.html" title="[14] Friends">Previous&nbsp;section</a> |&nbsp;<a href="freestore-mgmt.html" title="[16] Freestore management">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-15.19"></a>
+<div class=FaqTitle><h3>[15.19] How can I move the cursor around on the screen?</h3></div>
+<p>This is not a standard C++ feature &#151; C++ doesn't even require your system to
+have a screen.  That means every operating system and vendor does it somewhat
+differently.
+<p>Please read the documentation that came with your compiler for details on your
+particular installation.
+<p><small>[&nbsp;<a href="#top" title="Top of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Bottom</a> |&nbsp;<a href="friends.html" title="[14] Friends">Previous&nbsp;section</a> |&nbsp;<a href="freestore-mgmt.html" title="[16] Freestore management">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-15.20"></a>
+<div class=FaqTitle><h3>[15.20] How can I clear the screen? Is there something like <nobr><tt>clrscr()</tt></nobr>?</h3></div>
+<p>This is not a standard C++ feature &#151; C++ doesn't even require your system to
+have a screen.  That means every operating system and vendor does it somewhat
+differently.
+<p>Please read the documentation that came with your compiler for details on your
+particular installation.
+<p><small>[&nbsp;<a href="#top" title="Top of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Bottom</a> |&nbsp;<a href="friends.html" title="[14] Friends">Previous&nbsp;section</a> |&nbsp;<a href="freestore-mgmt.html" title="[16] Freestore management">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-15.21"></a>
+<div class=FaqTitle><h3>[15.21] How can I change the colors on the screen?</h3></div>
+<p>This is not a standard C++ feature &#151; C++ doesn't even require your system to
+have a screen.  That means every operating system and vendor does it somewhat
+differently.
+<p>Please read the documentation that came with your compiler for details on your
+particular installation.
+<p><small>[&nbsp;<a href="#top" title="Top of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [15] Input/output via &lt;iostream&gt; and &lt;cstdio&gt;">Bottom</a> |&nbsp;<a href="friends.html" title="[14] Friends">Previous&nbsp;section</a> |&nbsp;<a href="freestore-mgmt.html" title="[16] Freestore management">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="bottom"></a>
+<a href="mailto:cline@parashift.com" title="cline@parashift.com"><img src="mbox.gif" height=26 width=89 alt="E-Mail">&nbsp;E-mail the author</a><br>
+[&nbsp;<a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>
+|&nbsp;<a href="index.html#table-of-contents" title="Table of contents">Table&nbsp;of&nbsp;contents</a>
+|&nbsp;<a href="subject-index.html" title="Subject index; 3706 links to 2361 topics">Subject&nbsp;index</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.1" title="[1.1] Author">About&nbsp;the&nbsp;author</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">&copy;</a>
+|&nbsp;<a href="on-line-availability.html#faq-2.2" title="[2.2] How can I get a copy of all the HTML files of C++ FAQ Lite so I can read them Off-Line?">Download&nbsp;your&nbsp;own&nbsp;copy</a>&nbsp;]<br>
+<small>Revised May 2, 2003</small>
+</body>
+</html>

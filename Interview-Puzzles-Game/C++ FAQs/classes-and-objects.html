@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"
+	"http://www.w3.org/TR/REC-html40/strict.dtd">
+<html>
+<head>
+<title>[7] Classes and objects &nbsp;Updated!&nbsp;, C++ FAQ Lite</title>
+<meta name="FILENAME" content="classes-and-objects.html">
+<meta name="ABSTRACT" content="[7] Classes and objects [Updated!], C++ FAQ Lite">
+<meta name="OWNER"    content="cline@parashift.com">
+<meta name="AUTHOR"   content="Marshall Cline, cline@parashift.com">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rev=made href="mailto:cline@parashift.com">
+<style type='text/css'>
+  <!--
+  body       { font-family: arial; color: black; background: white }
+  .CodeBlock { color: black; background-color: #dfdfdf; margin-left: 30px; margin-right: 30px; padding: 5pt }
+  .FaqTitle  { color: black; background-color: gold }
+  .Updated   { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #ffff00; border: solid #e0e000 1px; }
+  .New       { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #00ff00; border: solid #00d000 1px; }
+  ul         { margin-bottom: 1px; margin-top: 1px }
+  ol         { margin-bottom: 1px; margin-top: 1px }
+  li         { margin-bottom: 4px; margin-top: 4px }
+  a          { color: blue }
+  a:hover    { color: red }
+  -->
+</style>
+</head>
+<body>
+<h1><a name="top"></a>[7] Classes and objects <span class=Updated>&nbsp;Updated!&nbsp;</span><br>
+<small><small>(Part of <a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>, <a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">Copyright&nbsp;&copy; 1991-2003</a>, <a href="http://www.parashift.com/" title="www.parashift.com/" target='_blank'>Marshall Cline</a>, <a href="mailto:cline@parashift.com" title="cline@parashift.com"><tt>cline@parashift.com</tt></a>)</small></small></h1>
+<hr>
+<h3>FAQs in section [7]:</h3>
+<ul>
+<li><a href="classes-and-objects.html#faq-7.1" title="[7.1] What is a class?">[7.1] What is a class?</a></li>
+<li><a href="classes-and-objects.html#faq-7.2" title="[7.2] What is an object?">[7.2] What is an object?</a></li>
+<li><a href="classes-and-objects.html#faq-7.3" title="[7.3] When is an interface &quot;good&quot;?">[7.3] When is an interface &quot;good&quot;?</a></li>
+<li><a href="classes-and-objects.html#faq-7.4" title="[7.4] What is encapsulation?">[7.4] What is encapsulation?</a></li>
+<li><a href="classes-and-objects.html#faq-7.5" title="[7.5] How does C++ help with the tradeoff of safety vs. usability?">[7.5] How does C++ help with the tradeoff of safety <em>vs.</em> usability?</a> <span class=Updated>&nbsp;Updated!&nbsp;</span></li>
+<li><a href="classes-and-objects.html#faq-7.6" title="[7.6] How can I prevent other programmers from violating encapsulation by seeing the private parts of my class?">[7.6] How can I prevent other programmers from violating encapsulation by seeing the <tt>private</tt> parts of my class?</a></li>
+<li><a href="classes-and-objects.html#faq-7.7" title="[7.7] Is Encapsulation a Security device?">[7.7] Is Encapsulation a Security device?</a></li>
+<li><a href="classes-and-objects.html#faq-7.8" title="[7.8] What's the difference between the keywords struct and class?">[7.8] What's the difference between the keywords <tt>struct</tt> and <tt>class</tt>?</a></li>
+</ul>
+<p><hr>
+<p><a name="faq-7.1"></a>
+<div class=FaqTitle><h3>[7.1] What is a class?</h3></div>
+<p>The fundamental building block of OO software.
+<p>A <tt>class</tt> defines a data type, much like a <tt>struct</tt> would be in C.  In a
+computer science sense, a type consists of both a set of states <em>and</em> a
+set of operations which transition between those states.  Thus <tt>int</tt> is a type
+because it has both a set of states <em>and</em> it has operations like <nobr><tt>i +
+j</tt></nobr> or <nobr><tt>i++</tt></nobr>, etc.  In exactly the same way, a <tt>class</tt> provides a set
+of (usually <tt>public</tt>) operations, and a set of (usually non-<tt>public</tt>) data
+bits representing the abstract values that instances of the type can have.
+<p>You can imagine that <tt>int</tt> is a <tt>class</tt> that has member functions called
+<nobr><tt>operator++</tt></nobr>, etc.  (<tt>int</tt> isn't really a <tt>class</tt>, but the basic analogy is
+this: a <tt>class</tt> is a type, much like <tt>int</tt> is a type.)
+<p>Note: a C programmer can think of a <tt>class</tt> as a C <tt>struct</tt> whose members
+default to <tt>private</tt>.  But if that's all you think of a <tt>class</tt>, then you
+probably need to experience a personal paradigm shift.
+<p><small>[&nbsp;<a href="#top" title="Top of section [7] Classes and objects">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [7] Classes and objects">Bottom</a> |&nbsp;<a href="big-picture.html" title="[6] Big Picture issues">Previous&nbsp;section</a> |&nbsp;<a href="references.html" title="[8] References">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-7.2"></a>
+<div class=FaqTitle><h3>[7.2] What is an object?</h3></div>
+<p>A region of storage with associated semantics.
+<p>After the declaration <nobr><tt>int i;</tt></nobr> we say that &quot;<tt>i</tt> is an object of type <tt>int</tt>.&quot;
+In OO/C++, &quot;object&quot; usually means &quot;an instance of a class.&quot; Thus a class
+defines the behavior of possibly many objects (instances).
+<p><small>[&nbsp;<a href="#top" title="Top of section [7] Classes and objects">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [7] Classes and objects">Bottom</a> |&nbsp;<a href="big-picture.html" title="[6] Big Picture issues">Previous&nbsp;section</a> |&nbsp;<a href="references.html" title="[8] References">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-7.3"></a>
+<div class=FaqTitle><h3>[7.3] When is an interface &quot;good&quot;?</h3></div>
+<p>When it provides a <em>simplified view</em> of a chunk of software, and it is
+expressed in the <em>vocabulary of a user</em> (where a &quot;chunk&quot; is normally a
+class or a <a href="friends.html#faq-14.2" title="[14.2] Do friends violate encapsulation?">tight group of classes<!--rawtext:[14.2]:rawtext--></a>, and a &quot;user&quot;
+is another developer rather than the ultimate customer).
+<ul>
+<li>The &quot;simplified view&quot; means unnecessary details are intentionally
+hidden.  This reduces the user's defect-rate.</li>
+<li>The &quot;vocabulary of users&quot; means users don't need to learn a new set
+of words and concepts.  This reduces the user's learning curve.</li>
+</ul>
+<p><small>[&nbsp;<a href="#top" title="Top of section [7] Classes and objects">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [7] Classes and objects">Bottom</a> |&nbsp;<a href="big-picture.html" title="[6] Big Picture issues">Previous&nbsp;section</a> |&nbsp;<a href="references.html" title="[8] References">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-7.4"></a>
+<div class=FaqTitle><h3>[7.4] What is encapsulation?</h3></div>
+<p>Preventing unauthorized access to some piece of information or functionality.
+<p>The key money-saving insight is to separate the volatile part of some chunk of
+software from the stable part.  Encapsulation puts a firewall around the chunk,
+which prevents other chunks from accessing the volatile parts; other chunks can
+only access the stable parts.  This prevents the other chunks from breaking if
+(when!) the volatile parts are changed.  In context of OO software, a &quot;chunk&quot;
+is normally a class or a <a href="friends.html#faq-14.2" title="[14.2] Do friends violate encapsulation?">tight group of classes<!--rawtext:[14.2]:rawtext--></a>.
+<p>The &quot;volatile parts&quot; are the implementation details.  If the chunk is a single
+class, the volatile part is normally encapsulated using the <a href="basics-of-inheritance.html#faq-19.5" title="[19.5] What's the difference between public, private, and protected?"><tt>private</tt> and/or <tt>protected</tt> keywords<!--rawtext:[19.5]:rawtext--></a>.  If the chunk is a
+<a href="friends.html#faq-14.2" title="[14.2] Do friends violate encapsulation?">tight group of classes<!--rawtext:[14.2]:rawtext--></a>, encapsulation can be used
+to deny access to entire classes in that group.  <a href="basics-of-inheritance.html" title="[19] Inheritance -- basics">Inheritance<!--rawtext:[19]:rawtext--></a> can also be used as <a href="abcs.html#faq-22.2" title="[22.2] How do I separate interface from implementation in C++ (like Modula-2)?">a form of
+encapsulation<!--rawtext:[22.2]:rawtext--></a>.
+<p>The &quot;stable parts&quot; are the interfaces.  A good interface provides a
+<a href="classes-and-objects.html#faq-7.3" title="[7.3] When is an interface &quot;good&quot;?">simplified view in the vocabulary of a user<!--rawtext:[7.3]:rawtext--></a>, and is
+designed <a href="operator-overloading.html#faq-13.10" title="[13.10] Should I design my classes from the outside (interfaces first) or from the inside (data first)?">from the outside-in<!--rawtext:[13.10]:rawtext--></a> (here a &quot;user&quot;
+means another developer, not the end-user who buys the completed application).
+If the chunk is a single class, the interface is simply the class's <tt>public</tt>
+member functions and <a href="friends.html" title="[14] Friends"><tt>friend</tt><!--rawtext:[14]:rawtext--></a> functions.  If the chunk is a
+<a href="friends.html#faq-14.2" title="[14.2] Do friends violate encapsulation?">tight group of classes<!--rawtext:[14.2]:rawtext--></a>, the interface can include
+several of the classes in the chunk.
+<p>Designing a clean interface and <a href="abcs.html#faq-22.1" title="[22.1] What's the big deal of separating interface from implementation?">separating
+that interface from its implementation<!--rawtext:[22.1]:rawtext--></a> merely <em>allows</em> users to use
+the interface.  But encapsulating (putting &quot;in a capsule&quot;) the implementation
+<em>forces</em> users to use the interface.
+<p><small>[&nbsp;<a href="#top" title="Top of section [7] Classes and objects">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [7] Classes and objects">Bottom</a> |&nbsp;<a href="big-picture.html" title="[6] Big Picture issues">Previous&nbsp;section</a> |&nbsp;<a href="references.html" title="[8] References">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-7.5"></a>
+<div class=FaqTitle><h3>[7.5] How does C++ help with the tradeoff of safety <em>vs.</em> usability? <span class=Updated>&nbsp;Updated!&nbsp;</span></h3></div>
+<small><em>[Recently clarified that it is <em>data</em> declared as static at file-scope that is deprecated (in 4/03).  <a href="inline-functions.html#faq-9.3" title="[9.3] Do inline functions improve performance?">Click here to go to the next FAQ in the &quot;chain&quot; of recent changes<!--rawtext:[9.3]:rawtext--></a>.]</em></small>
+<p>In C, <a href="classes-and-objects.html#faq-7.4" title="[7.4] What is encapsulation?">encapsulation<!--rawtext:[7.4]:rawtext--></a> was accomplished by making things
+<tt>static</tt> in a compilation unit or module.  This prevented another module from
+accessing the <tt>static</tt> stuff.  (By the way, <tt>static</tt> data at file-scope is now deprecated in C++: don't
+do that.)
+<p>Unfortunately this approach doesn't support multiple instances of the data,
+since there is no direct support for making multiple instances of a module's
+<tt>static</tt> data.  If multiple instances were needed in C, programmers typically
+used a <tt>struct</tt>.  But unfortunately C <tt>struct</tt>s don't support
+<a href="classes-and-objects.html#faq-7.4" title="[7.4] What is encapsulation?">encapsulation<!--rawtext:[7.4]:rawtext--></a>.  This exacerbates the tradeoff between
+safety (information hiding) and usability (multiple instances).
+<p>In C++, you can have both multiple instances and encapsulation via a class.
+The <tt>public</tt> part of a class contains the class's interface, which normally
+consists of the class's <tt>public</tt> member functions and its <a href="friends.html" title="[14] Friends"><tt>friend</tt><!--rawtext:[14]:rawtext--></a> functions.  The <a href="basics-of-inheritance.html#faq-19.5" title="[19.5] What's the difference between public, private, and protected?"><tt>private</tt> and/or
+<tt>protected</tt><!--rawtext:[19.5]:rawtext--></a> parts of a class contain the class's implementation, which
+is typically where the data lives.
+<p>The end result is like an &quot;encapsulated <tt>struct</tt>.&quot; This reduces the tradeoff
+between safety (information hiding) and usability (multiple instances).
+<p><small>[&nbsp;<a href="#top" title="Top of section [7] Classes and objects">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [7] Classes and objects">Bottom</a> |&nbsp;<a href="big-picture.html" title="[6] Big Picture issues">Previous&nbsp;section</a> |&nbsp;<a href="references.html" title="[8] References">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-7.6"></a>
+<div class=FaqTitle><h3>[7.6] How can I prevent other programmers from violating encapsulation by seeing the <tt>private</tt> parts of my class?</h3></div>
+<p>Not worth the effort &#151; encapsulation is for code, not people.
+<p>It doesn't violate encapsulation for a <em>programmer</em> to see the
+<a href="basics-of-inheritance.html#faq-19.5" title="[19.5] What's the difference between public, private, and protected?"><tt>private</tt> and/or <tt>protected</tt><!--rawtext:[19.5]:rawtext--></a> parts of your class, so
+long as they don't write code that somehow depends on what they saw.  In other
+words, encapsulation doesn't prevent <em>people</em> from knowing about the
+inside of a class; it prevents the <em>code</em> they write from becoming
+dependent on the insides of the class.  Your company doesn't have to pay a
+&quot;maintenance cost&quot; to maintain the gray matter between your ears; but it does
+have to pay a maintenance cost to maintain the code that comes out of your
+finger tips.  What you know as a person doesn't increase maintenance cost,
+provided the code you write depends on the interface rather than the
+implementation.
+<p>Besides, this is rarely if ever a problem.  I don't know any programmers who
+have intentionally tried to access the <tt>private</tt> parts of a class.  &quot;My
+recommendation in such cases would be to change the programmer, not the code&quot;
+[<a href="mailto:kanze@gabi-soft.fr" title="kanze@gabi-soft.fr">James Kanze</a>; used with permission].
+<p><small>[&nbsp;<a href="#top" title="Top of section [7] Classes and objects">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [7] Classes and objects">Bottom</a> |&nbsp;<a href="big-picture.html" title="[6] Big Picture issues">Previous&nbsp;section</a> |&nbsp;<a href="references.html" title="[8] References">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-7.7"></a>
+<div class=FaqTitle><h3>[7.7] Is Encapsulation a Security device?</h3></div>
+<p>No.
+<p>Encapsulation <nobr><tt>!=</tt></nobr> security.
+<p>Encapsulation prevents mistakes, not espionage.
+<p><small>[&nbsp;<a href="#top" title="Top of section [7] Classes and objects">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [7] Classes and objects">Bottom</a> |&nbsp;<a href="big-picture.html" title="[6] Big Picture issues">Previous&nbsp;section</a> |&nbsp;<a href="references.html" title="[8] References">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-7.8"></a>
+<div class=FaqTitle><h3>[7.8] What's the difference between the keywords <tt>struct</tt> and <tt>class</tt>?</h3></div>
+<p>The members and base classes of a <tt>struct</tt> are <tt>public</tt> by default, while in
+<tt>class</tt>, they default to <tt>private</tt>.  Note: you should make your base classes
+<em>explicitly</em> <tt>public</tt>, <tt>private</tt>, or <tt>protected</tt>, rather than relying on
+the defaults.
+<p><tt>struct</tt> and <tt>class</tt> are otherwise functionally equivalent.
+<p>OK, enough of that squeaky clean techno talk.  Emotionally, most developers
+make a strong distinction between a <tt>class</tt> and a <tt>struct</tt>.  A <tt>struct</tt> simply
+<em>feels</em> like an open pile of bits with very little in the way of
+encapsulation or functionality.  A <tt>class</tt> <em>feels</em> like a living and
+responsible member of society with intelligent services, a strong encapsulation
+barrier, and a well defined interface.  Since that's the connotation most
+people already have, you should probably use the <tt>struct</tt> keyword if you have a
+class that has very few methods and has <tt>public</tt> data (such things <em>do</em>
+exist in well designed systems!), but otherwise you should probably use the
+<tt>class</tt> keyword.
+<p><small>[&nbsp;<a href="#top" title="Top of section [7] Classes and objects">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [7] Classes and objects">Bottom</a> |&nbsp;<a href="big-picture.html" title="[6] Big Picture issues">Previous&nbsp;section</a> |&nbsp;<a href="references.html" title="[8] References">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="bottom"></a>
+<a href="mailto:cline@parashift.com" title="cline@parashift.com"><img src="mbox.gif" height=26 width=89 alt="E-Mail">&nbsp;E-mail the author</a><br>
+[&nbsp;<a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>
+|&nbsp;<a href="index.html#table-of-contents" title="Table of contents">Table&nbsp;of&nbsp;contents</a>
+|&nbsp;<a href="subject-index.html" title="Subject index; 3706 links to 2361 topics">Subject&nbsp;index</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.1" title="[1.1] Author">About&nbsp;the&nbsp;author</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">&copy;</a>
+|&nbsp;<a href="on-line-availability.html#faq-2.2" title="[2.2] How can I get a copy of all the HTML files of C++ FAQ Lite so I can read them Off-Line?">Download&nbsp;your&nbsp;own&nbsp;copy</a>&nbsp;]<br>
+<small>Revised May 2, 2003</small>
+</body>
+</html>

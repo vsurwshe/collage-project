@@ -1,0 +1,177 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"
+	"http://www.w3.org/TR/REC-html40/strict.dtd">
+<html>
+<head>
+<title>[22] Inheritance -- abstract base classes (ABCs), C++ FAQ Lite</title>
+<meta name="FILENAME" content="abcs.html">
+<meta name="ABSTRACT" content="[22] Inheritance -- abstract base classes (ABCs), C++ FAQ Lite">
+<meta name="OWNER"    content="cline@parashift.com">
+<meta name="AUTHOR"   content="Marshall Cline, cline@parashift.com">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rev=made href="mailto:cline@parashift.com">
+<style type='text/css'>
+  <!--
+  body       { font-family: arial; color: black; background: white }
+  .CodeBlock { color: black; background-color: #dfdfdf; margin-left: 30px; margin-right: 30px; padding: 5pt }
+  .FaqTitle  { color: black; background-color: gold }
+  .Updated   { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #ffff00; border: solid #e0e000 1px; }
+  .New       { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #00ff00; border: solid #00d000 1px; }
+  ul         { margin-bottom: 1px; margin-top: 1px }
+  ol         { margin-bottom: 1px; margin-top: 1px }
+  li         { margin-bottom: 4px; margin-top: 4px }
+  a          { color: blue }
+  a:hover    { color: red }
+  -->
+</style>
+</head>
+<body>
+<h1><a name="top"></a>[22] Inheritance &#151; abstract base classes (ABCs)<br>
+<small><small>(Part of <a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>, <a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">Copyright&nbsp;&copy; 1991-2003</a>, <a href="http://www.parashift.com/" title="www.parashift.com/" target='_blank'>Marshall Cline</a>, <a href="mailto:cline@parashift.com" title="cline@parashift.com"><tt>cline@parashift.com</tt></a>)</small></small></h1>
+<hr>
+<h3>FAQs in section [22]:</h3>
+<ul>
+<li><a href="abcs.html#faq-22.1" title="[22.1] What's the big deal of separating interface from implementation?">[22.1] What's the big deal of separating interface from implementation?</a></li>
+<li><a href="abcs.html#faq-22.2" title="[22.2] How do I separate interface from implementation in C++ (like Modula-2)?">[22.2] How do I separate interface from implementation in C++ (like Modula-2)?</a></li>
+<li><a href="abcs.html#faq-22.3" title="[22.3] What is an ABC?">[22.3] What is an ABC?</a></li>
+<li><a href="abcs.html#faq-22.4" title="[22.4] What is a &quot;pure virtual&quot; member function?">[22.4] What is a &quot;pure virtual&quot; member function?</a></li>
+<li><a href="abcs.html#faq-22.5" title="[22.5] How do you define a copy constructor or assignment operator for a class that contains a pointer to a (abstract) base class?">[22.5] How do you define a copy constructor or assignment <tt>operator</tt> for a class that contains a pointer to a (abstract) base class?</a></li>
+</ul>
+<p><hr>
+<p><a name="faq-22.1"></a>
+<div class=FaqTitle><h3>[22.1] What's the big deal of separating interface from implementation?</h3></div>
+<p>Interfaces are a company's most valuable resources.  Designing an interface
+takes longer than whipping together a concrete class which fulfills that
+interface.  Furthermore interfaces require the time of more expensive people.
+<p>Since interfaces are so valuable, they should be protected from being tarnished
+by data structures and other implementation artifacts.  Thus you should
+separate interface from implementation.
+<p><small>[&nbsp;<a href="#top" title="Top of section [22] Inheritance -- abstract base classes (ABCs)">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [22] Inheritance -- abstract base classes (ABCs)">Bottom</a> |&nbsp;<a href="proper-inheritance.html" title="[21] Inheritance -- proper inheritance and substitutability">Previous&nbsp;section</a> |&nbsp;<a href="strange-inheritance.html" title="[23] Inheritance -- what your mother never told you">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-22.2"></a>
+<div class=FaqTitle><h3>[22.2] How do I separate interface from implementation in C++ (like Modula-2)?</h3></div>
+<p>Use an <a href="abcs.html#faq-22.3" title="[22.3] What is an ABC?">ABC<!--rawtext:[22.3]:rawtext--></a>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [22] Inheritance -- abstract base classes (ABCs)">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [22] Inheritance -- abstract base classes (ABCs)">Bottom</a> |&nbsp;<a href="proper-inheritance.html" title="[21] Inheritance -- proper inheritance and substitutability">Previous&nbsp;section</a> |&nbsp;<a href="strange-inheritance.html" title="[23] Inheritance -- what your mother never told you">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-22.3"></a>
+<div class=FaqTitle><h3>[22.3] What is an ABC?</h3></div>
+<p>An abstract base class.
+<p>At the design level, an abstract base class (ABC) corresponds to an abstract
+concept.  If you asked a mechanic if he repaired vehicles, he'd probably wonder
+what <em>kind-of</em> vehicle you had in mind.  Chances are he doesn't repair
+space shuttles, ocean liners, bicycles, or nuclear submarines.  The problem is
+that the term &quot;vehicle&quot; is an abstract concept (e.g., you can't build a
+&quot;vehicle&quot; unless you know what kind of vehicle to build).  In C++, <tt>class</tt>
+<tt>Vehicle</tt> would be an ABC, with <tt>Bicycle</tt>, <tt>SpaceShuttle</tt>, etc, being
+derived classes (an <tt>OceanLiner</tt> is-a-kind-of-a <tt>Vehicle</tt>).  In real-world OO, ABCs
+show up all over the place.
+<p>At the programming language level, an ABC is a <tt>class</tt> that has one or more
+<a href="abcs.html#faq-22.4" title="[22.4] What is a &quot;pure virtual&quot; member function?">pure virtual<!--rawtext:[22.4]:rawtext--></a> member functions.  You cannot make
+an object (instance) of an ABC.
+<p><small>[&nbsp;<a href="#top" title="Top of section [22] Inheritance -- abstract base classes (ABCs)">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [22] Inheritance -- abstract base classes (ABCs)">Bottom</a> |&nbsp;<a href="proper-inheritance.html" title="[21] Inheritance -- proper inheritance and substitutability">Previous&nbsp;section</a> |&nbsp;<a href="strange-inheritance.html" title="[23] Inheritance -- what your mother never told you">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-22.4"></a>
+<div class=FaqTitle><h3>[22.4] What is a &quot;pure virtual&quot; member function?</h3></div>
+<p>A member function declaration that turns a normal class into an abstract
+class (i.e., an ABC).  You normally only implement it in a derived class.
+<p>Some member functions exist in concept; they don't have any reasonable
+definition.  E.g., suppose I asked you to draw a <tt>Shape</tt> at location
+<nobr><tt>(x,y)</tt></nobr> that has size 7.  You'd ask me &quot;what kind of shape should I
+draw?&quot; (circles, squares, hexagons, etc, are drawn differently).  In C++, we
+must indicate the existence of the <nobr><tt>draw()</tt></nobr> member function (so users can call
+it when they have a <nobr><tt>Shape*</tt></nobr> or a <nobr><tt>Shape&amp;</tt></nobr>), but we recognize it can
+(logically) be defined only in derived classes:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Shape&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;virtual&nbsp;void&nbsp;draw()&nbsp;const&nbsp;=&nbsp;0;&nbsp;&nbsp;</tt><em>//&nbsp;<nobr><tt>=&nbsp;0</tt></nobr>&nbsp;means&nbsp;it&nbsp;is&nbsp;&quot;pure&nbsp;virtual&quot;</em><tt><br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;};
+</tt>
+</div>
+<p>This pure virtual function makes <tt>Shape</tt> an ABC.  If you want, you can think of
+the &quot;<nobr><tt>= 0;</tt></nobr>&quot; syntax as if the code were at the <tt>NULL</tt> pointer.  Thus
+<tt>Shape</tt> promises a service to its users, yet Shape isn't able to provide any
+code to fulfill that promise.  This <em>forces</em> any actual object created
+from a [concrete] class derived from Shape to have the indicated member
+function, even though the base class doesn't have enough information to
+actually <em>define</em> it yet.
+<p>Note that it is possible to provide a definition for a pure virtual function,
+but this usually confuses novices and is best avoided until later.
+<p><small>[&nbsp;<a href="#top" title="Top of section [22] Inheritance -- abstract base classes (ABCs)">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [22] Inheritance -- abstract base classes (ABCs)">Bottom</a> |&nbsp;<a href="proper-inheritance.html" title="[21] Inheritance -- proper inheritance and substitutability">Previous&nbsp;section</a> |&nbsp;<a href="strange-inheritance.html" title="[23] Inheritance -- what your mother never told you">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-22.5"></a>
+<div class=FaqTitle><h3>[22.5] How do you define a copy constructor or assignment <tt>operator</tt> for a class that contains a pointer to a (abstract) base class?</h3></div>
+<p>If the class &quot;owns&quot; the object pointed to by the (abstract) base class pointer,
+use the <a href="virtual-functions.html#faq-20.6" title="[20.6] What is a &quot;virtual constructor&quot;?">Virtual Constructor Idiom<!--rawtext:[20.6]:rawtext--></a> in the (abstract)
+base class.  As usual with this idiom, we declare a <a href="abcs.html#faq-22.4" title="[22.4] What is a &quot;pure virtual&quot; member function?">pure
+<tt>virtual</tt><!--rawtext:[22.4]:rawtext--></a> <nobr><tt>clone()</tt></nobr> method in the base class:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Shape&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;virtual&nbsp;Shape*&nbsp;clone()&nbsp;const&nbsp;=&nbsp;0;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;<a href="virtual-functions.html#faq-20.6" title="[20.6] What is a &quot;virtual constructor&quot;?">The&nbsp;Virtual&nbsp;(Copy)&nbsp;Constructor<!--rawtext:[20.6]:rawtext--></a></em><tt><br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;};
+</tt>
+</div>
+<p>Then we implement this <nobr><tt>clone()</tt></nobr> method in each derived class:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Circle&nbsp;:&nbsp;public&nbsp;Shape&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;virtual&nbsp;Shape*&nbsp;clone()&nbsp;const&nbsp;{&nbsp;return&nbsp;new&nbsp;Circle(*this);&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Square&nbsp;:&nbsp;public&nbsp;Shape&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;virtual&nbsp;Shape*&nbsp;clone()&nbsp;const&nbsp;{&nbsp;return&nbsp;new&nbsp;Square(*this);&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;};
+</tt>
+</div>
+<p>Now suppose that each <tt>Fred</tt> object &quot;has-a&quot; <tt>Shape</tt> object.  Naturally the
+<tt>Fred</tt> object doesn't know whether the <tt>Shape</tt> is <tt>Circle</tt> or a <tt>Square</tt> or ...
+<tt>Fred</tt>'s copy constructor and assignment <tt>operator</tt> will invoke <tt>Shape</tt>'s
+<nobr><tt>clone()</tt></nobr> method to copy the object:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Fred&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;Fred(Shape*&nbsp;p)&nbsp;:&nbsp;p_(p)&nbsp;{&nbsp;assert(p&nbsp;!=&nbsp;NULL);&nbsp;}&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;<tt>p</tt>&nbsp;must&nbsp;not&nbsp;be&nbsp;<tt>NULL</tt></em><tt><br>
+&nbsp;&nbsp;~Fred()&nbsp;{&nbsp;delete&nbsp;p_;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;Fred(const&nbsp;Fred&amp;&nbsp;f)&nbsp;:&nbsp;p_(f.p_-&gt;clone())&nbsp;{&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;Fred&amp;&nbsp;operator=&nbsp;(const&nbsp;Fred&amp;&nbsp;f)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(this&nbsp;!=&nbsp;&amp;f)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Check&nbsp;for&nbsp;self-assignment</em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Shape*&nbsp;p2&nbsp;=&nbsp;f.p_-&gt;clone();&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Create&nbsp;the&nbsp;new&nbsp;one&nbsp;FIRST...</em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delete&nbsp;p_;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;...THEN&nbsp;<tt>delete</tt>&nbsp;the&nbsp;old&nbsp;one</em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p_&nbsp;=&nbsp;p2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;*this;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;private:<br>
+&nbsp;&nbsp;&nbsp;Shape*&nbsp;p_;<br>
+&nbsp;};
+</tt>
+</div>
+<p><small>[&nbsp;<a href="#top" title="Top of section [22] Inheritance -- abstract base classes (ABCs)">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [22] Inheritance -- abstract base classes (ABCs)">Bottom</a> |&nbsp;<a href="proper-inheritance.html" title="[21] Inheritance -- proper inheritance and substitutability">Previous&nbsp;section</a> |&nbsp;<a href="strange-inheritance.html" title="[23] Inheritance -- what your mother never told you">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="bottom"></a>
+<a href="mailto:cline@parashift.com" title="cline@parashift.com"><img src="mbox.gif" height=26 width=89 alt="E-Mail">&nbsp;E-mail the author</a><br>
+[&nbsp;<a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>
+|&nbsp;<a href="index.html#table-of-contents" title="Table of contents">Table&nbsp;of&nbsp;contents</a>
+|&nbsp;<a href="subject-index.html" title="Subject index; 3706 links to 2361 topics">Subject&nbsp;index</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.1" title="[1.1] Author">About&nbsp;the&nbsp;author</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">&copy;</a>
+|&nbsp;<a href="on-line-availability.html#faq-2.2" title="[2.2] How can I get a copy of all the HTML files of C++ FAQ Lite so I can read them Off-Line?">Download&nbsp;your&nbsp;own&nbsp;copy</a>&nbsp;]<br>
+<small>Revised May 2, 2003</small>
+</body>
+</html>

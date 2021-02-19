@@ -1,0 +1,310 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"
+	"http://www.w3.org/TR/REC-html40/strict.dtd">
+<html>
+<head>
+<title>[9] Inline functions &nbsp;Updated!&nbsp;, C++ FAQ Lite</title>
+<meta name="FILENAME" content="inline-functions.html">
+<meta name="ABSTRACT" content="[9] Inline functions [Updated!], C++ FAQ Lite">
+<meta name="OWNER"    content="cline@parashift.com">
+<meta name="AUTHOR"   content="Marshall Cline, cline@parashift.com">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rev=made href="mailto:cline@parashift.com">
+<style type='text/css'>
+  <!--
+  body       { font-family: arial; color: black; background: white }
+  .CodeBlock { color: black; background-color: #dfdfdf; margin-left: 30px; margin-right: 30px; padding: 5pt }
+  .FaqTitle  { color: black; background-color: gold }
+  .Updated   { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #ffff00; border: solid #e0e000 1px; }
+  .New       { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #00ff00; border: solid #00d000 1px; }
+  ul         { margin-bottom: 1px; margin-top: 1px }
+  ol         { margin-bottom: 1px; margin-top: 1px }
+  li         { margin-bottom: 4px; margin-top: 4px }
+  a          { color: blue }
+  a:hover    { color: red }
+  -->
+</style>
+</head>
+<body>
+<h1><a name="top"></a>[9] Inline functions <span class=Updated>&nbsp;Updated!&nbsp;</span><br>
+<small><small>(Part of <a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>, <a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">Copyright&nbsp;&copy; 1991-2003</a>, <a href="http://www.parashift.com/" title="www.parashift.com/" target='_blank'>Marshall Cline</a>, <a href="mailto:cline@parashift.com" title="cline@parashift.com"><tt>cline@parashift.com</tt></a>)</small></small></h1>
+<hr>
+<h3>FAQs in section [9]:</h3>
+<ul>
+<li><a href="inline-functions.html#faq-9.1" title="[9.1] What's the deal with inline functions?">[9.1] What's the deal with <tt>inline</tt> functions?</a></li>
+<li><a href="inline-functions.html#faq-9.2" title="[9.2] What's a simple example of procedural integration?">[9.2] What's a simple example of procedural integration?</a></li>
+<li><a href="inline-functions.html#faq-9.3" title="[9.3] Do inline functions improve performance?">[9.3] Do <tt>inline</tt> functions improve performance?</a> <span class=Updated>&nbsp;Updated!&nbsp;</span></li>
+<li><a href="inline-functions.html#faq-9.4" title="[9.4] How can inline functions help with the tradeoff of safety vs. speed?">[9.4] How can <tt>inline</tt> functions help with the tradeoff of safety <em>vs.</em> speed?</a> <span class=Updated>&nbsp;Updated!&nbsp;</span></li>
+<li><a href="inline-functions.html#faq-9.5" title="[9.5] Why should I use inline functions instead of plain old #define macros?">[9.5] Why should I use <tt>inline</tt> functions instead of plain old <nobr><tt>#define</tt></nobr> macros?</a></li>
+<li><a href="inline-functions.html#faq-9.6" title="[9.6] How do you tell the compiler to make a non-member function inline?">[9.6] How do you tell the compiler to make a non-member function <tt>inline</tt>?</a></li>
+<li><a href="inline-functions.html#faq-9.7" title="[9.7] How do you tell the compiler to make a member function inline?">[9.7] How do you tell the compiler to make a member function <tt>inline</tt>?</a></li>
+<li><a href="inline-functions.html#faq-9.8" title="[9.8] Is there another way to tell the compiler to make a member function inline?">[9.8] Is there another way to tell the compiler to make a member function <tt>inline</tt>?</a></li>
+</ul>
+<p><hr>
+<p><a name="faq-9.1"></a>
+<div class=FaqTitle><h3>[9.1] What's the deal with <tt>inline</tt> functions?</h3></div>
+<p>When the compiler inline-expands a function call, the function's code gets
+inserted into the caller's code stream (conceptually similar to what happens
+with a <a href="inline-functions.html#faq-9.5" title="[9.5] Why should I use inline functions instead of plain old #define macros?"><nobr><tt>#define</tt></nobr> macro<!--rawtext:[9.5]:rawtext--></a>).  This can,
+<a href="inline-functions.html#faq-9.3" title="[9.3] Do inline functions improve performance?">depending on a zillion other things<!--rawtext:[9.3]:rawtext--></a>, improve
+performance, because the optimizer can
+<a href="inline-functions.html#faq-9.2" title="[9.2] What's a simple example of procedural integration?">procedurally integrate<!--rawtext:[9.2]:rawtext--></a> the called code &#151;
+optimize the called code into the caller.
+<p>There are several ways to designate that a function is <tt>inline</tt>, some of which
+<a href="inline-functions.html#faq-9.7" title="[9.7] How do you tell the compiler to make a member function inline?">involve the <tt>inline</tt> keyword<!--rawtext:[9.7]:rawtext--></a>, others
+<a href="inline-functions.html#faq-9.8" title="[9.8] Is there another way to tell the compiler to make a member function inline?">do not<!--rawtext:[9.8]:rawtext--></a>.  No matter how you designate a
+function as <tt>inline</tt>, it is a request that the compiler is allowed to ignore:
+it might inline-expand some, all, or none of the calls to an <tt>inline</tt>
+function.  (Don't get discouraged if that seems hopelessly vague.  The
+flexibility of the above is actually a huge advantage: it lets the compiler
+treat large functions differently from small ones, plus it lets the compiler
+generate code that is easy to debug if you select the right compiler options.)
+<p><small>[&nbsp;<a href="#top" title="Top of section [9] Inline functions">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [9] Inline functions">Bottom</a> |&nbsp;<a href="references.html" title="[8] References">Previous&nbsp;section</a> |&nbsp;<a href="ctors.html" title="[10] Constructors">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-9.2"></a>
+<div class=FaqTitle><h3>[9.2] What's a simple example of procedural integration?</h3></div>
+<p>Consider the following call to function <nobr><tt>g()</tt></nobr>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;f()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;x&nbsp;=&nbsp;</tt><em>/*...*/</em><tt>;<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;y&nbsp;=&nbsp;</tt><em>/*...*/</em><tt>;<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;z&nbsp;=&nbsp;</tt><em>/*...*/</em><tt>;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...code&nbsp;that&nbsp;uses&nbsp;<tt>x</tt>,&nbsp;<tt>y</tt>&nbsp;and&nbsp;<tt>z</tt>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;g(x,&nbsp;y,&nbsp;z);<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...more&nbsp;code&nbsp;that&nbsp;uses&nbsp;<tt>x</tt>,&nbsp;<tt>y</tt>&nbsp;and&nbsp;<tt>z</tt>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>Assuming a typical C++ implementation that has registers and a stack, the
+registers and parameters get written to the stack just before the call to
+<nobr><tt>g()</tt></nobr>, then the parameters get read from the stack inside <nobr><tt>g()</tt></nobr> and read again
+to restore the registers while <nobr><tt>g()</tt></nobr> returns to <nobr><tt>f()</tt></nobr>.  But that's a lot of
+unnecessary reading and writing, especially in cases when the compiler is able
+to use registers for variables <tt>x</tt>, <tt>y</tt> and <tt>z</tt>: each variable could get
+written twice (as a register and also as a parameter) and read twice (when
+used within <nobr><tt>g()</tt></nobr> and to restore the registers during the return to <nobr><tt>f()</tt></nobr>).
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;g(int&nbsp;x,&nbsp;int&nbsp;y,&nbsp;int&nbsp;z)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...code&nbsp;that&nbsp;uses&nbsp;<tt>x</tt>,&nbsp;<tt>y</tt>&nbsp;and&nbsp;<tt>z</tt>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>If the compiler inline-expands the call to <nobr><tt>g()</tt></nobr>, all those memory operations
+could vanish.  The registers wouldn't need to get written or read since there
+wouldn't be a function call, and the parameters wouldn't need to get written
+or read since the optimizer would know they're already in registers.
+<p>Naturally your mileage may vary, and there are a zillion variables that are
+outside the scope of this particular FAQ, but the above serves as an example
+of the sorts of things that can happen with procedural integration.
+<p><small>[&nbsp;<a href="#top" title="Top of section [9] Inline functions">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [9] Inline functions">Bottom</a> |&nbsp;<a href="references.html" title="[8] References">Previous&nbsp;section</a> |&nbsp;<a href="ctors.html" title="[10] Constructors">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-9.3"></a>
+<div class=FaqTitle><h3>[9.3] Do <tt>inline</tt> functions improve performance? <span class=Updated>&nbsp;Updated!&nbsp;</span></h3></div>
+<small><em>[Recently rewrote the &quot;can cause thrashing&quot; bullet thanks to <a href="mailto:zariust@eml.cc" title="zariust@eml.cc">Zarius Tularial</a>; also reworded throughout to strengthen the points (in 4/03).  <a href="inline-functions.html#faq-9.4" title="[9.4] How can inline functions help with the tradeoff of safety vs. speed?">Click here to go to the next FAQ in the &quot;chain&quot; of recent changes<!--rawtext:[9.4]:rawtext--></a>.]</em></small>
+<p>Yes and no.  Sometimes.  Maybe.
+<p>There are no simple answers.  <tt>inline</tt> functions might make the code
+faster, they might make it slower.  They might make the executable larger,
+they might make it smaller.  They might cause thrashing, they might prevent
+thrashing.  And they might be, and often are, totally irrelevant to speed.
+<p><b><tt>inline</tt> functions might make it <em>faster</em>:</b> As shown
+<a href="inline-functions.html#faq-9.2" title="[9.2] What's a simple example of procedural integration?">above<!--rawtext:[9.2]:rawtext--></a>, procedural integration might remove
+a bunch of unnecessary instructions, which might make things run faster.
+<p><b><tt>inline</tt> functions might make it <em>slower</em>:</b> Too much inlining
+might cause code bloat, which might cause &quot;thrashing&quot; on demand-paged
+virtual-memory systems.  In other words, if the executable size is too big,
+the system might spend most of its time going out to disk to fetch the next
+chunk of code.
+<p><b><tt>inline</tt> functions might make it <em>larger</em>:</b> This is the
+notion of code bloat, as described above.  For example, if a system has 100
+<tt>inline</tt> functions each of which expands to 100 bytes of executable code
+and is called in 100 places, that's an increase of 1MB.  Is that 1MB going to
+cause problems?  Who knows, but it is possible that that last 1MB could cause
+the system to &quot;thrash,&quot; and that could slow things down.
+<p><b><tt>inline</tt> functions might make it <em>smaller</em>:</b> The compiler
+often generates more code to push/pop registers/parameters than it would by
+inline-expanding the function's body.  This happens with very small functions,
+and it also happens with large functions when the optimizer is able to remove
+a lot of redundant code through procedural integration &#151; that is, when the
+optimizer is able to make the large function small.
+<p><b><tt>inline</tt> functions might <em>cause thrashing</em>:</b> Inlining might
+increase the size of the binary executable, and that might cause thrashing.
+<p><b><tt>inline</tt> functions might <em>prevent thrashing</em>:</b> The working
+set size (number of pages that need to be in memory at once) might go down
+even if the executable size goes up.  When <nobr><tt>f()</tt></nobr> calls <nobr><tt>g()</tt></nobr>, the
+code is often on two distinct pages; when the compiler procedurally integrates
+the code of <nobr><tt>g()</tt></nobr> into <nobr><tt>f()</tt></nobr>, the code is often on the same page.
+<p><b><tt>inline</tt> functions might be <em>irrelevant to speed</em>:</b> Most
+systems are not CPU-bound.  Most systems are I/O-bound, database-bound or
+network-bound, meaning the bottleneck in the system's overall performance is
+the file system, the database or the network.  Unless your &quot;CPU meter&quot; is
+pegged at 100%, <tt>inline</tt> functions probably won't make your system
+faster.  (Even in CPU-bound systems, <tt>inline</tt> will help only when used
+within the bottleneck itself, and the bottleneck is typically in only a small
+percentage of the code.)
+<p><b>There are no simple answers:</b> You have to play with it to see what
+is best.  Do <em>not</em> settle for simplistic answers like, &quot;Never use
+<tt>inline</tt> functions&quot; or &quot;Always use <tt>inline</tt> functions&quot; or &quot;Use <tt>inline</tt>
+functions if and only if the function is less than <em>N</em> lines of code.&quot;
+These one-size-fits-all rules may be easy to write down, but they will produce
+sub-optimal results.
+<p><small>[&nbsp;<a href="#top" title="Top of section [9] Inline functions">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [9] Inline functions">Bottom</a> |&nbsp;<a href="references.html" title="[8] References">Previous&nbsp;section</a> |&nbsp;<a href="ctors.html" title="[10] Constructors">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-9.4"></a>
+<div class=FaqTitle><h3>[9.4] How can <tt>inline</tt> functions help with the tradeoff of safety <em>vs.</em> speed? <span class=Updated>&nbsp;Updated!&nbsp;</span></h3></div>
+<small><em>[Recently fixed a misspelling (in 5/03).  <a href="freestore-mgmt.html#faq-16.16" title="[16.16] But the previous FAQ's code is SOOOO tricky and error prone! Isn't there a simpler way?">Click here to go to the next FAQ in the &quot;chain&quot; of recent changes<!--rawtext:[16.16]:rawtext--></a>.]</em></small>
+<p>In straight C, you can achieve &quot;encapsulated <tt>struct</tt>s&quot; by putting a <nobr><tt>void*</tt></nobr> in
+a <tt>struct</tt>, in which case the <nobr><tt>void*</tt></nobr> points to the real data that is unknown
+to users of the <tt>struct</tt>.  Therefore users of the <tt>struct</tt> don't know how to
+interpret the stuff pointed to by the <nobr><tt>void*</tt></nobr>, but the access functions cast
+the <nobr><tt>void*</tt></nobr> to the appropriate hidden type.  This gives a form of encapsulation.
+<p>Unfortunately it forfeits type safety, and also imposes a function call to
+access even trivial fields of the <tt>struct</tt> (if you allowed direct access to the
+<tt>struct</tt>'s fields, anyone and everyone would be able to get direct access since
+they would of necessity know how to interpret the stuff pointed to by the
+<nobr><tt>void*</tt></nobr>; this would make it difficult to change the underlying data structure).
+<p>Function call overhead is small, but can add up.  C++ classes allow function
+calls to be expanded <tt>inline</tt>.  This lets you have the safety of encapsulation
+along with the speed of direct access.  Furthermore the parameter types of
+these <tt>inline</tt> functions are checked by the compiler, an improvement over C's
+<nobr><tt>#define</tt></nobr> macros.
+<p><small>[&nbsp;<a href="#top" title="Top of section [9] Inline functions">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [9] Inline functions">Bottom</a> |&nbsp;<a href="references.html" title="[8] References">Previous&nbsp;section</a> |&nbsp;<a href="ctors.html" title="[10] Constructors">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-9.5"></a>
+<div class=FaqTitle><h3>[9.5] Why should I use <tt>inline</tt> functions instead of plain old <nobr><tt>#define</tt></nobr> macros?</h3></div>
+<p>Because <nobr><tt>#define</tt></nobr> macros are <a href="big-picture.html#faq-6.14" title="[6.14] What does the FAQ mean by &quot;such-in-such is evil&quot;?">evil<!--rawtext:[6.14]:rawtext--></a> in 4 different
+ways: <a href="inline-functions.html#faq-9.5" title="[9.5] Why should I use inline functions instead of plain old #define macros?">evil#1<!--rawtext:[9.5]:rawtext--></a>, <a href="misc-technical-issues.html#faq-38.4" title="[38.4] What should be done with macros that contain if?">evil#2<!--rawtext:[38.4]:rawtext--></a>,
+<a href="misc-technical-issues.html#faq-38.5" title="[38.5] What should be done with macros that have multiple lines?">evil#3<!--rawtext:[38.5]:rawtext--></a>, and
+<a href="misc-technical-issues.html#faq-38.6" title="[38.6] What should be done with macros that need to paste two tokens together?">evil#4<!--rawtext:[38.6]:rawtext--></a>.  Sometimes you should
+<a href="big-picture.html#faq-6.15" title="[6.15] Will I sometimes use any so-called &quot;evil&quot; constructs?">use them anyway<!--rawtext:[6.15]:rawtext--></a>, but they're still evil.
+<p>Unlike <nobr><tt>#define</tt></nobr> macros, <tt>inline</tt> functions avoid infamous macro errors
+since <tt>inline</tt> functions always evaluate every argument exactly once.
+In other words, invoking an <tt>inline</tt> function is semantically just like
+invoking a regular function, only faster:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;</tt><em>//&nbsp;A&nbsp;macro&nbsp;that&nbsp;returns&nbsp;the&nbsp;absolute&nbsp;value&nbsp;of&nbsp;<tt>i</tt></em><tt><br>
+&nbsp;#define&nbsp;unsafe(i)&nbsp;&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&nbsp;(i)&nbsp;&gt;=&nbsp;0&nbsp;?&nbsp;(i)&nbsp;:&nbsp;-(i)&nbsp;)<br>
+&nbsp;<br>
+&nbsp;</tt><em>//&nbsp;An&nbsp;<tt>inline</tt>&nbsp;function&nbsp;that&nbsp;returns&nbsp;the&nbsp;absolute&nbsp;value&nbsp;of&nbsp;<tt>i</tt></em><tt><br>
+&nbsp;inline<br>
+&nbsp;int&nbsp;safe(int&nbsp;i)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;return&nbsp;i&nbsp;&gt;=&nbsp;0&nbsp;?&nbsp;i&nbsp;:&nbsp;-i;<br>
+&nbsp;}<br>
+&nbsp;<br>
+&nbsp;int&nbsp;f();<br>
+&nbsp;<br>
+&nbsp;void&nbsp;userCode(int&nbsp;x)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;ans;<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;ans&nbsp;=&nbsp;unsafe(x++);&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Error!&nbsp;<tt>x</tt>&nbsp;is&nbsp;incremented&nbsp;twice</em><tt><br>
+&nbsp;&nbsp;&nbsp;ans&nbsp;=&nbsp;unsafe(f());&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Danger!&nbsp;<nobr><tt>f()</tt></nobr>&nbsp;is&nbsp;called&nbsp;twice</em><tt><br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;ans&nbsp;=&nbsp;safe(x++);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Correct!&nbsp;<tt>x</tt>&nbsp;is&nbsp;incremented&nbsp;once</em><tt><br>
+&nbsp;&nbsp;&nbsp;ans&nbsp;=&nbsp;safe(f());&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Correct!&nbsp;<nobr><tt>f()</tt></nobr>&nbsp;is&nbsp;called&nbsp;once</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>Also unlike macros, argument types are checked, and necessary conversions are
+performed correctly.
+<p>Macros are bad for your health; don't use them <a href="big-picture.html#faq-6.15" title="[6.15] Will I sometimes use any so-called &quot;evil&quot; constructs?">unless you have to<!--rawtext:[6.15]:rawtext--></a>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [9] Inline functions">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [9] Inline functions">Bottom</a> |&nbsp;<a href="references.html" title="[8] References">Previous&nbsp;section</a> |&nbsp;<a href="ctors.html" title="[10] Constructors">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-9.6"></a>
+<div class=FaqTitle><h3>[9.6] How do you tell the compiler to make a non-member function <tt>inline</tt>?</h3></div>
+<p>When you declare an <tt>inline</tt> function, it looks just like a normal function:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;f(int&nbsp;i,&nbsp;char&nbsp;c);
+</tt>
+</div>
+<p>But when you define an <tt>inline</tt> function, you prepend the function's definition
+with the keyword <tt>inline</tt>, and you put the definition into a header file:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;inline<br>
+&nbsp;void&nbsp;f(int&nbsp;i,&nbsp;char&nbsp;c)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>Note: It's imperative that the function's definition (the part between the
+<nobr><tt>{</tt>...<tt>}</tt></nobr>) be placed in a header file, unless the function is used only in
+a single .cpp file.  In particular, if you put the <tt>inline</tt> function's
+definition into a <tt>.cpp</tt> file and you call it from some other
+<tt>.cpp</tt> file, you'll get an &quot;unresolved external&quot; error from the linker.
+<p><small>[&nbsp;<a href="#top" title="Top of section [9] Inline functions">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [9] Inline functions">Bottom</a> |&nbsp;<a href="references.html" title="[8] References">Previous&nbsp;section</a> |&nbsp;<a href="ctors.html" title="[10] Constructors">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-9.7"></a>
+<div class=FaqTitle><h3>[9.7] How do you tell the compiler to make a member function <tt>inline</tt>?</h3></div>
+<p>When you declare an <tt>inline</tt> member function, it looks just like a normal
+member function:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Fred&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;void&nbsp;f(int&nbsp;i,&nbsp;char&nbsp;c);<br>
+&nbsp;};
+</tt>
+</div>
+<p>But when you define an <tt>inline</tt> member function, you prepend the member
+function's definition with the keyword <tt>inline</tt>, and you put the definition
+into a header file:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;inline<br>
+&nbsp;void&nbsp;Fred::f(int&nbsp;i,&nbsp;char&nbsp;c)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>It's usually imperative that the function's definition (the part between the
+<nobr><tt>{</tt>...<tt>}</tt></nobr>) be placed in a header file.  If you put the <tt>inline</tt> function's
+definition into a <tt>.cpp</tt> file, and if it is called from some other
+<tt>.cpp</tt> file, you'll get an &quot;unresolved external&quot; error from the linker.
+<p><small>[&nbsp;<a href="#top" title="Top of section [9] Inline functions">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [9] Inline functions">Bottom</a> |&nbsp;<a href="references.html" title="[8] References">Previous&nbsp;section</a> |&nbsp;<a href="ctors.html" title="[10] Constructors">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-9.8"></a>
+<div class=FaqTitle><h3>[9.8] Is there another way to tell the compiler to make a member function <tt>inline</tt>?</h3></div>
+<p>Yep: define the member function in the class body itself:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Fred&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;void&nbsp;f(int&nbsp;i,&nbsp;char&nbsp;c)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;};
+</tt>
+</div>
+<p>Although this is easier on the person who writes the class, it's harder on
+all the readers since it mixes &quot;what&quot; a class does with &quot;how&quot; it does them.
+Because of this mixture, we normally prefer to define member functions
+<a href="inline-functions.html#faq-9.7" title="[9.7] How do you tell the compiler to make a member function inline?">outside the class body with the <tt>inline</tt>
+keyword<!--rawtext:[9.7]:rawtext--></a>.  The insight that makes sense of this: in a
+reuse-oriented world, there will usually be many people who use your class,
+but there is only one person who builds it (yourself); therefore you should do
+things that favor the many rather than the few.
+<p><small>[&nbsp;<a href="#top" title="Top of section [9] Inline functions">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [9] Inline functions">Bottom</a> |&nbsp;<a href="references.html" title="[8] References">Previous&nbsp;section</a> |&nbsp;<a href="ctors.html" title="[10] Constructors">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="bottom"></a>
+<a href="mailto:cline@parashift.com" title="cline@parashift.com"><img src="mbox.gif" height=26 width=89 alt="E-Mail">&nbsp;E-mail the author</a><br>
+[&nbsp;<a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>
+|&nbsp;<a href="index.html#table-of-contents" title="Table of contents">Table&nbsp;of&nbsp;contents</a>
+|&nbsp;<a href="subject-index.html" title="Subject index; 3706 links to 2361 topics">Subject&nbsp;index</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.1" title="[1.1] Author">About&nbsp;the&nbsp;author</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">&copy;</a>
+|&nbsp;<a href="on-line-availability.html#faq-2.2" title="[2.2] How can I get a copy of all the HTML files of C++ FAQ Lite so I can read them Off-Line?">Download&nbsp;your&nbsp;own&nbsp;copy</a>&nbsp;]<br>
+<small>Revised May 2, 2003</small>
+</body>
+</html>

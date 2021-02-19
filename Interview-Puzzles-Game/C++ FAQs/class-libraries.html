@@ -1,0 +1,238 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"
+	"http://www.w3.org/TR/REC-html40/strict.dtd">
+<html>
+<head>
+<title>[36] Class libraries &nbsp;Updated!&nbsp;, C++ FAQ Lite</title>
+<meta name="FILENAME" content="class-libraries.html">
+<meta name="ABSTRACT" content="[36] Class libraries [Updated!], C++ FAQ Lite">
+<meta name="OWNER"    content="cline@parashift.com">
+<meta name="AUTHOR"   content="Marshall Cline, cline@parashift.com">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rev=made href="mailto:cline@parashift.com">
+<style type='text/css'>
+  <!--
+  body       { font-family: arial; color: black; background: white }
+  .CodeBlock { color: black; background-color: #dfdfdf; margin-left: 30px; margin-right: 30px; padding: 5pt }
+  .FaqTitle  { color: black; background-color: gold }
+  .Updated   { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #ffff00; border: solid #e0e000 1px; }
+  .New       { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #00ff00; border: solid #00d000 1px; }
+  ul         { margin-bottom: 1px; margin-top: 1px }
+  ol         { margin-bottom: 1px; margin-top: 1px }
+  li         { margin-bottom: 4px; margin-top: 4px }
+  a          { color: blue }
+  a:hover    { color: red }
+  -->
+</style>
+</head>
+<body>
+<h1><a name="top"></a>[36] Class libraries <span class=Updated>&nbsp;Updated!&nbsp;</span><br>
+<small><small>(Part of <a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>, <a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">Copyright&nbsp;&copy; 1991-2003</a>, <a href="http://www.parashift.com/" title="www.parashift.com/" target='_blank'>Marshall Cline</a>, <a href="mailto:cline@parashift.com" title="cline@parashift.com"><tt>cline@parashift.com</tt></a>)</small></small></h1>
+<hr>
+<h3>FAQs in section [36]:</h3>
+<ul>
+<li><a href="class-libraries.html#faq-36.1" title="[36.1] What is the &quot;STL&quot;?">[36.1] What is the &quot;STL&quot;?</a></li>
+<li><a href="class-libraries.html#faq-36.2" title="[36.2] Where can I get a copy of &quot;STL&quot;?">[36.2] Where can I get a copy of &quot;STL&quot;?</a> <span class=Updated>&nbsp;Updated!&nbsp;</span></li>
+<li><a href="class-libraries.html#faq-36.3" title="[36.3] How can I find a Fred object in an STL container of Fred* such as std::vector&lt;Fred*&gt;?">[36.3] How can I find a <tt>Fred</tt> object in an STL container of <nobr><tt>Fred*</tt></nobr> such as <nobr><tt>std::vector&lt;Fred*&gt;</tt></nobr>?</a></li>
+<li><a href="class-libraries.html#faq-36.4" title="[36.4] Where can I get help on how to use STL?">[36.4] Where can I get help on how to use STL?</a> <span class=Updated>&nbsp;Updated!&nbsp;</span></li>
+<li><a href="class-libraries.html#faq-36.5" title="[36.5] How can you tell if you have a dynamically typed C++ class library?">[36.5] How can you tell if you have a dynamically typed C++ class library?</a></li>
+<li><a href="class-libraries.html#faq-36.6" title="[36.6] What is the NIHCL? Where can I get it?">[36.6] What is the NIHCL? Where can I get it?</a></li>
+<li><a href="class-libraries.html#faq-36.7" title="[36.7] Where can I ftp the code that accompanies &quot;Numerical Recipes&quot;?">[36.7] Where can I ftp the code that accompanies &quot;Numerical Recipes&quot;?</a></li>
+<li><a href="class-libraries.html#faq-36.8" title="[36.8] Why is my executable so large?">[36.8] Why is my executable so large?</a></li>
+<li><a href="class-libraries.html#faq-36.9" title="[36.9] Where can I get tons and tons of more information on C++ class libraries?">[36.9] Where can I get tons and tons of more information on C++ class libraries?</a></li>
+</ul>
+<p><hr>
+<p><a name="faq-36.1"></a>
+<div class=FaqTitle><h3>[36.1] What is the &quot;STL&quot;?</h3></div>
+<p>STL (&quot;Standard Templates Library&quot;) is a library that consists mainly of
+(<em>very</em> efficient) container classes, along with some iterators and
+algorithms to work with the contents of these containers.
+<p>Technically speaking the term &quot;STL&quot; is no longer meaningful since the classes
+provided by the STL have been fully integrated into the standard library, along
+with other standard classes like <nobr><tt>std::ostream</tt></nobr>, etc.  Nonetheless many people
+still refer to the STL as if it was a separate thing, so you might as well get
+used to hearing that term.
+<p><small>[&nbsp;<a href="#top" title="Top of section [36] Class libraries">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [36] Class libraries">Bottom</a> |&nbsp;<a href="serialization.html" title="[35] Serialization and Unserialization">Previous&nbsp;section</a> |&nbsp;<a href="compiler-dependencies.html" title="[37] Compiler dependencies">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-36.2"></a>
+<div class=FaqTitle><h3>[36.2] Where can I get a copy of &quot;STL&quot;? <span class=Updated>&nbsp;Updated!&nbsp;</span></h3></div>
+<small><em>[Recently fixed the URL for <a href="http://www.sgi.com/tech/stl/" title="www.sgi.com/tech/stl/" target='_blank'>the SGI implementation</a> thanks to <a href="mailto:jeremy@edg.eu.com" title="jeremy@edg.eu.com">Jeremy Bishop</a> (in 4/03).  <a href="class-libraries.html#faq-36.4" title="[36.4] Where can I get help on how to use STL?">Click here to go to the next FAQ in the &quot;chain&quot; of recent changes<!--rawtext:[36.4]:rawtext--></a>.]</em></small>
+<p>Since the classes that were part of the <a href="class-libraries.html#faq-36.1" title="[36.1] What is the &quot;STL&quot;?">STL<!--rawtext:[36.1]:rawtext--></a> have become part of
+the standard library, your compiler should provide these classes.  If your
+compiler doesn't include these standard classes, either get an updated version
+of your compiler or download a copy of the STL classes from one of the
+following:
+<ul>
+<li>An STL site:
+<a href="ftp://ftp.cs.rpi.edu/pub/stl" title="ftp.cs.rpi.edu/pub/stl" target='_blank'><tt>ftp.cs.rpi.edu/pub/stl</tt></a></li>
+<li>STL HP official site:
+<a href="ftp://butler.hpl.hp.com/stl/" title="butler.hpl.hp.com/stl/" target='_blank'><tt>butler.hpl.hp.com/stl/</tt></a></li>
+<li>Mirror site in Europe:
+<a href="http://www.maths.warwick.ac.uk/ftp/mirrors/c++/stl/" title="www.maths.warwick.ac.uk/ftp/mirrors/c++/stl/" target='_blank'><tt>www.maths.warwick.ac.uk/ftp/mirrors/c++/stl/</tt></a></li>
+<li>STL code alternate:
+<a href="ftp://ftp.cs.rpi.edu/stl" title="ftp.cs.rpi.edu/stl" target='_blank'><tt>ftp.cs.rpi.edu/stl</tt></a></li>
+<li>The SGI implementation:
+<a href="http://www.sgi.com/tech/stl/" title="www.sgi.com/tech/stl/" target='_blank'><tt>www.sgi.com/tech/stl/</tt></a></li>
+<li>STLport:
+<a href="http://www.stlport.org" title="www.stlport.org" target='_blank'><tt>www.stlport.org</tt></a></li>
+</ul>
+<p>STL hacks for GCC-2.6.3 are part of the GNU libg++ package 2.6.2.1 or later
+(and they may be in an earlier version as well).  Thanks to Mike Lindner.
+<p>Also you may as well get used to some people using &quot;STL&quot; to include the
+standard string header, &quot;&lt;string&gt;&quot;, and others objecting to that usage.
+<p><small>[&nbsp;<a href="#top" title="Top of section [36] Class libraries">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [36] Class libraries">Bottom</a> |&nbsp;<a href="serialization.html" title="[35] Serialization and Unserialization">Previous&nbsp;section</a> |&nbsp;<a href="compiler-dependencies.html" title="[37] Compiler dependencies">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-36.3"></a>
+<div class=FaqTitle><h3>[36.3] How can I find a <tt>Fred</tt> object in an STL container of <nobr><tt>Fred*</tt></nobr> such as <nobr><tt>std::vector&lt;Fred*&gt;</tt></nobr>?</h3></div>
+<p>STL functions such as <nobr><tt>std::find_if()</tt></nobr> help you find a <tt>T</tt> element
+in a container of <tt>T</tt>'s.  But if you have a container of pointers such as
+<nobr><tt>std::vector&lt;Fred*&gt;</tt></nobr>, these functions will enable you to find an element that
+matches a given <nobr><tt>Fred*</tt></nobr> pointer, but they don't let you find an element that
+matches a given <tt>Fred</tt> object.
+<p>The solution is to use an optional parameter that specifies the &quot;match&quot;
+function.  The following class template lets you compare the objects on the
+other end of the dereferenced pointers.
+<p><div class=CodeBlock>
+<tt>
+&nbsp;template&lt;class&nbsp;T&gt;<br>
+&nbsp;class&nbsp;DereferencedEqual&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;DereferencedEqual(const&nbsp;T*&nbsp;p)&nbsp;:&nbsp;p_(p)&nbsp;{&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;bool&nbsp;operator()&nbsp;(const&nbsp;T*&nbsp;p2)&nbsp;const&nbsp;{&nbsp;return&nbsp;*p_&nbsp;==&nbsp;*p2;&nbsp;}<br>
+&nbsp;private:<br>
+&nbsp;&nbsp;&nbsp;const&nbsp;T*&nbsp;p_;<br>
+&nbsp;};
+</tt>
+</div>
+<p>Now you can use this template to find an appropriate <tt>Fred</tt> object:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;userCode(std::vector&lt;Fred*&gt;&nbsp;v,&nbsp;const&nbsp;Fred&amp;&nbsp;match)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::find_if(v.begin(),&nbsp;v.end(),&nbsp;DereferencedEqual&lt;Fred&gt;(&amp;match));<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p><small>[&nbsp;<a href="#top" title="Top of section [36] Class libraries">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [36] Class libraries">Bottom</a> |&nbsp;<a href="serialization.html" title="[35] Serialization and Unserialization">Previous&nbsp;section</a> |&nbsp;<a href="compiler-dependencies.html" title="[37] Compiler dependencies">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-36.4"></a>
+<div class=FaqTitle><h3>[36.4] Where can I get help on how to use STL? <span class=Updated>&nbsp;Updated!&nbsp;</span></h3></div>
+<small><em>[Recently added <a href="http://www.sgi.com/tech/stl/" title="www.sgi.com/tech/stl/" target='_blank'>SGI's STL Programmer's guide</a> (in 5/03).  <a href="compiler-dependencies.html#faq-37.2" title="[37.2] Where can I get more information on using MFC and Visual C++?">Click here to go to the next FAQ in the &quot;chain&quot; of recent changes<!--rawtext:[37.2]:rawtext--></a>.]</em></small>
+<p>Here are some resources (in random order):
+<p>Rogue Wave's STL Guide:
+<a href="http://www.ccd.bnl.gov/bcf/cluster/pgi/pgC++_lib/stdlibug/ug1.htm" title="www.ccd.bnl.gov/bcf/cluster/pgi/pgC++_lib/stdlibug/ug1.htm" target='_blank'><tt>www.ccd.bnl.gov/bcf/cluster/pgi/pgC++_lib/stdlibug/ug1.htm</tt></a>
+<p>The STL FAQ:
+<a href="ftp://butler.hpl.hp.com/stl/stl.faq" title="butler.hpl.hp.com/stl/stl.faq" target='_blank'><tt>butler.hpl.hp.com/stl/stl.faq</tt></a>
+<p>Kenny Zalewski's STL guide:
+<a href="http://www.cs.rpi.edu/projects/STL/htdocs/stl.html" title="www.cs.rpi.edu/projects/STL/htdocs/stl.html" target='_blank'><tt>www.cs.rpi.edu/projects/STL/htdocs/stl.html</tt></a>
+<p>Mumit's STL Newbie's guide:
+<a href="http://www.xraylith.wisc.edu/~khan/software/stl/STL.newbie.html" title="www.xraylith.wisc.edu/~khan/software/stl/STL.newbie.html" target='_blank'><tt>www.xraylith.wisc.edu/~khan/software/stl/STL.newbie.html</tt></a>
+<p>SGI's STL Programmer's guide:
+<a href="http://www.sgi.com/tech/stl/" title="www.sgi.com/tech/stl/" target='_blank'><tt>www.sgi.com/tech/stl/</tt></a>
+<p>There are also some <a href="how-to-learn-cpp.html#faq-28.7" title="[28.7] What are some best-of-breed C++ programming-by-example guides?">books that will help<!--rawtext:[28.7]:rawtext--></a>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [36] Class libraries">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [36] Class libraries">Bottom</a> |&nbsp;<a href="serialization.html" title="[35] Serialization and Unserialization">Previous&nbsp;section</a> |&nbsp;<a href="compiler-dependencies.html" title="[37] Compiler dependencies">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-36.5"></a>
+<div class=FaqTitle><h3>[36.5] How can you tell if you have a dynamically typed C++ class library?</h3></div>
+<ul>
+<li>Hint #1: when everything is derived from a single root class,
+usually <tt>Object</tt>.</li>
+<li>Hint #2: when the container classes (<tt>List</tt>, <tt>Stack</tt>, <tt>Set</tt>, etc)
+are non-templates.</li>
+<li>Hint #3: when the container classes (<tt>List</tt>, <tt>Stack</tt>, <tt>Set</tt>, etc)
+insert/extract elements as pointers to <tt>Object</tt>.  This lets you put an
+<tt>Apple</tt> into such a container, but when you get it out, the compiler knows
+only that it is derived from <tt>Object</tt>, so you have to use a pointer cast
+to convert it back to an <nobr><tt>Apple*</tt></nobr>; and you'd better pray a lot that it really
+<em>is</em> an <tt>Apple</tt>, cause <a href="coding-standards.html#faq-27.10" title="[27.10] Why do people worry so much about pointer casts and/or reference casts?">your blood is on your own
+head<!--rawtext:[27.10]:rawtext--></a>).</li>
+</ul>
+<p>You can make the pointer cast &quot;safe&quot; by using <tt>dynamic_cast</tt>, but this dynamic
+testing is just that: dynamic.  This coding style is the essence of dynamic
+typing in C++.  You call a function that says &quot;convert this <tt>Object</tt> into
+an <tt>Apple</tt> or give me <tt>NULL</tt> if its not an <tt>Apple</tt>,&quot; and you've got dynamic
+typing: you don't know what will happen until run-time.
+<p>When you use templates to implement your containers, the C++ compiler can
+statically validate 90+% of an application's typing information (the figure
+&quot;90+%&quot; is apocryphal; some claim they always get 100%, those who need
+<a href="misc-technical-issues.html#faq-38.10" title="[38.10] What is &quot;persistence&quot;? What is a &quot;persistent object&quot;?">persistence<!--rawtext:[38.10]:rawtext--></a> get something less than 100% static type
+checking).  The point is: C++ gets genericity from templates, not from
+inheritance.
+<p><small>[&nbsp;<a href="#top" title="Top of section [36] Class libraries">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [36] Class libraries">Bottom</a> |&nbsp;<a href="serialization.html" title="[35] Serialization and Unserialization">Previous&nbsp;section</a> |&nbsp;<a href="compiler-dependencies.html" title="[37] Compiler dependencies">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-36.6"></a>
+<div class=FaqTitle><h3>[36.6] What is the NIHCL? Where can I get it?</h3></div>
+<p>NIHCL stands for &quot;National-Institute-of-Health's-class-library.&quot; It can be
+acquired via <a href="ftp://128.231.128.7/pub/NIHCL/nihcl-3.0.tar.Z" title="128.231.128.7/pub/NIHCL/nihcl-3.0.tar.Z" target='_blank'><tt>128.231.128.7/pub/NIHCL/nihcl-3.0.tar.Z</tt></a>
+<p>NIHCL (some people pronounce it &quot;N-I-H-C-L,&quot; others pronounce it like &quot;nickel&quot;)
+is a <a href="class-libraries.html#faq-36.5" title="[36.5] How can you tell if you have a dynamically typed C++ class library?">C++ translation of the Smalltalk class
+library<!--rawtext:[36.5]:rawtext--></a>.  There are some ways where NIHCL's use of
+dynamic typing helps (e.g., <a href="misc-technical-issues.html#faq-38.10" title="[38.10] What is &quot;persistence&quot;? What is a &quot;persistent object&quot;?">persistent<!--rawtext:[38.10]:rawtext--></a> objects).  There
+are also places where its use of dynamic typing creates
+<a href="smalltalk.html#faq-30.3" title="[30.3] Which is a better fit for C++: &quot;static typing&quot; or &quot;dynamic typing&quot;?">tension<!--rawtext:[30.3]:rawtext--></a> with the static typing of the C++
+language.
+<p><small>[&nbsp;<a href="#top" title="Top of section [36] Class libraries">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [36] Class libraries">Bottom</a> |&nbsp;<a href="serialization.html" title="[35] Serialization and Unserialization">Previous&nbsp;section</a> |&nbsp;<a href="compiler-dependencies.html" title="[37] Compiler dependencies">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-36.7"></a>
+<div class=FaqTitle><h3>[36.7] Where can I ftp the code that accompanies &quot;Numerical Recipes&quot;?</h3></div>
+<p>This software is sold and therefore it would be illegal to provide it on the
+net.  However, it's only about $30.
+<p><small>[&nbsp;<a href="#top" title="Top of section [36] Class libraries">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [36] Class libraries">Bottom</a> |&nbsp;<a href="serialization.html" title="[35] Serialization and Unserialization">Previous&nbsp;section</a> |&nbsp;<a href="compiler-dependencies.html" title="[37] Compiler dependencies">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-36.8"></a>
+<div class=FaqTitle><h3>[36.8] Why is my executable so large?</h3></div>
+<p>Many people are surprised by how big executables are, especially if the source
+code is trivial.  For example, a simple <nobr><tt>&quot;hello world&quot;</tt></nobr> program can
+generate an executable that is larger than most people expect (40+K bytes).
+<p>One reason executables can be large is that portions of the C++ runtime
+library might get statically linked with your program.  How much gets linked
+in depends on compiler options regarding whether to statically or dynamically
+link the standard libraries, on how much of it you are using, and on how the
+implementer split up the library into pieces.  For example, the
+<nobr><tt>&lt;iostream&gt;</tt></nobr> library is quite large, and consists of numerous classes
+and <a href="virtual-functions.html" title="[20] Inheritance -- virtual functions"><tt>virtual</tt><!--rawtext:[20]:rawtext--></a> functions.  Using any part
+of it <em>might</em> pull in nearly all of the <nobr><tt>&lt;iostream&gt;</tt></nobr> code as a
+result of the interdependencies (however there might be a compiler option to
+dynamically link these classes, in which case your program might be small).
+<p>Another reason executables can be large is if you have turned on debugging
+(again via a compiler option).  In at least one well known compiler, this
+option can increase the executable size by up to a factor of 10.
+<p>You have to consult your compiler manuals or the vendor's technical support
+for a more detailed answer.
+<p><small>[&nbsp;<a href="#top" title="Top of section [36] Class libraries">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [36] Class libraries">Bottom</a> |&nbsp;<a href="serialization.html" title="[35] Serialization and Unserialization">Previous&nbsp;section</a> |&nbsp;<a href="compiler-dependencies.html" title="[37] Compiler dependencies">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-36.9"></a>
+<div class=FaqTitle><h3>[36.9] Where can I get tons and tons of more information on C++ class libraries?</h3></div>
+<p>Three places you should check (not necessarily in this order):
+<ul>
+<li>The <em>C++ Libraries</em> FAQ is maintained by <a href="mailto:cpplibs@trmphrst.demon.co.uk" title="cpplibs@trmphrst.demon.co.uk">Nikki Locke</a> and is available
+<a href="http://www.trumphurst.com/cpplibs/cpplibs.phtml" title="www.trumphurst.com/cpplibs/cpplibs.phtml" target='_blank'>with frames</a>
+and <a href="http://www.trumphurst.com/cpplibs1.html" title="www.trumphurst.com/cpplibs1.html" target='_blank'>without
+frames</a>.</li>
+<li>Also you should check out <a href="http://www.mathtools.net/C++/" title="www.mathtools.net/C++/" target='_blank'><tt>www.mathtools.net/C++/</tt></a>.
+They have a good pile of stuff organized into (at present) sixty-some
+categories.</li>
+<li>Also you should check out <a href="http://www.boost.org/" title="www.boost.org/" target='_blank'><tt>www.boost.org/</tt></a>.  They
+have some wonderful stuff, some of which will get proposed for standardization
+the next time around.</li>
+</ul>
+<p>Important: none of these lists are exhaustive.  If you are looking for some
+particular functionality that you don't find above, try a Web search such as
+<a href="http://www.google.com" title="www.google.com" target='_blank'>Google</a>.  Also, don't forget to help out
+the next person via <a href="http://www.trumphurst.com/cppsub.html" title="www.trumphurst.com/cppsub.html" target='_blank'>the
+Submission Form in the C++ Libraries FAQ</a>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [36] Class libraries">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [36] Class libraries">Bottom</a> |&nbsp;<a href="serialization.html" title="[35] Serialization and Unserialization">Previous&nbsp;section</a> |&nbsp;<a href="compiler-dependencies.html" title="[37] Compiler dependencies">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="bottom"></a>
+<a href="mailto:cline@parashift.com" title="cline@parashift.com"><img src="mbox.gif" height=26 width=89 alt="E-Mail">&nbsp;E-mail the author</a><br>
+[&nbsp;<a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>
+|&nbsp;<a href="index.html#table-of-contents" title="Table of contents">Table&nbsp;of&nbsp;contents</a>
+|&nbsp;<a href="subject-index.html" title="Subject index; 3706 links to 2361 topics">Subject&nbsp;index</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.1" title="[1.1] Author">About&nbsp;the&nbsp;author</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">&copy;</a>
+|&nbsp;<a href="on-line-availability.html#faq-2.2" title="[2.2] How can I get a copy of all the HTML files of C++ FAQ Lite so I can read them Off-Line?">Download&nbsp;your&nbsp;own&nbsp;copy</a>&nbsp;]<br>
+<small>Revised May 2, 2003</small>
+</body>
+</html>

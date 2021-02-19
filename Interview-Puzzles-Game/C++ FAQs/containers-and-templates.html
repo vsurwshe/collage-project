@@ -1,0 +1,808 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"
+	"http://www.w3.org/TR/REC-html40/strict.dtd">
+<html>
+<head>
+<title>[34] Container classes and templates &nbsp;Updated!&nbsp;, C++ FAQ Lite</title>
+<meta name="FILENAME" content="containers-and-templates.html">
+<meta name="ABSTRACT" content="[34] Container classes and templates [Updated!], C++ FAQ Lite">
+<meta name="OWNER"    content="cline@parashift.com">
+<meta name="AUTHOR"   content="Marshall Cline, cline@parashift.com">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rev=made href="mailto:cline@parashift.com">
+<style type='text/css'>
+  <!--
+  body       { font-family: arial; color: black; background: white }
+  .CodeBlock { color: black; background-color: #dfdfdf; margin-left: 30px; margin-right: 30px; padding: 5pt }
+  .FaqTitle  { color: black; background-color: gold }
+  .Updated   { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #ffff00; border: solid #e0e000 1px; }
+  .New       { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #00ff00; border: solid #00d000 1px; }
+  ul         { margin-bottom: 1px; margin-top: 1px }
+  ol         { margin-bottom: 1px; margin-top: 1px }
+  li         { margin-bottom: 4px; margin-top: 4px }
+  a          { color: blue }
+  a:hover    { color: red }
+  -->
+</style>
+</head>
+<body>
+<h1><a name="top"></a>[34] Container classes and templates <span class=Updated>&nbsp;Updated!&nbsp;</span><br>
+<small><small>(Part of <a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>, <a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">Copyright&nbsp;&copy; 1991-2003</a>, <a href="http://www.parashift.com/" title="www.parashift.com/" target='_blank'>Marshall Cline</a>, <a href="mailto:cline@parashift.com" title="cline@parashift.com"><tt>cline@parashift.com</tt></a>)</small></small></h1>
+<hr>
+<h3>FAQs in section [34]:</h3>
+<ul>
+<li><a href="containers-and-templates.html#faq-34.1" title="[34.1] Why should I use container classes rather than simple arrays?">[34.1] Why should I use container classes rather than simple arrays?</a></li>
+<li><a href="containers-and-templates.html#faq-34.2" title="[34.2] How can I make a perl-like associative array in C++?">[34.2] How can I make a <tt>perl</tt>-like associative array in C++?</a></li>
+<li><a href="containers-and-templates.html#faq-34.3" title="[34.3] Is the storage for a std::vector&lt;T&gt; guaranteed to be contiguous?">[34.3] Is the storage for a <nobr><tt>std::vector&lt;T&gt;</tt></nobr> guaranteed to be contiguous?</a> <span class=Updated>&nbsp;Updated!&nbsp;</span></li>
+<li><a href="containers-and-templates.html#faq-34.4" title="[34.4] How can I build a &lt;favorite container&gt; of objects of different types?">[34.4] How can I build a &lt;favorite container&gt; of objects of different types?</a></li>
+<li><a href="containers-and-templates.html#faq-34.5" title="[34.5] How can I insert/access/change elements from a linked list/hashtable/etc?">[34.5] How can I insert/access/change elements from a linked list/hashtable/etc?</a></li>
+<li><a href="containers-and-templates.html#faq-34.6" title="[34.6] What's the idea behind templates?">[34.6] What's the idea behind templates?</a></li>
+<li><a href="containers-and-templates.html#faq-34.7" title="[34.7] What's the syntax / semantics for a &quot;class template&quot;?">[34.7] What's the syntax / semantics for a &quot;class template&quot;?</a></li>
+<li><a href="containers-and-templates.html#faq-34.8" title="[34.8] What's the syntax / semantics for a &quot;function template&quot;?">[34.8] What's the syntax / semantics for a &quot;function template&quot;?</a></li>
+<li><a href="containers-and-templates.html#faq-34.9" title="[34.9] How do I explicitly select which version of a function template should get called?">[34.9] How do I explicitly select which version of a function template should get called?</a></li>
+<li><a href="containers-and-templates.html#faq-34.10" title="[34.10] What is a &quot;parameterized type&quot;?">[34.10] What is a &quot;parameterized type&quot;?</a></li>
+<li><a href="containers-and-templates.html#faq-34.11" title="[34.11] What is &quot;genericity&quot;?">[34.11] What is &quot;genericity&quot;?</a></li>
+<li><a href="containers-and-templates.html#faq-34.12" title="[34.12] Why can't I separate the definition of my templates class from it's declaration and put it inside a .cpp file?">[34.12] Why can't I separate the definition of my templates class from it's declaration and put it inside a .cpp file?</a></li>
+<li><a href="containers-and-templates.html#faq-34.13" title="[34.13] How can I avoid linker errors with my template functions?">[34.13] How can I avoid linker errors with my template functions?</a></li>
+<li><a href="containers-and-templates.html#faq-34.14" title="[34.14] How can I avoid linker errors with my template classes?">[34.14] How can I avoid linker errors with my template classes?</a></li>
+</ul>
+<p><hr>
+<p><a name="faq-34.1"></a>
+<div class=FaqTitle><h3>[34.1] Why should I use container classes rather than simple arrays?</h3></div>
+<p>Because arrays are <a href="big-picture.html#faq-6.14" title="[6.14] What does the FAQ mean by &quot;such-in-such is evil&quot;?">evil<!--rawtext:[6.14]:rawtext--></a>.
+<p>Let's assume the best case scenario: you're an experienced C programmer, which
+almost by definition means you're pretty good at working with arrays.  You
+know you can handle the complexity; you've done it for years.  And you're
+smart &#151; the smartest on the team &#151; the smartest in the whole company.  But
+even given all that, <em>please</em> read this entire FAQ and think very
+carefully about it before you go into &quot;business as usual&quot; mode.
+<p>Fundamentally it boils down to this simple fact: C++ is not C.  That means
+(this might be painful for you!!) you'll need to set aside some of your hard
+earned wisdom from your vast experience in C.  The two languages simply are
+different.  The &quot;best&quot; way to do something in C is not always the same as the
+&quot;best&quot; way to do it in C++.  If you really want to program in C, please do
+yourself a favor and program in C.  But if you want to be really good at C++,
+then learn the C++ ways of doing things.  You may be a C guru, but if you're
+just learning C++, you're just learning C++ &#151; you're a newbie.  (Ouch; I
+know that had to hurt.  Sorry.)
+<p>Here's what you need to realize about containers <em>vs.</em> arrays:
+<ol>
+<li>Container classes make programmers more productive.  So if you
+insist on using arrays while those around are willing to use container
+classes, you'll probably be less productive than they are (even if you're
+smarter and more experienced than they are!).</li>
+<li>Container classes let programmers write more robust code.  So if
+you insist on using arrays while those around are willing to use container
+classes, your code will probably have more bugs than their code (even if
+you're smarter and more experienced).</li>
+<li>And if you're <em>so</em> smart and <em>so</em> experienced that you
+can use arrays as fast and as safe as they can use container classes, someone
+else will probably end up maintaining your code and <em>they'll</em> probably
+introduce bugs.  Or worse, you'll be the only one who can maintain your code
+so management will yank you from development and move you into a full-time
+maintenance role &#151; just what you always wanted!</li>
+</ol>
+<p>Here are some specific problems with arrays:
+<ol>
+<li>Subscripts don't get checked to see if they are out of bounds.
+(Note that some container classes, such as <nobr><tt>std::vector</tt></nobr>, have methods to
+access elements with or without bounds checking on subscripts.)</li>
+<li>Arrays often require you to allocate memory from the heap (see
+below for examples), in which case you must manually make sure the allocation
+is eventually <tt>delete</tt>d (even when someone <tt>throw</tt>s an exception).  When you
+use container classes, this memory management is handled automatically, but
+when you use arrays, you have to manually write a bunch of code (and
+<a href="exceptions.html#faq-17.5" title="[17.5] How do I change the string-length of an array of char to prevent memory leaks even if/when someone throws an exception?">unfortunately that code is often subtle and
+tricky<!--rawtext:[17.5]:rawtext--></a>) to deal with this.  For example, in addition to writing the code
+that destroys all the objects and <tt>delete</tt>s the memory, arrays often also
+force you you to write an extra <tt>try</tt> block with a <tt>catch</tt> clause that
+destroys all the objects, <tt>delete</tt>s the memory, then re-throws the exception.
+This is a real pain in the neck, <a href="freestore-mgmt.html#faq-16.15" title="[16.15] How do I allocate multidimensional arrays using new?">as shown here<!--rawtext:[16.15]:rawtext--></a>.
+When using container classes, <a href="freestore-mgmt.html#faq-16.16" title="[16.16] But the previous FAQ's code is SOOOO tricky and error prone! Isn't there a simpler way?">things are much
+easier<!--rawtext:[16.16]:rawtext--></a>.</li>
+<li>You can't insert an element into the middle of the array, or even
+add one at the end, unless you allocate the array via the heap, and even then
+you must allocate a new array and copy the elements.</li>
+<li>Container classes give you the choice of passing them by reference
+or by value, but arrays do not give you that choice: they are always passed by
+reference.  If you want to simulate pass-by-value with an array, you have to
+manually write code that explicitly copies the array's elements (possibly
+allocating from the heap), along with code to clean up the copy when you're
+done with it.  All this is handled automatically for you if you use a
+container class.</li>
+<li>If your function has a non-<tt>static</tt> local array (i.e., an &quot;auto&quot;
+array), you cannot return that array, whereas the same is not true for objects
+of container classes.</li>
+</ol>
+<p>Here are some things to think about when using containers:
+<ol>
+<li>Different C++ containers have different strengths and weaknesses,
+but for any given job there's usually one of them that is better &#151; clearer,
+safer, easier/cheaper to maintain, and often more efficient &#151; than an array.
+For instance,
+<ul>
+<li>You might consider a <nobr><tt>std::map</tt></nobr> instead of manually writing code
+for a lookup table.</li>
+<li>A <nobr><tt>std::map</tt></nobr> might also be used for a sparse array or sparse
+matrix.</li>
+<li>A <nobr><tt>std::vector</tt></nobr> is the most array-like of the standard container
+classes, but it also offers various extra features such as bounds checking via
+the <nobr><tt>at()</tt></nobr> member function, insertions/removals of elements, automatic memory
+management even if someone throws an exception, ability to be passed both by
+reference and by value, etc.</li>
+<li>A <nobr><tt>std::string</tt></nobr> is <a href="exceptions.html#faq-17.5" title="[17.5] How do I change the string-length of an array of char to prevent memory leaks even if/when someone throws an exception?">almost always
+better than an array of <tt>char</tt><!--rawtext:[17.5]:rawtext--></a> (you can think of a <nobr><tt>std::string</tt></nobr> as a
+&quot;container class&quot; for the sake of this discussion).</li>
+</ul>
+</li>
+<li>Container classes aren't best for <em>everything</em>, and sometimes
+you may need to use arrays.  But that should be very rare, and if/when it
+happens:
+<ul>
+<li>Please design your container class's <tt>public</tt> interface in such a
+way that the code that uses the container class is unaware of the fact that
+there is an array inside.</li>
+<li>The goal is to &quot;bury&quot; the array inside a container class.  In other
+words, make sure there is a very small number of lines of code that directly
+touch the array (just your own methods of your container class) so everyone
+else (the users of your container class) can write code that doesn't depend on
+there being an array inside your container class.</li>
+</ul>
+</li>
+</ol>
+<p>To net this out, arrays really are <a href="big-picture.html#faq-6.14" title="[6.14] What does the FAQ mean by &quot;such-in-such is evil&quot;?">evil<!--rawtext:[6.14]:rawtext--></a>.  You may not
+think so if you're new to C++.  But after you write a big pile of code that
+uses arrays (especially if you make your code leak-proof and exception-safe),
+you'll learn &#151; the hard way.  Or you'll learn the easy way by believing
+those who've already done things like that.  The choice is yours.
+<p><small>[&nbsp;<a href="#top" title="Top of section [34] Container classes and templates">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [34] Container classes and templates">Bottom</a> |&nbsp;<a href="pointers-to-members.html" title="[33] Pointers to member functions">Previous&nbsp;section</a> |&nbsp;<a href="serialization.html" title="[35] Serialization and Unserialization">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-34.2"></a>
+<div class=FaqTitle><h3>[34.2] How can I make a <tt>perl</tt>-like associative array in C++?</h3></div>
+<p>Use the standard class template <nobr><tt>std::map&lt;Key,Val&gt;</tt></nobr>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#include&nbsp;&lt;string&gt;<br>
+&nbsp;#include&nbsp;&lt;map&gt;<br>
+&nbsp;#include&nbsp;&lt;iostream&gt;<br>
+&nbsp;<br>
+&nbsp;int&nbsp;main()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;<tt>age</tt>&nbsp;is&nbsp;a&nbsp;<tt>map</tt>&nbsp;from&nbsp;<tt>string</tt>&nbsp;to&nbsp;<tt>int</tt></em><tt><br>
+&nbsp;&nbsp;&nbsp;std::map&lt;std::string,&nbsp;int,&nbsp;std::less&lt;std::string&gt;&nbsp;&gt;&nbsp;&nbsp;age;<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;age[&quot;Fred&quot;]&nbsp;=&nbsp;42;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Fred&nbsp;is&nbsp;42&nbsp;years&nbsp;old</em><tt><br>
+&nbsp;&nbsp;&nbsp;age[&quot;Barney&quot;]&nbsp;=&nbsp;37;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Barney&nbsp;is&nbsp;37</em><tt><br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;if&nbsp;(todayIsFredsBirthday())&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;On&nbsp;Fred's&nbsp;birthday,</em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;++&nbsp;age[&quot;Fred&quot;];&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;&nbsp;&nbsp;&nbsp;increment&nbsp;Fred's&nbsp;age</em><tt><br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;Fred&nbsp;is&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;age[&quot;Fred&quot;]&nbsp;&lt;&lt;&nbsp;&quot;&nbsp;years&nbsp;old\n&quot;;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p><small>[&nbsp;<a href="#top" title="Top of section [34] Container classes and templates">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [34] Container classes and templates">Bottom</a> |&nbsp;<a href="pointers-to-members.html" title="[33] Pointers to member functions">Previous&nbsp;section</a> |&nbsp;<a href="serialization.html" title="[35] Serialization and Unserialization">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-34.3"></a>
+<div class=FaqTitle><h3>[34.3] Is the storage for a <nobr><tt>std::vector&lt;T&gt;</tt></nobr> guaranteed to be contiguous? <span class=Updated>&nbsp;Updated!&nbsp;</span></h3></div>
+<small><em>[Recently fixed a couple of typos in the last two paragraphs thanks to Dean Stanton (in 4/03).  <a href="class-libraries.html#faq-36.2" title="[36.2] Where can I get a copy of &quot;STL&quot;?">Click here to go to the next FAQ in the &quot;chain&quot; of recent changes<!--rawtext:[36.2]:rawtext--></a>.]</em></small>
+<p>Yes.
+<p>This means you the following technique is safe:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#include&nbsp;&lt;vector&gt;<br>
+&nbsp;#include&nbsp;&quot;Foo.h&quot;&nbsp;&nbsp;</tt><em>/*&nbsp;get&nbsp;class&nbsp;Foo&nbsp;*/</em><tt><br>
+&nbsp;<br>
+&nbsp;</tt><em>//&nbsp;old-style&nbsp;code&nbsp;that&nbsp;wants&nbsp;an&nbsp;array</em><tt><br>
+&nbsp;void&nbsp;f(Foo*&nbsp;array,&nbsp;unsigned&nbsp;numFoos);<br>
+&nbsp;<br>
+&nbsp;void&nbsp;g()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::vector&lt;Foo&gt;&nbsp;v;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;f(&amp;v[0],&nbsp;v.size());&nbsp;&nbsp;</tt><em><big>&#8592;</big>&nbsp;safe</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>In general, it means you are guaranteed that <nobr><tt>&amp;v[0] + n == &amp;v[n]</tt></nobr>, where
+<tt>v</tt> is a <nobr><tt>std::vector&lt;T&gt;</tt></nobr> and <tt>n</tt> is an integer in the range
+<nobr><tt>0 .. v.size()-1</tt></nobr>.
+<p><em>However</em> <nobr><tt>v.begin()</tt></nobr> is <em>not</em> guaranteed to be a
+<nobr><tt>T*</tt></nobr>, which means <nobr><tt>v.begin()</tt></nobr> is not guaranteed to be the same as
+<nobr><tt>&amp;v[0]</tt></nobr>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;g()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::vector&lt;Foo&gt;&nbsp;v;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;f(v.begin(),&nbsp;v.size());&nbsp;&nbsp;</tt><em><big>&#8592;</big>&nbsp;Error!!&nbsp;Not&nbsp;Guaranteed!!</em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^^^^^^^^^</tt><em>--&nbsp;cough,&nbsp;choke,&nbsp;gag;&nbsp;not&nbsp;guaranteed&nbsp;to&nbsp;be&nbsp;the&nbsp;same&nbsp;as&nbsp;<nobr><tt>&amp;v[0]</tt></nobr></em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>Do <em><b><u>NOT</u></b></em> email me and tell me that <nobr><tt>v.begin() ==
+&amp;v[0]</tt></nobr> on your particular version of your particular compiler on your
+particular platform.  I don't care, plus that would show that you've
+<em>totally</em> missed the point.  The point is to help you know the kind of
+code that is guaranteed to work correctly on <em>all</em> standard-conforming
+implementations, not to study the vagaries of particular implementations.
+<p>Caveat: the above guarantee is currently in the technical corrigendum of the
+standard and has not, as of this date, officially become a part of the
+standard.  However it will be ratified <em>Real Soon Now</em>.  In the mean
+time, the practically important thing is that existing implementations make
+the storage contiguous, so it is safe to assume that <nobr><tt>&amp;v[0] + n == &amp;v[n]</tt></nobr>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [34] Container classes and templates">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [34] Container classes and templates">Bottom</a> |&nbsp;<a href="pointers-to-members.html" title="[33] Pointers to member functions">Previous&nbsp;section</a> |&nbsp;<a href="serialization.html" title="[35] Serialization and Unserialization">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-34.4"></a>
+<div class=FaqTitle><h3>[34.4] How can I build a &lt;favorite container&gt; of objects of different types?</h3></div>
+<p>You can't, but you can fake it pretty well.  In C/C++ all arrays are
+homogeneous (i.e., the elements are all the same type).  However, with an extra
+layer of indirection you can give the appearance of a heterogeneous container
+(a heterogeneous container is a container where the contained objects are of
+different types).
+<p>There are two cases with heterogeneous containers.
+<p>The first case occurs when all objects you want to store in a container are
+publicly derived from a common base class.  You can then declare/define your
+container to hold pointers to the base class.  You indirectly store a derived
+class object in a container by storing the object's address as an element in
+the container.  You can then access objects in the container indirectly through
+the pointers (enjoying polymorphic behavior).  If you need to know the exact
+type of the object in the container you can use <nobr><tt>dynamic_cast&lt;&gt;</tt></nobr> or
+<nobr><tt>typeid()</tt></nobr>.  You'll probably need the <a href="virtual-functions.html#faq-20.6" title="[20.6] What is a &quot;virtual constructor&quot;?">Virtual Constructor
+Idiom<!--rawtext:[20.6]:rawtext--></a> to copy a container of disparate object types.  The
+downside of this approach is that it makes memory management a little more
+problematic (who &quot;owns&quot; the pointed-to objects? if you <tt>delete</tt> these
+pointed-to objects when you destroy the container, how can you guarantee that
+no one else has a copy of one of these pointers? if you don't <tt>delete</tt> these
+pointed-to objects when you destroy the container, how can you be sure that
+someone else will eventually do the <tt>delete</tt>ing?).  It also makes copying the
+container more complex (may actually break the container's copying functions
+since you don't want to copy the pointers, at least not when the container
+&quot;owns&quot; the pointed-to objects).
+<p>The second case occurs when the object types are disjoint &#151; they do not share
+a common base class.  The approach here is to use a handle class.  The
+container is a container of handle objects (by value or by pointer, your
+choice; by value is easier).  Each handle object knows how to &quot;hold on to&quot;
+(i.e. ,maintain a pointer to) one of the objects you want to put in the
+container.  You can use either a single handle class with several different
+types of pointers as instance data, or a hierarchy of handle classes that
+shadow the various types you wish to contain (requires the container be of
+handle base class pointers).  The downside of this approach is that it opens up
+the handle class(es) to maintenance every time you change the set of types
+that can be contained.  The benefit is that you can use the handle class(es)
+to encapsulate most of the ugliness of memory management and object lifetime.
+Thus using handle objects may be beneficial even in the first case.
+<p><small>[&nbsp;<a href="#top" title="Top of section [34] Container classes and templates">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [34] Container classes and templates">Bottom</a> |&nbsp;<a href="pointers-to-members.html" title="[33] Pointers to member functions">Previous&nbsp;section</a> |&nbsp;<a href="serialization.html" title="[35] Serialization and Unserialization">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-34.5"></a>
+<div class=FaqTitle><h3>[34.5] How can I insert/access/change elements from a linked list/hashtable/etc?</h3></div>
+<p>The most important thing to remember is this: don't roll your own from scratch
+unless there is a compelling reason to do so.  In other words, instead of
+creating your own list or hashtable, use one of the standard class templates
+such as <nobr><tt>std::vector&lt;T&gt;</tt></nobr> or <nobr><tt>std::list&lt;T&gt;</tt></nobr> or whatever.
+<p>Assuming you have a compelling reason to build your own container, here's how
+to handle inserting (or accessing, changing, etc.) the elements.
+<p>To make the discussion concrete, I'll discuss how to insert an element into a
+linked list.  This example is just complex enough that it generalizes pretty
+well to things like vectors, hash tables, binary trees, etc.
+<p>A linked list makes it easy insert an element before the first or after the
+last element of the list, but limiting ourselves to these would produce a
+library that is too weak (a weak library is almost worse than no library).
+This answer will be a lot to swallow for novice C++'ers, so I'll give a couple
+of options.  The first option is easiest; the second and third are better.
+<ol>
+<li>Empower the <tt>List</tt> with a &quot;current location,&quot; and member functions
+such as <nobr><tt>advance()</tt></nobr>, <nobr><tt>backup()</tt></nobr>, <nobr><tt>atEnd()</tt></nobr>, <nobr><tt>atBegin()</tt></nobr>, <nobr><tt>getCurrElem()</tt></nobr>,
+<nobr><tt>setCurrElem(Elem)</tt></nobr>, <nobr><tt>insertElem(Elem)</tt></nobr>, and <nobr><tt>removeElem()</tt></nobr>.  Although this
+works in small examples, the notion of <em>a</em> current position makes it
+difficult to access elements at two or more positions within the list (e.g.,
+&quot;for all pairs x,y do the following...&quot;).</li>
+<li>Remove the above member functions from <tt>List</tt> itself, and move them
+to a separate class, <tt>ListPosition</tt>.  <tt>ListPosition</tt> would act as a &quot;current
+position&quot; within a list.  This allows multiple positions within the same list.
+<tt>ListPosition</tt> would be a <a href="friends.html" title="[14] Friends"><tt>friend</tt><!--rawtext:[14]:rawtext--></a> of <tt>class</tt> <tt>List</tt>, so
+<tt>List</tt> can hide its innards from the outside world (else the innards of <tt>List</tt>
+would have to be publicized via <tt>public</tt> member functions in <tt>List</tt>).  Note:
+<tt>ListPosition</tt> can use <tt>operator</tt> overloading for things like <nobr><tt>advance()</tt></nobr> and
+<nobr><tt>backup()</tt></nobr>, since <tt>operator</tt> overloading is syntactic sugar for normal member
+functions.</li>
+<li>Consider the entire iteration as an atomic event, and create a class
+template that embodies this event.  This enhances performance by allowing the
+public access member functions (which may be <a href="virtual-functions.html" title="[20] Inheritance -- virtual functions"><tt>virtual</tt><!--rawtext:[20]:rawtext--></a> functions) to be avoided during the access, and this access
+often occurs within an inner loop.  Unfortunately the class template will
+increase the size of your object code, since templates gain speed by
+duplicating code.  For more, see [Koenig, &quot;Templates as interfaces,&quot; JOOP, 4, 5
+(Sept 91)], and [Stroustrup, &quot;The C++ Programming Language Third Edition,&quot;
+under &quot;Comparator&quot;].</li>
+</ol>
+<p><small>[&nbsp;<a href="#top" title="Top of section [34] Container classes and templates">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [34] Container classes and templates">Bottom</a> |&nbsp;<a href="pointers-to-members.html" title="[33] Pointers to member functions">Previous&nbsp;section</a> |&nbsp;<a href="serialization.html" title="[35] Serialization and Unserialization">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-34.6"></a>
+<div class=FaqTitle><h3>[34.6] What's the idea behind templates?</h3></div>
+<p>A template is a cookie-cutter that specifies how to cut cookies that all look
+pretty much the same (although the cookies can be made of various kinds of
+dough, they'll all have the same basic shape).  In the same way, a class
+template is a cookie cutter for a description of how to build a family of
+classes that all look basically the same, and a function template describes
+how to build a family of similar looking functions.
+<p>Class templates are often used to build type safe containers (although this
+only scratches the surface for how they can be used).
+<p><small>[&nbsp;<a href="#top" title="Top of section [34] Container classes and templates">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [34] Container classes and templates">Bottom</a> |&nbsp;<a href="pointers-to-members.html" title="[33] Pointers to member functions">Previous&nbsp;section</a> |&nbsp;<a href="serialization.html" title="[35] Serialization and Unserialization">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-34.7"></a>
+<div class=FaqTitle><h3>[34.7] What's the syntax / semantics for a &quot;class template&quot;?</h3></div>
+<p>Consider a container <tt>class</tt> <tt>Array</tt> that acts like an array of integers:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;</tt><em>//&nbsp;This&nbsp;would&nbsp;go&nbsp;into&nbsp;a&nbsp;header&nbsp;file&nbsp;such&nbsp;as&nbsp;&quot;<tt>Array.h</tt>&quot;</em><tt><br>
+&nbsp;class&nbsp;Array&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;Array(int&nbsp;len=10)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;len_(len),&nbsp;data_(new&nbsp;int[len])&nbsp;{&nbsp;}<br>
+&nbsp;&nbsp;~Array()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;delete[]&nbsp;data_;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;len()&nbsp;const&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;return&nbsp;len_;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;const&nbsp;int&amp;&nbsp;operator[](int&nbsp;i)&nbsp;const&nbsp;{&nbsp;return&nbsp;data_[check(i)];&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int&amp;&nbsp;operator[](int&nbsp;i)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;return&nbsp;data_[check(i)];&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;Array(const&nbsp;Array&amp;);<br>
+&nbsp;&nbsp;&nbsp;Array&amp;&nbsp;operator=&nbsp;(const&nbsp;Array&amp;);<br>
+&nbsp;private:<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;&nbsp;len_;<br>
+&nbsp;&nbsp;&nbsp;int*&nbsp;data_;<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;&nbsp;check(int&nbsp;i)&nbsp;const<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;if&nbsp;(i&nbsp;&lt;&nbsp;0&nbsp;||&nbsp;i&nbsp;&gt;=&nbsp;len_)&nbsp;throw&nbsp;BoundsViol(&quot;Array&quot;,&nbsp;i,&nbsp;len_);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;i;&nbsp;}<br>
+&nbsp;};
+</tt>
+</div>
+<p>Repeating the above over and over for Array of float, of char, of
+<nobr><tt>std::string</tt></nobr>, of Array-of-<nobr><tt>std::string</tt></nobr>, etc, will become tedious.
+<p><div class=CodeBlock>
+<tt>
+&nbsp;</tt><em>//&nbsp;This&nbsp;would&nbsp;go&nbsp;into&nbsp;a&nbsp;header&nbsp;file&nbsp;such&nbsp;as&nbsp;&quot;<tt>Array.h</tt>&quot;</em><tt><br>
+&nbsp;template&lt;class&nbsp;T&gt;<br>
+&nbsp;class&nbsp;Array&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;Array(int&nbsp;len=10)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;len_(len),&nbsp;data_(new&nbsp;T[len])&nbsp;{&nbsp;}<br>
+&nbsp;&nbsp;~Array()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;delete[]&nbsp;data_;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;len()&nbsp;const&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;return&nbsp;len_;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;const&nbsp;T&amp;&nbsp;operator[](int&nbsp;i)&nbsp;const&nbsp;{&nbsp;return&nbsp;data_[check(i)];&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T&amp;&nbsp;operator[](int&nbsp;i)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;return&nbsp;data_[check(i)];&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;Array(const&nbsp;Array&lt;T&gt;&amp;);<br>
+&nbsp;&nbsp;&nbsp;Array&lt;T&gt;&amp;&nbsp;operator=&nbsp;(const&nbsp;Array&lt;T&gt;&amp;);<br>
+&nbsp;private:<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;len_;<br>
+&nbsp;&nbsp;&nbsp;T*&nbsp;&nbsp;data_;<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;check(int&nbsp;i)&nbsp;const<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;if&nbsp;(i&nbsp;&lt;&nbsp;0&nbsp;||&nbsp;i&nbsp;&gt;=&nbsp;len_)&nbsp;throw&nbsp;BoundsViol(&quot;Array&quot;,&nbsp;i,&nbsp;len_);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;i;&nbsp;}<br>
+&nbsp;};
+</tt>
+</div>
+<p>Unlike <a href="containers-and-templates.html#faq-34.8" title="[34.8] What's the syntax / semantics for a &quot;function template&quot;?">template functions<!--rawtext:[34.8]:rawtext--></a>, template classes
+(instantiations of class templates) need to be explicit about the parameters
+over which they are instantiating:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;int&nbsp;main()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;Array&lt;int&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ai;<br>
+&nbsp;&nbsp;&nbsp;Array&lt;float&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;af;<br>
+&nbsp;&nbsp;&nbsp;Array&lt;char*&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ac;<br>
+&nbsp;&nbsp;&nbsp;Array&lt;std::string&gt;&nbsp;&nbsp;&nbsp;as;<br>
+&nbsp;&nbsp;&nbsp;Array&lt;&nbsp;Array&lt;int&gt;&nbsp;&gt;&nbsp;&nbsp;aai;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>Note the space between the two <nobr><tt>&gt;</tt></nobr>'s in the last example.  Without this
+space, the compiler would see a <nobr><tt>&gt;&gt;</tt></nobr> (right-shift) token instead of two
+<nobr><tt>&gt;</tt></nobr>'s.
+<p><small>[&nbsp;<a href="#top" title="Top of section [34] Container classes and templates">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [34] Container classes and templates">Bottom</a> |&nbsp;<a href="pointers-to-members.html" title="[33] Pointers to member functions">Previous&nbsp;section</a> |&nbsp;<a href="serialization.html" title="[35] Serialization and Unserialization">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-34.8"></a>
+<div class=FaqTitle><h3>[34.8] What's the syntax / semantics for a &quot;function template&quot;?</h3></div>
+<p>Consider this function that swaps its two integer arguments:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;swap(int&amp;&nbsp;x,&nbsp;int&amp;&nbsp;y)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;tmp&nbsp;=&nbsp;x;<br>
+&nbsp;&nbsp;&nbsp;x&nbsp;=&nbsp;y;<br>
+&nbsp;&nbsp;&nbsp;y&nbsp;=&nbsp;tmp;<br>
+&nbsp;}
+</tt>
+</div>
+<p>If we also had to swap floats, longs, Strings, Sets, and FileSystems, we'd get
+pretty tired of coding lines that look almost identical except for the type.
+Mindless repetition is an ideal job for a computer, hence a function
+template:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;template&lt;class&nbsp;T&gt;<br>
+&nbsp;void&nbsp;swap(T&amp;&nbsp;x,&nbsp;T&amp;&nbsp;y)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;T&nbsp;tmp&nbsp;=&nbsp;x;<br>
+&nbsp;&nbsp;&nbsp;x&nbsp;=&nbsp;y;<br>
+&nbsp;&nbsp;&nbsp;y&nbsp;=&nbsp;tmp;<br>
+&nbsp;}
+</tt>
+</div>
+<p>Every time we used <nobr><tt>swap()</tt></nobr> with a given pair of types, the compiler will go to
+the above definition and will create yet another &quot;template function&quot; as an
+instantiation of the above.  E.g.,
+<p><div class=CodeBlock>
+<tt>
+&nbsp;int&nbsp;main()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i,j;&nbsp;&nbsp;</tt><em>/*...*/</em><tt>&nbsp;&nbsp;swap(i,j);&nbsp;&nbsp;</tt><em>//&nbsp;Instantiates&nbsp;a&nbsp;swap&nbsp;for&nbsp;<tt>int</tt></em><tt><br>
+&nbsp;&nbsp;&nbsp;float&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a,b;&nbsp;&nbsp;</tt><em>/*...*/</em><tt>&nbsp;&nbsp;swap(a,b);&nbsp;&nbsp;</tt><em>//&nbsp;Instantiates&nbsp;a&nbsp;swap&nbsp;for&nbsp;<tt>float</tt></em><tt><br>
+&nbsp;&nbsp;&nbsp;char&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c,d;&nbsp;&nbsp;</tt><em>/*...*/</em><tt>&nbsp;&nbsp;swap(c,d);&nbsp;&nbsp;</tt><em>//&nbsp;Instantiates&nbsp;a&nbsp;swap&nbsp;for&nbsp;<tt>char</tt></em><tt><br>
+&nbsp;&nbsp;&nbsp;std::string&nbsp;s,t;&nbsp;&nbsp;</tt><em>/*...*/</em><tt>&nbsp;&nbsp;swap(s,t);&nbsp;&nbsp;</tt><em>//&nbsp;Instantiates&nbsp;a&nbsp;swap&nbsp;for&nbsp;<nobr><tt>std::string</tt></nobr></em><tt><br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>Note: A &quot;template function&quot; is the instantiation of a &quot;function template&quot;.
+<p><small>[&nbsp;<a href="#top" title="Top of section [34] Container classes and templates">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [34] Container classes and templates">Bottom</a> |&nbsp;<a href="pointers-to-members.html" title="[33] Pointers to member functions">Previous&nbsp;section</a> |&nbsp;<a href="serialization.html" title="[35] Serialization and Unserialization">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-34.9"></a>
+<div class=FaqTitle><h3>[34.9] How do I explicitly select which version of a function template should get called?</h3></div>
+<p>When you call a function template, the compiler tries to <em>deduce</em> the
+template type.  Most of the time it can do that successfully, but every once
+in a while you may want to help the compiler deduce the right type &#151; either
+because it cannot deduce the type at all, or perhaps because it would deduce
+the wrong type.
+<p>For example, you might be calling a function template that doesn't have any
+parameters of its template argument types, or you might want to force the
+compiler to do certain promotions on the arguments before selecting the
+correct function template.  In these cases you'll need to explicitly tell the
+compiler which instantiation of the function template should be called.
+<p>Here is a sample function template where the template parameter <tt>T</tt> does
+not appear in the function's parameter list.  In this case the compiler
+<em>cannot</em> deduce the template parameter types when the function is
+called.
+<p><div class=CodeBlock>
+<tt>
+&nbsp;template&lt;class&nbsp;T&gt;<br>
+&nbsp;void&nbsp;f()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>To call this function with <tt>T</tt> being an <tt>int</tt> or a <nobr><tt>std::string</tt></nobr>, you
+could say:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#include&nbsp;&lt;string&gt;<br>
+&nbsp;<br>
+&nbsp;void&nbsp;sample()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;f&lt;int&gt;();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;type&nbsp;<tt>T</tt>&nbsp;will&nbsp;be&nbsp;<tt>int</tt>&nbsp;in&nbsp;this&nbsp;call</em><tt><br>
+&nbsp;&nbsp;&nbsp;f&lt;std::string&gt;();&nbsp;&nbsp;</tt><em>//&nbsp;type&nbsp;<tt>T</tt>&nbsp;will&nbsp;be&nbsp;<nobr><tt>std::string</tt></nobr>&nbsp;in&nbsp;this&nbsp;call</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>Here is another function whose template parameters appear in the function's
+list of formal parameters (that is, the compiler <em>can</em> deduce the
+template type from the actual arguments):
+<p><div class=CodeBlock>
+<tt>
+&nbsp;template&lt;class&nbsp;T&gt;<br>
+&nbsp;void&nbsp;g(T&nbsp;x)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>Now if you want to force the actual arguments to be promoted before the
+compiler deduces the template type, you can use the above technique.  E.g., if
+you simply called <nobr><tt>g(42)</tt></nobr> you would get <nobr><tt>g&lt;int&gt;(42)</tt></nobr>, but if you
+wanted to pass <tt>42</tt> to <nobr><tt>g&lt;long&gt;()</tt></nobr>, you could say this:
+<nobr><tt>g&lt;long&gt;(42)</tt></nobr>.  (Of course you could also promote the parameter
+explicitly, such as either <nobr><tt>g(long(42))</tt></nobr> or even <nobr><tt>g(42L)</tt></nobr>, but
+that ruins the example.)
+<p>Similarly if you said <nobr><tt>g(&quot;xyz&quot;)</tt></nobr> you'd end up calling
+<nobr><tt>g&lt;char*&gt;(char*)</tt></nobr>, but if you wanted to call the <nobr><tt>std::string</tt></nobr>
+version of <nobr><tt>g&lt;&gt;()</tt></nobr> you could say <nobr><tt>g&lt;std::string&gt;(&quot;xyz&quot;)</tt></nobr>.  (Again
+you could also promote the argument, such as <nobr><tt>g(std::string(&quot;xyz&quot;))</tt></nobr>,
+but that's another story.)
+<p><small>[&nbsp;<a href="#top" title="Top of section [34] Container classes and templates">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [34] Container classes and templates">Bottom</a> |&nbsp;<a href="pointers-to-members.html" title="[33] Pointers to member functions">Previous&nbsp;section</a> |&nbsp;<a href="serialization.html" title="[35] Serialization and Unserialization">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-34.10"></a>
+<div class=FaqTitle><h3>[34.10] What is a &quot;parameterized type&quot;?</h3></div>
+<p>Another way to say, &quot;class templates.&quot;
+<p>A parameterized type is a type that is parameterized over another type or some
+value.  <nobr><tt>List&lt;int&gt;</tt></nobr> is a type (<tt>List</tt>) parameterized over another type (<tt>int</tt>).
+<p><small>[&nbsp;<a href="#top" title="Top of section [34] Container classes and templates">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [34] Container classes and templates">Bottom</a> |&nbsp;<a href="pointers-to-members.html" title="[33] Pointers to member functions">Previous&nbsp;section</a> |&nbsp;<a href="serialization.html" title="[35] Serialization and Unserialization">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-34.11"></a>
+<div class=FaqTitle><h3>[34.11] What is &quot;genericity&quot;?</h3></div>
+<p>Yet another way to say, &quot;class templates.&quot;
+<p>Not to be confused with &quot;generality&quot; (which just means avoiding solutions which
+are overly specific), &quot;genericity&quot; means class templates.
+<p><small>[&nbsp;<a href="#top" title="Top of section [34] Container classes and templates">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [34] Container classes and templates">Bottom</a> |&nbsp;<a href="pointers-to-members.html" title="[33] Pointers to member functions">Previous&nbsp;section</a> |&nbsp;<a href="serialization.html" title="[35] Serialization and Unserialization">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-34.12"></a>
+<div class=FaqTitle><h3>[34.12] Why can't I separate the definition of my templates class from it's declaration and put it inside a .cpp file?</h3></div>
+<p>If all you want to know is <em>how</em> to fix this situation, read
+<a href="containers-and-templates.html#faq-34.13" title="[34.13] How can I avoid linker errors with my template functions?">the next FAQ<!--rawtext:[34.13]:rawtext--></a>.  But in order to
+understand <em>why</em> things are the way they are, first accept these facts:
+<ol>
+<li>A template is not a class or a function.  A template is a
+&quot;pattern&quot; that the compiler uses to generate a family of
+<a href="containers-and-templates.html#faq-34.7" title="[34.7] What's the syntax / semantics for a &quot;class template&quot;?">classes<!--rawtext:[34.7]:rawtext--></a> or <a href="containers-and-templates.html#faq-34.8" title="[34.8] What's the syntax / semantics for a &quot;function template&quot;?">functions<!--rawtext:[34.8]:rawtext--></a>.</li>
+<li>In order for the compiler to generate the code, it must see
+both the template definition (not just declaration) and the specific
+types/whatever used to &quot;fill in&quot; the template.  For example, if you're
+trying to use a <nobr><tt>Foo&lt;int&gt;</tt></nobr>, the compiler must see both the <tt>Foo</tt>
+template and the fact that you're trying to make a specific
+<nobr><tt>Foo&lt;int&gt;</tt></nobr>.</li>
+<li>Your compiler probably doesn't remember the details of one
+<tt>.cpp</tt> file while it is compiling another <tt>.cpp</tt> file.  It
+<em>could</em>, but most do not and if you are reading this FAQ, it
+almost definitely does not.  BTW this is called the &quot;separate
+compilation model.&quot;</li>
+</ol>
+<p>Now based on those facts, here's an example that shows why things are the way
+they are.  Suppose you have a template <tt>Foo</tt> defined like this:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;template&lt;class&nbsp;T&gt;<br>
+&nbsp;class&nbsp;Foo&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;Foo();<br>
+&nbsp;&nbsp;&nbsp;void&nbsp;someMethod(T&nbsp;x);<br>
+&nbsp;private:<br>
+&nbsp;&nbsp;&nbsp;T&nbsp;x;<br>
+&nbsp;};
+</tt>
+</div>
+<p>Along with similar definitions for the member functions:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;template&lt;class&nbsp;T&gt;<br>
+&nbsp;Foo&lt;T&gt;::Foo()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}<br>
+&nbsp;<br>
+&nbsp;template&lt;class&nbsp;T&gt;<br>
+&nbsp;void&nbsp;Foo&lt;T&gt;::someMethod(T&nbsp;x)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>Now suppose you have some code in file <tt>Bar.cpp</tt> that uses
+<nobr><tt>Foo&lt;int&gt;</tt></nobr>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;</tt><em>//&nbsp;Bar.cpp</em><tt><br>
+&nbsp;<br>
+&nbsp;void&nbsp;blah_blah_blah()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;Foo&lt;int&gt;&nbsp;f;<br>
+&nbsp;&nbsp;&nbsp;f.someMethod(5);<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>Clearly somebody somewhere is going to have to use the &quot;pattern&quot; for
+the constructor definition and for the <nobr><tt>someMethod()</tt></nobr> definition and
+instantiate those when <tt>T</tt> is actually <tt>int</tt>.  But if you had put the
+definition of the constructor and <nobr><tt>someMethod()</tt></nobr> into file
+<tt>Foo.cpp</tt>, the compiler would see the template code when it
+compiled <tt>Foo.cpp</tt> and it would see <nobr><tt>Foo&lt;int&gt;</tt></nobr> when it
+compiled <tt>Bar.cpp</tt>, but there would never be a time when it saw
+both the template code and <nobr><tt>Foo&lt;int&gt;</tt></nobr>.  So by rule #2 above, it
+could never generate the code for <nobr><tt>Foo&lt;int&gt;::someMethod()</tt></nobr>.
+<p><em>A note to the experts:</em> I have obviously made several simplifications
+above.  This was intentional so please don't complain too loudly.  If you know
+the difference between a <tt>.cpp</tt> file and a compilation unit, the
+difference between a class template and a template class, and the fact that
+templates really aren't just glorified macros, then don't complain: this
+particular question/answer wasn't aimed at you to begin with.  I simplified
+things so newbies would &quot;get it,&quot; even if doing so offends some experts.
+<p><small>[&nbsp;<a href="#top" title="Top of section [34] Container classes and templates">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [34] Container classes and templates">Bottom</a> |&nbsp;<a href="pointers-to-members.html" title="[33] Pointers to member functions">Previous&nbsp;section</a> |&nbsp;<a href="serialization.html" title="[35] Serialization and Unserialization">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-34.13"></a>
+<div class=FaqTitle><h3>[34.13] How can I avoid linker errors with my template functions?</h3></div>
+<p>Tell your C++ compiler which instantiations to make while it is compiling your
+template function's .cpp file.
+<p>As an example, consider the header file <tt>foo.h</tt> which contains the
+following template function declaration:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;</tt><em>//&nbsp;file&nbsp;&quot;foo.h&quot;</em><tt><br>
+&nbsp;template&lt;class&nbsp;T&gt;<br>
+&nbsp;extern&nbsp;void&nbsp;foo();
+</tt>
+</div>
+<p>Now suppose file <tt>foo.cpp</tt> actually defines that template function:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;</tt><em>//&nbsp;file&nbsp;&quot;foo.cpp&quot;</em><tt><br>
+&nbsp;#include&nbsp;&lt;iostream&gt;<br>
+&nbsp;#include&nbsp;&quot;foo.h&quot;<br>
+&nbsp;<br>
+&nbsp;template&lt;class&nbsp;T&gt;<br>
+&nbsp;void&nbsp;foo()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;Here&nbsp;I&nbsp;am!\n&quot;;<br>
+&nbsp;}
+</tt>
+</div>
+<p>Suppose file <tt>main.cpp</tt> uses this template function by calling
+<nobr><tt>foo&lt;int&gt;()</tt></nobr>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;</tt><em>//&nbsp;file&nbsp;&quot;main.cpp&quot;</em><tt><br>
+&nbsp;#include&nbsp;&quot;foo.h&quot;<br>
+&nbsp;<br>
+&nbsp;int&nbsp;main()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;foo&lt;int&gt;();<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>If you compile and (try to) link these two .cpp files, most compilers will
+generate linker errors.  There are three solutions for this.  The first
+solution is to physically move the definition of the template function into
+the .h file, even if it is not an <tt>inline</tt> function.  This solution may
+(or may not!) cause significant code bloat, meaning your executable size may
+increase dramatically (or, if your compiler is smart enough, may not; try it
+and see).
+<p>The other solution is to leave the definition of the template function in the
+.cpp file and simply add the line <nobr><tt>template void foo&lt;int&gt;();</tt></nobr> to that
+file:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;</tt><em>//&nbsp;file&nbsp;&quot;foo.cpp&quot;</em><tt><br>
+&nbsp;#include&nbsp;&lt;iostream&gt;<br>
+&nbsp;#include&nbsp;&quot;foo.h&quot;<br>
+&nbsp;<br>
+&nbsp;template&lt;class&nbsp;T&gt;&nbsp;void&nbsp;foo()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;Here&nbsp;I&nbsp;am!\n&quot;;<br>
+&nbsp;}<br>
+&nbsp;<br>
+&nbsp;template&nbsp;void&nbsp;foo&lt;int&gt;();
+</tt>
+</div>
+<p>If you can't modify <tt>foo.cpp</tt>, simply create a new .cpp file such as
+<nobr><tt>foo-impl.cpp</tt></nobr> as follows:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;</tt><em>//&nbsp;file&nbsp;&quot;foo-impl.cpp&quot;</em><tt><br>
+&nbsp;#include&nbsp;&quot;foo.cpp&quot;<br>
+&nbsp;<br>
+&nbsp;template&nbsp;void&nbsp;foo&lt;int&gt;();
+</tt>
+</div>
+<p>Notice that <nobr><tt>foo-impl.cpp</tt></nobr> <nobr><tt>#include</tt></nobr>s a .cpp file, not a .h file.
+If that's confusing, click your heels twice, think of Kansas, and repeat after
+me, &quot;I will do it anyway even though it's confusing.&quot; You can trust me on
+this one.  But if you don't trust me or are simply curious,
+<a href="containers-and-templates.html#faq-34.12" title="[34.12] Why can't I separate the definition of my templates class from it's declaration and put it inside a .cpp file?">the rationale is given earlier<!--rawtext:[34.12]:rawtext--></a>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [34] Container classes and templates">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [34] Container classes and templates">Bottom</a> |&nbsp;<a href="pointers-to-members.html" title="[33] Pointers to member functions">Previous&nbsp;section</a> |&nbsp;<a href="serialization.html" title="[35] Serialization and Unserialization">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-34.14"></a>
+<div class=FaqTitle><h3>[34.14] How can I avoid linker errors with my template classes?</h3></div>
+<p>Tell your C++ compiler which instantiations to make while it is compiling your
+template class's .cpp file.
+<p>(If you've already read the previous FAQ, this answer is completely symmetric
+with that one, so you can probably skip this answer.)
+<p>As an example, consider the header file <tt>Foo.h</tt> which contains the
+following template class.  Note that method <nobr><tt>Foo&lt;T&gt;::f()</tt></nobr> is inline and
+methods <nobr><tt>Foo&lt;T&gt;::g()</tt></nobr> and <nobr><tt>Foo&lt;T&gt;::h()</tt></nobr> are not.
+<p><div class=CodeBlock>
+<tt>
+&nbsp;</tt><em>//&nbsp;file&nbsp;&quot;Foo.h&quot;</em><tt><br>
+&nbsp;template&lt;class&nbsp;T&gt;<br>
+&nbsp;class&nbsp;Foo&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;void&nbsp;f();<br>
+&nbsp;&nbsp;&nbsp;void&nbsp;g();<br>
+&nbsp;&nbsp;&nbsp;void&nbsp;h();<br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;template&lt;class&nbsp;T&gt;<br>
+&nbsp;inline<br>
+&nbsp;void&nbsp;Foo&lt;T&gt;::f()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>Now suppose file <tt>Foo.cpp</tt> actually defines the non-<tt>inline</tt>
+methods <nobr><tt>Foo&lt;T&gt;::g()</tt></nobr> and <nobr><tt>Foo&lt;T&gt;::h()</tt></nobr>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;</tt><em>//&nbsp;file&nbsp;&quot;Foo.cpp&quot;</em><tt><br>
+&nbsp;#include&nbsp;&lt;iostream&gt;<br>
+&nbsp;#include&nbsp;&quot;Foo.h&quot;<br>
+&nbsp;<br>
+&nbsp;template&lt;class&nbsp;T&gt;<br>
+&nbsp;void&nbsp;Foo&lt;T&gt;::g()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;Foo&lt;T&gt;::g()\n&quot;;<br>
+&nbsp;}<br>
+&nbsp;<br>
+&nbsp;template&lt;class&nbsp;T&gt;<br>
+&nbsp;void&nbsp;Foo&lt;T&gt;::h()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;Foo&lt;T&gt;::h()\n&quot;;<br>
+&nbsp;}
+</tt>
+</div>
+<p>Suppose file <tt>main.cpp</tt> uses this template class by creating a
+<nobr><tt>Foo&lt;int&gt;</tt></nobr> and calling its methods:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;</tt><em>//&nbsp;file&nbsp;&quot;main.cpp&quot;</em><tt><br>
+&nbsp;#include&nbsp;&quot;Foo.h&quot;<br>
+&nbsp;<br>
+&nbsp;int&nbsp;main()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;Foo&lt;int&gt;&nbsp;x;<br>
+&nbsp;&nbsp;&nbsp;x.f();<br>
+&nbsp;&nbsp;&nbsp;x.g();<br>
+&nbsp;&nbsp;&nbsp;x.h();<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>If you compile and (try to) link these two .cpp files, most compilers will
+generate linker errors.  There are three solutions for this.  The first
+solution is to physically move the definition of the template functions into
+the .h file, even if they are not <tt>inline</tt> functions.  This solution may
+(or may not!) cause significant code bloat, meaning your executable size may
+increase dramatically (or, if your compiler is smart enough, may not; try it
+and see).
+<p>The other solution is to leave the definition of the template function in the
+.cpp file and simply add the line <nobr><tt>template Foo&lt;int&gt;;</tt></nobr> to that file:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;</tt><em>//&nbsp;file&nbsp;&quot;Foo.cpp&quot;</em><tt><br>
+&nbsp;#include&nbsp;&lt;iostream&gt;<br>
+&nbsp;#include&nbsp;&quot;Foo.h&quot;<br>
+&nbsp;<br>
+&nbsp;</tt><em>...definition&nbsp;of&nbsp;Foo&lt;T&gt;::f()&nbsp;is&nbsp;unchanged&nbsp;--&nbsp;see&nbsp;above...</em><tt><br>
+&nbsp;</tt><em>...definition&nbsp;of&nbsp;Foo&lt;T&gt;::g()&nbsp;is&nbsp;unchanged&nbsp;--&nbsp;see&nbsp;above...</em><tt><br>
+&nbsp;<br>
+&nbsp;template&nbsp;Foo&lt;int&gt;;
+</tt>
+</div>
+<p>If you can't modify <tt>Foo.cpp</tt>, simply create a new .cpp file such as
+<nobr><tt>Foo-impl.cpp</tt></nobr> as follows:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;</tt><em>//&nbsp;file&nbsp;&quot;Foo-impl.cpp&quot;</em><tt><br>
+&nbsp;#include&nbsp;&quot;Foo.cpp&quot;<br>
+&nbsp;<br>
+&nbsp;template&nbsp;Foo&lt;int&gt;;
+</tt>
+</div>
+<p>Notice that <nobr><tt>Foo-impl.cpp</tt></nobr> <nobr><tt>#include</tt></nobr>s a .cpp file, not a .h file.
+If that's confusing, click your heels twice, think of Kansas, and repeat after
+me, &quot;I will do it anyway even though it's confusing.&quot; You can trust me on
+this one.  But if you don't trust me or are simply curious,
+<a href="containers-and-templates.html#faq-34.12" title="[34.12] Why can't I separate the definition of my templates class from it's declaration and put it inside a .cpp file?">the rationale is given earlier<!--rawtext:[34.12]:rawtext--></a>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [34] Container classes and templates">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [34] Container classes and templates">Bottom</a> |&nbsp;<a href="pointers-to-members.html" title="[33] Pointers to member functions">Previous&nbsp;section</a> |&nbsp;<a href="serialization.html" title="[35] Serialization and Unserialization">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="bottom"></a>
+<a href="mailto:cline@parashift.com" title="cline@parashift.com"><img src="mbox.gif" height=26 width=89 alt="E-Mail">&nbsp;E-mail the author</a><br>
+[&nbsp;<a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>
+|&nbsp;<a href="index.html#table-of-contents" title="Table of contents">Table&nbsp;of&nbsp;contents</a>
+|&nbsp;<a href="subject-index.html" title="Subject index; 3706 links to 2361 topics">Subject&nbsp;index</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.1" title="[1.1] Author">About&nbsp;the&nbsp;author</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">&copy;</a>
+|&nbsp;<a href="on-line-availability.html#faq-2.2" title="[2.2] How can I get a copy of all the HTML files of C++ FAQ Lite so I can read them Off-Line?">Download&nbsp;your&nbsp;own&nbsp;copy</a>&nbsp;]<br>
+<small>Revised May 2, 2003</small>
+</body>
+</html>

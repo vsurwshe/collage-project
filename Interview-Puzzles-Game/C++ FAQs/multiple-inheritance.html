@@ -1,0 +1,606 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"
+	"http://www.w3.org/TR/REC-html40/strict.dtd">
+<html>
+<head>
+<title>[25] Inheritance -- multiple and virtual inheritance &nbsp;New!&nbsp;, C++ FAQ Lite</title>
+<meta name="FILENAME" content="multiple-inheritance.html">
+<meta name="ABSTRACT" content="[25] Inheritance -- multiple and virtual inheritance [New!], C++ FAQ Lite">
+<meta name="OWNER"    content="cline@parashift.com">
+<meta name="AUTHOR"   content="Marshall Cline, cline@parashift.com">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rev=made href="mailto:cline@parashift.com">
+<style type='text/css'>
+  <!--
+  body       { font-family: arial; color: black; background: white }
+  .CodeBlock { color: black; background-color: #dfdfdf; margin-left: 30px; margin-right: 30px; padding: 5pt }
+  .FaqTitle  { color: black; background-color: gold }
+  .Updated   { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #ffff00; border: solid #e0e000 1px; }
+  .New       { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #00ff00; border: solid #00d000 1px; }
+  ul         { margin-bottom: 1px; margin-top: 1px }
+  ol         { margin-bottom: 1px; margin-top: 1px }
+  li         { margin-bottom: 4px; margin-top: 4px }
+  a          { color: blue }
+  a:hover    { color: red }
+  -->
+</style>
+</head>
+<body>
+<h1><a name="top"></a>[25] Inheritance &#151; multiple and virtual inheritance <span class=New>&nbsp;New!&nbsp;</span><br>
+<small><small>(Part of <a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>, <a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">Copyright&nbsp;&copy; 1991-2003</a>, <a href="http://www.parashift.com/" title="www.parashift.com/" target='_blank'>Marshall Cline</a>, <a href="mailto:cline@parashift.com" title="cline@parashift.com"><tt>cline@parashift.com</tt></a>)</small></small></h1>
+<hr>
+<h3>FAQs in section [25]:</h3>
+<ul>
+<li><a href="multiple-inheritance.html#faq-25.1" title="[25.1] How is this section organized?">[25.1] How is this section organized?</a></li>
+<li><a href="multiple-inheritance.html#faq-25.2" title="[25.2] I've been told that I should never use multiple inheritance. Is that right?">[25.2] I've been told that I should never use multiple inheritance. Is that right?</a></li>
+<li><a href="multiple-inheritance.html#faq-25.3" title="[25.3] So there are times when multiple inheritance isn't bad?!??">[25.3] So there are times when multiple inheritance isn't bad?!??</a></li>
+<li><a href="multiple-inheritance.html#faq-25.4" title="[25.4] What are some disciplines for using multiple inheritance?">[25.4] What are some disciplines for using multiple inheritance?</a></li>
+<li><a href="multiple-inheritance.html#faq-25.5" title="[25.5] Can you provide an example that demonstrates the above guidelines?">[25.5] Can you provide an example that demonstrates the above guidelines?</a></li>
+<li><a href="multiple-inheritance.html#faq-25.6" title="[25.6] Is there a simple way to visualize all these tradeoffs?">[25.6] Is there a simple way to visualize all these tradeoffs?</a></li>
+<li><a href="multiple-inheritance.html#faq-25.7" title="[25.7] Can you give another example to illustrate the above disciplines?">[25.7] Can you give another example to illustrate the above disciplines?</a></li>
+<li><a href="multiple-inheritance.html#faq-25.8" title="[25.8] What is the &quot;dreaded diamond&quot;?">[25.8] What is the &quot;dreaded diamond&quot;?</a></li>
+<li><a href="multiple-inheritance.html#faq-25.9" title="[25.9] Where in a hierarchy should I use virtual inheritance?">[25.9] Where in a hierarchy should I use virtual inheritance?</a></li>
+<li><a href="multiple-inheritance.html#faq-25.10" title="[25.10] What does it mean to &quot;delegate to a sister class&quot; via virtual inheritance?">[25.10] What does it mean to &quot;delegate to a sister class&quot; via virtual inheritance?</a></li>
+<li><a href="multiple-inheritance.html#faq-25.11" title="[25.11] What special considerations do I need to know about when I use virtual inheritance?">[25.11] What special considerations do I need to know about when I use virtual inheritance?</a></li>
+<li><a href="multiple-inheritance.html#faq-25.12" title="[25.12] What special considerations do I need to know about when I inherit from a class that uses virtual inheritance?">[25.12] What special considerations do I need to know about when I inherit from a class that uses virtual inheritance?</a> <span class=Updated>&nbsp;Updated!&nbsp;</span></li>
+<li><a href="multiple-inheritance.html#faq-25.13" title="[25.13] What special considerations do I need to know about when I use a class that uses virtual inheritance?">[25.13] What special considerations do I need to know about when I <em>use</em> a class that uses virtual inheritance?</a></li>
+<li><a href="multiple-inheritance.html#faq-25.14" title="[25.14] One more time: what is the exact order of constructors in a multiple and/or virtual inheritance situation?">[25.14] One more time: what is the exact order of constructors in a multiple and/or virtual inheritance situation?</a></li>
+</ul>
+<p><hr>
+<p><a name="faq-25.1"></a>
+<div class=FaqTitle><h3>[25.1] How is this section organized?</h3></div>
+<p>This section covers a wide spectrum of questions/answers, ranging from the
+high-level / strategy / design issues, going all the way down to low-level /
+tactical / programming issues.  We cover them in that order.
+<p>Please make <em>sure</em> you understand the high-level / strategy / design
+issues.  Too many programmers worry about getting &quot;it&quot; to compile without
+first deciding whether they really want &quot;it&quot; in the first place.  So please
+read the first several FAQs in this section before worrying about the
+(important) mechanical details in the last several FAQs.
+<p><small>[&nbsp;<a href="#top" title="Top of section [25] Inheritance -- multiple and virtual inheritance">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [25] Inheritance -- multiple and virtual inheritance">Bottom</a> |&nbsp;<a href="private-inheritance.html" title="[24] Inheritance -- private and protected inheritance">Previous&nbsp;section</a> |&nbsp;<a href="intrinsic-types.html" title="[26] Built-in / intrinsic / primitive data types">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-25.2"></a>
+<div class=FaqTitle><h3>[25.2] I've been told that I should never use multiple inheritance. Is that right?</h3></div>
+<p>Grrrrrrrrr.
+<p>It <em>really</em> bothers me when people think they know what's best for
+<em>your</em> problem even though they've never seen <em>your</em> problem!!
+How can anybody possibly know that multiple inheritance won't help <em>you</em>
+accomplish <em>your</em> goals without knowing <em>your</em> goals?!?!?!?!!!
+<p>Next time somebody tells you that you should never use multiple inheritance,
+look them straight in the eye and say, &quot;One size does not fit all.&quot; If they
+respond with something about <em>their</em> bad experience on <em>their</em>
+project, look them in the eye and repeat, slower this time, &quot;One size does not
+fit all.&quot;
+<p>People who spout off one-size-fits-all rules presume to make your design
+decisions without knowing your requirements.  They don't know where you're
+going but know how you should get there.
+<p>Don't trust an answer from someone who doesn't know the question.
+<p><small>[&nbsp;<a href="#top" title="Top of section [25] Inheritance -- multiple and virtual inheritance">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [25] Inheritance -- multiple and virtual inheritance">Bottom</a> |&nbsp;<a href="private-inheritance.html" title="[24] Inheritance -- private and protected inheritance">Previous&nbsp;section</a> |&nbsp;<a href="intrinsic-types.html" title="[26] Built-in / intrinsic / primitive data types">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-25.3"></a>
+<div class=FaqTitle><h3>[25.3] So there are times when multiple inheritance isn't bad?!??</h3></div>
+<p>Of <em>course</em> there are!
+<p>You won't use it all the time.  You might not even use it regularly.  But
+there are some situations where a solution with multiple inheritance is
+cheaper to build, debug, test, optimize, and maintain than a solution without
+multiple inheritance.  If multiple inheritance cuts you costs, improves your
+schedule, reduces your risk, and performs well, then please use it.
+<p>On the other hand, just because it's there doesn't mean you should use it.
+Like any tool, use the right tool for the job.  If MI (multiple inheritance)
+helps, use it; if not, don't.  And if you have a bad experience with it, don't
+blame the tool.  Take responsibility for your mistakes, and say, &quot;I used the
+wrong tool for the job; it was my fault.&quot; Do <em>not</em> say, &quot;Since it
+didn't help <em>my</em> problem, it's bad for all problems in all industries
+across all time.&quot; Good workmen never blame their tools.
+<p><small>[&nbsp;<a href="#top" title="Top of section [25] Inheritance -- multiple and virtual inheritance">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [25] Inheritance -- multiple and virtual inheritance">Bottom</a> |&nbsp;<a href="private-inheritance.html" title="[24] Inheritance -- private and protected inheritance">Previous&nbsp;section</a> |&nbsp;<a href="intrinsic-types.html" title="[26] Built-in / intrinsic / primitive data types">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-25.4"></a>
+<div class=FaqTitle><h3>[25.4] What are some disciplines for using multiple inheritance?</h3></div>
+<p><b>M.I. rule of thumb #1:</b> Use inheritance only if doing so will remove
+<tt>if</tt> / <tt>switch</tt> statements from the caller code.
+<em>Rationale:</em> this steers people away from &quot;gratuitous&quot; inheritance
+(either of the single or multiple variety), which is often a good thing.
+There are a <em>few</em> times when you'll use inheritance without dynamic
+binding, but beware: if you do that a lot, you may have been infected with
+wrong thinking.  In particular, <a href="smalltalk.html#faq-30.4" title="[30.4] How do you use inheritance in C++, and is that different from Smalltalk?">inheritance is
+<em>not</em> for code-reuse<!--rawtext:[30.4]:rawtext--></a>.  You sometimes get a little code reuse via
+inheritance, but the primary purpose for inheritance is dynamic binding, and
+that is for flexibility.  Composition is for code reuse, inheritance is for
+flexibility.  This rule of thumb isn't specific to MI, but is generic to all
+usages of inheritance.
+<p><b>M.I. rule of thumb #2:</b> Try especially hard to use <a href="abcs.html" title="[22] Inheritance -- abstract base classes (ABCs)">ABCs<!--rawtext:[22]:rawtext--></a>
+when you use MI.  In particular, most classes above the <a href="multiple-inheritance.html#faq-25.8" title="[25.8] What is the &quot;dreaded diamond&quot;?">join
+class<!--rawtext:[25.8]:rawtext--></a> (and often the join class itself) should be ABCs.  In this
+context, &quot;ABC&quot; doesn't simply mean &quot;a class with at least one pure virtual
+function&quot;; it actually means a <em>pure</em> ABC, meaning a class with as
+little data as possible (often none), and with most (often all) its methods
+being <a href="abcs.html#faq-22.4" title="[22.4] What is a &quot;pure virtual&quot; member function?">pure virtual<!--rawtext:[22.4]:rawtext--></a>.  <em>Rationale:</em> this
+discipline helps you avoid situations where you need to inherit data or code
+along two paths, plus it encourages you to use inheritance properly.  This
+second goal is subtle but is extremely powerful.  In particular, if you're in
+the habit of using inheritance for code reuse (dubious at best; see above),
+this rule of thumb will steer you away from MI and perhaps (hopefully!) away
+from inheritance-for-code-reuse in the first place.  In other words, this rule
+of thumb tends to push people toward
+inheritance-for-interface-substitutability, which is always safe, and away
+from inheritance-just-to-help-me-write-less-code-in-my-derived-class, which is
+often (not always) unsafe.
+<p><b>M.I. rule of thumb #3:</b> Consider <a href="multiple-inheritance.html#faq-25.5" title="[25.5] Can you provide an example that demonstrates the above guidelines?">the &quot;bridge&quot;
+pattern<!--rawtext:[25.5]:rawtext--></a> or <a href="multiple-inheritance.html#faq-25.5" title="[25.5] Can you provide an example that demonstrates the above guidelines?">nested generalization<!--rawtext:[25.5]:rawtext--></a> as possible
+alternatives to multiple inheritance.  This does not imply that there is
+something &quot;wrong&quot; with MI; it simply implies that there are at least three
+alternatives, and a wise designer checks out all the alternatives before
+choosing which is best.
+<p><small>[&nbsp;<a href="#top" title="Top of section [25] Inheritance -- multiple and virtual inheritance">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [25] Inheritance -- multiple and virtual inheritance">Bottom</a> |&nbsp;<a href="private-inheritance.html" title="[24] Inheritance -- private and protected inheritance">Previous&nbsp;section</a> |&nbsp;<a href="intrinsic-types.html" title="[26] Built-in / intrinsic / primitive data types">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-25.5"></a>
+<div class=FaqTitle><h3>[25.5] Can you provide an example that demonstrates the above guidelines?</h3></div>
+<p>Suppose you have land vehicles, water vehicles, air vehicles, and space
+vehicles.  (Forget the whole concept of amphibious vehicles for this example;
+pretend they don't exist for this illustration.) Suppose we also have
+different power sources: gas powered, wind powered, nuclear powered, pedal
+powered, etc.  We <em>could</em> use multiple inheritance to tie everything
+together, but before we do, we should ask a few tough questions:
+<ol>
+<li>Will the <em>users</em> of <tt>LandVehicle</tt> need to have a
+<nobr><tt>Vehicle&amp;</tt></nobr> that refers to a <tt>LandVehicle</tt> object?  In particular,
+will the <em>users</em> call methods on a <tt>Vehicle</tt>-reference and expect
+the actual implementation of those methods to be specific to
+<tt>LandVehicle</tt>s?</li>
+<li>Ditto for <tt>GasPoweredVehicle</tt>s: will the users want a
+<tt>Vehicle</tt> reference that refers to a <tt>GasPoweredVehicle</tt> object,
+and in particular will they want to call methods on that <tt>Vehicle</tt>
+reference and expect the implementations to get overridden by
+<tt>GasPoweredVehicle</tt>?</li>
+</ol>
+<p>If <em>both</em> answers are &quot;yes,&quot; multiple inheritance is probably the best
+way to go.  But before you close the door on the alternatives, here are a few
+more &quot;decision criteria.&quot; Suppose there are N geographies (land, water, air,
+space, etc.) and M power sources (gas, nuclear, wind, pedal, etc.).  There are
+at least three choices for the overall design: the bridge pattern, nested
+generalization, and multiple inheritance.  Each has its pros/cons:
+<ul>
+<li><b>With the bridge pattern</b>, you create two distinct hierarchies: ABC
+<tt>Vehicle</tt> has derived classes <tt>LandVehicle</tt>, <tt>WaterVehicle</tt>,
+etc., and ABC <tt>Engine</tt> has derived classes <tt>GasPowered</tt>,
+<tt>NuclearPowered</tt>, etc.  Then the <tt>Vehicle</tt> has an <nobr><tt>Engine*</tt></nobr>
+(that is, an <tt>Engine</tt>-pointer), and users mix and match vehicles and
+engines at run-time.  This has the advantage that you only have to write N+M
+derived classes, which means things grow very gracefully: when you add a new
+geography (incrementing N) or engine type (incrementing M), you need add only
+one new derived class.  However you have several disadvantages as well: you
+only have N+M derived classes which means you only have at most N+M overrides
+and therefore N+M concrete algorithms / data structures.  If you ultimately
+want different algorithms and/or data structures in the N*M combinations,
+you'll have to work hard to make that happen, and you're probably better off
+with something other than a pure bridge pattern.  The other thing the bridge
+doesn't solve for you is eliminating the nonsensical choices, such as pedal
+powered space vehicles.  You can solve that by adding extra checks when the
+users combine vehicles and engines at run-time, but it requires a bit of
+skullduggery, something the bridge pattern doesn't provide for free.  The
+bridge also restricts users since, although there is a common base class above
+all geographies (meaning a user can pass any kind of vehicle as a
+<nobr><tt>Vehicle&amp;</tt></nobr>), there is not a common base class above, for example, all
+gas powered vehicles, and therefore users cannot pass any gas powered vehicle
+as a <nobr><tt>GasPoweredVehicle&amp;</tt></nobr>.  Finally, the bridge has the advantage that
+it shares code between the group of, for example, water vehicles as well as
+the group of, for example, gas powered vehicles.  In other words, the various
+gas powered vehicles share the code in derived class
+<tt>GasPoweredEngine</tt>.</li>
+<li><b>With nested generalization</b>, you pick one of the hierarchies as
+primary and the other as secondary, and you have a nested hierarchy.  For
+example, if you choose geography as primary, <tt>Vehicle</tt> would have
+derived classes <tt>LandVehicle</tt>, <tt>WaterVehicle</tt>, etc., and those
+would each have further derived classes, one per power source type.  E.g.,
+<tt>LandVehicle</tt> would have derived classes <tt>GasPoweredLandVehicle</tt>,
+<tt>PedalPoweredLandVehicle</tt>, <tt>NuclearPoweredLandVehicle</tt>, etc.;
+<tt>WaterVehicle</tt> would have a similar set of derived classes, etc.  This
+requires you to write roughly N*M different derived classes, which means
+things don't grow gracefully when you increment N or M, but it gives you the
+advantage over the bridge that you can have N*M different algorithms and data
+structures.  It also gives you fine granular control, since the user cannot
+select nonsensical combinations, such as pedal powered space vehicles, since
+the user can select only those combinations that a programmer has decided are
+reasonable.  Unfortunately nested generalization doesn't improve the problem
+with passing any gas powered vehicle as a common base class, since there is no
+common base class above the secondary hierarchy, e.g., there is no
+<tt>GasPoweredVehicle</tt> base class.  And finally, it's not obvious how to
+share code between all vehicles that use the same power source, e.g., between
+all gas powered vehicles.</li>
+<li><b>With multiple inheritance</b>, you have two distinct hierarchies, just
+like the bridge, but you remove the <nobr><tt>Engine*</tt></nobr> from the bridge and
+instead create roughly N*M derived classes below both the hierarchy of
+geographies and the hierarchy of power sources.  It's not as simple as this,
+since you'll need to change the concept of the <tt>Engine</tt> classes.  In
+particular, you'll want to rename the classes in that hierarchy from, for
+example, <tt>GasPoweredEngine</tt> to <tt>GasPoweredVehicle</tt>; plus you'll
+need to make corresponding changes to the methods in the hierarchy.  In any
+case, class <tt>GasPoweredLandVehicle</tt> will multiply inherit from
+<tt>GasPoweredVehicle</tt> and <tt>LandVehicle</tt>, and similarly with
+<tt>GasPoweredWaterVehicle</tt>, <tt>NuclearPoweredWaterVehicle</tt>, etc.  Like
+nested generalization, you have to write roughly N*M classes, which doesn't
+grow gracefully, but it does give you fine granular control over both which
+algorithm and data structures to use in the various derived classes as well as
+which combinations are deemed &quot;reasonable,&quot; meaning you simply don't create
+nonsensical choices like <tt>PedalPoweredSpaceVehicle</tt>.  It solves a
+problem shared by both bridge and nested generalization, namely it allows a
+user to pass any gas powered vehicle using a common base class.  Finally it
+provides a solution to the code-sharing problem, a solution that is at least
+as good as that of the bridge solution: it lets all gas powered vehicles share
+common code when that is desired.  We say this is &quot;at least as good as the
+solution from the bridge&quot; since, unlike the bridge, the derived classes can
+share common code within gas powered vehicles, but can also, unlike with the
+bridge, override and replace that code in cases where the shared code is not
+ideal.</li>
+</ul>
+<p><b>The most important point:</b> there is no universally &quot;best&quot; answer.
+Perhaps you were hoping I would tell you to always use one or the other of the
+above choices.  I'd be happy to do that except for one minor detail: it'd be a
+lie.  If exactly one of the above was <em>always</em> best, then one size would
+fit all, and we know it does not.
+<p>So here's what you have to do: T&nbsp;H&nbsp;I&nbsp;N&nbsp;K.  You'll have to make a
+decision.  I'll give you some guidelines, but ultimately you will have to
+decide what is best (or perhaps &quot;least bad&quot;) for <em>your</em> situation.
+<p><small>[&nbsp;<a href="#top" title="Top of section [25] Inheritance -- multiple and virtual inheritance">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [25] Inheritance -- multiple and virtual inheritance">Bottom</a> |&nbsp;<a href="private-inheritance.html" title="[24] Inheritance -- private and protected inheritance">Previous&nbsp;section</a> |&nbsp;<a href="intrinsic-types.html" title="[26] Built-in / intrinsic / primitive data types">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-25.6"></a>
+<div class=FaqTitle><h3>[25.6] Is there a simple way to visualize all these tradeoffs?</h3></div>
+<p>The following matrix gives an overview of the pros/cons:
+<table  BORDER='1'>
+<tr>
+<td>&nbsp;</td>
+<td><center><b>Bridge</b></center></td>
+<td><center><b>Nested generalization</b></center></td>
+<td><center><b>Multiple inheritance</b></center></td>
+</tr>
+<tr>
+<td>Does it grow gracefully when adding geography or power source?</td>
+<td><center><img src="smile.gif" alt="Good"></center></td>
+<td><center><img src="frown.gif" alt="Bad"></center></td>
+<td><center><img src="frown.gif" alt="Bad"></center></td>
+</tr>
+<tr>
+<td>How much code needs to be written?</td>
+<td><center><img src="smile.gif" alt="Good"><br>(N+M chunks)</center></td>
+<td><center><img src="frown.gif" alt="Bad"><br>(N*M chunks)</center></td>
+<td><center><img src="frown.gif" alt="Bad"><br>(N*M chunks)</center></td>
+</tr>
+<tr>
+<td>Do you have fine granular control over the algorithms and data structures?</td>
+<td><center><img src="frown.gif" alt="Bad"></center></td>
+<td><center><img src="smile.gif" alt="Good"></center></td>
+<td><center><img src="smile.gif" alt="Good"></center></td>
+</tr>
+<tr>
+<td>Do you have fine granular control over nonsensical combinations?</td>
+<td><center><img src="frown.gif" alt="Bad"></center></td>
+<td><center><img src="smile.gif" alt="Good"></center></td>
+<td><center><img src="smile.gif" alt="Good"></center></td>
+</tr>
+<tr>
+<td>Does it let users treat either base class polymorphically?</td>
+<td><center><img src="frown.gif" alt="Bad"></center></td>
+<td><center><img src="frown.gif" alt="Bad"></center></td>
+<td><center><img src="smile.gif" alt="Good"></center></td>
+</tr>
+<tr>
+<td>Does it let derived classes share common code from either side?</td>
+<td><center><img src="smile.gif" alt="Good"></center></td>
+<td><center><img src="frown.gif" alt="Bad"></center></td>
+<td><center><img src="smile.gif" alt="Good"></center></td>
+</tr>
+</table>
+<p>Warning: the reader should not be naive in using the above matrix.  For
+example, do not simply add up the number of <img src="smile.gif" alt="Good"> and
+<img src="frown.gif" alt="Bad"> marks, then decide based on which design has the most
+good and least bad.  The first step in using the above matrix is to find out
+if there are additional design approaches, that is, additional columns.  And
+don't forget: the bridge and nested generalization columns are really both
+<em>pairs</em> of columns, since in both cases there is an asymmetry that could
+go in either direction.  In other words, one could put an <nobr><tt>Engine*</tt></nobr> in
+<tt>Vehicle</tt> or a <nobr><tt>Vehicle*</tt></nobr> in <tt>Engine</tt> (or both, or some
+other way to pair them up, such as a small object that contains just a
+<nobr><tt>Vehicle*</tt></nobr> and an <nobr><tt>Engine*</tt></nobr>).  Similarly, with nested
+generalization you could decompose first by geography (land, water, etc.) or
+first by power source (gas, nuclear, etc.), yielding two distinct designs with
+distinct tradeoffs.
+<p>The second step in using the above matrix is to give a &quot;weight&quot; to each row.
+For example, in your particular situation, the amount of code that must get
+written (second row) may be more or less important than the granular control
+over data structures.  The ultimate decision will be made by finding out which
+approach is best <em>for your situation</em>.  One size does not fit all &#151; do
+<em>not</em> expect the answer in one project to be the same as the answer in
+another project.
+<p><small>[&nbsp;<a href="#top" title="Top of section [25] Inheritance -- multiple and virtual inheritance">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [25] Inheritance -- multiple and virtual inheritance">Bottom</a> |&nbsp;<a href="private-inheritance.html" title="[24] Inheritance -- private and protected inheritance">Previous&nbsp;section</a> |&nbsp;<a href="intrinsic-types.html" title="[26] Built-in / intrinsic / primitive data types">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-25.7"></a>
+<div class=FaqTitle><h3>[25.7] Can you give another example to illustrate the above disciplines?</h3></div>
+<p>This second example is only slightly different from the previous since it is
+more obviously symmetric.  This symmetry tilts the scales slightly toward the
+multiple inheritance solution, but one of the others still might be best in
+some situations.
+<p>In this example, we have only two categories of vehicles: land vehicles and
+water vehicles.  Then somebody points out that we need amphibious vehicles.
+Now we get to the good part: the questions.
+<ol>
+<li>Do we even need a distinct <tt>AmphibiousVehicle</tt> class?  Is it also
+viable to use one of the other classes with a &quot;bit&quot; indicating the vehicle can
+be both in water and on land?  Just because &quot;the real world&quot; has amphibious
+vehicles doesn't mean we need to mimic that in software.</tt>
+<li>Will the users of <tt>LandVehicle</tt> need to use a <nobr><tt>LandVehicle&amp;</tt></nobr>
+that refers to an <tt>AmphibiousVehicle</tt> object?  Will they need to call
+methods on the <nobr><tt>LandVehicle&amp;</tt></nobr> and expect the actual implementation of
+those methods to specific to (&quot;overridden in&quot;) <tt>AmphibiousVehicle</tt>?</li>
+<li>Ditto for water vehicles: will the users want a <nobr><tt>WaterVehicle&amp;</tt></nobr> that
+might refer to an <tt>AmphibiousVehicle</tt> object, and in particular to call
+methods on that reference and expect the implementation will get overridden by
+<tt>AmphibiousVehicle</tt>?</li>
+</ol>
+<p>If we get three &quot;yes&quot; answers, multiple inheritance is probably the right
+choice.  To be sure, you should ask the other questions as well, e.g., the
+grow-gracefully issue, the granularity of control issues, etc.
+<p><small>[&nbsp;<a href="#top" title="Top of section [25] Inheritance -- multiple and virtual inheritance">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [25] Inheritance -- multiple and virtual inheritance">Bottom</a> |&nbsp;<a href="private-inheritance.html" title="[24] Inheritance -- private and protected inheritance">Previous&nbsp;section</a> |&nbsp;<a href="intrinsic-types.html" title="[26] Built-in / intrinsic / primitive data types">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-25.8"></a>
+<div class=FaqTitle><h3>[25.8] What is the &quot;dreaded diamond&quot;?</h3></div>
+<p>The &quot;dreaded diamond&quot; refers to a class structure in which a particular class
+appears more than once in a class's inheritance hierarchy.  For example,
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Base&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;protected:<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;data_;<br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Der1&nbsp;:&nbsp;public&nbsp;Base&nbsp;{&nbsp;...&nbsp;};<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Der2&nbsp;:&nbsp;public&nbsp;Base&nbsp;{&nbsp;...&nbsp;};<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Join&nbsp;:&nbsp;public&nbsp;Der1,&nbsp;public&nbsp;Der2&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;void&nbsp;method()<br>
+&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data_&nbsp;=&nbsp;1;&nbsp;&nbsp;</tt><em><big>&#8592;</big>&nbsp;bad:&nbsp;this&nbsp;is&nbsp;ambiguous;&nbsp;see&nbsp;below</em><tt><br>
+&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;int&nbsp;main()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;Join*&nbsp;j&nbsp;=&nbsp;new&nbsp;Join();<br>
+&nbsp;&nbsp;&nbsp;Base*&nbsp;b&nbsp;=&nbsp;j;&nbsp;&nbsp;&nbsp;</tt><em><big>&#8592;</big>&nbsp;bad:&nbsp;this&nbsp;is&nbsp;ambiguous;&nbsp;see&nbsp;below</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>Forgive the ASCII-art, but the inheritance hierarchy looks something like
+this:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Base<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Der1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Der2<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\&nbsp;&nbsp;/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Join
+</tt>
+</div>
+<p>Before we explain why the dreaded diamond is dreaded, it is important to note
+that C++ provides techniques to deal with each of the &quot;dreads.&quot; In other
+words, this structure is often <em>called</em> the dreaded diamond, but it
+really isn't dreaded; it's more just something to be aware of.
+<p>The key is to realize that <tt>Base</tt> is inherited twice, which means any
+data members declared in <tt>Base</tt>, such as <tt>data_</tt> above, will
+appear twice within a <tt>Join</tt> object.  This can create ambiguities: which
+<tt>data_</tt> did you want to change?  For the same reason the conversion from
+<nobr><tt>Join*</tt></nobr> to <nobr><tt>Base*</tt></nobr>, or from <nobr><tt>Join&amp;</tt></nobr> to <nobr><tt>Base&amp;</tt></nobr>, is
+ambiguous: which <tt>Base</tt> class subobject did you want?
+<p>C++ lets you resolve the ambiguities.  For example, instead of saying
+<nobr><tt>data_ = 1</tt></nobr> you could say <nobr><tt>Der2::data_ = 1</tt></nobr>, or you could convert
+from <nobr><tt>Join*</tt></nobr> to a <nobr><tt>Der1*</tt></nobr> and then to a <nobr><tt>Base*</tt></nobr>.  However
+please, Please, <em>PLEASE</em> think before you do that.  That is almost
+always <em>not</em> the best solution.  The best solution is typically to tell
+the C++ compiler that only one <tt>Base</tt> subobject should appear within a
+<tt>Join</tt> object, and that is described
+<a href="multiple-inheritance.html#faq-25.9" title="[25.9] Where in a hierarchy should I use virtual inheritance?">next<!--rawtext:[25.9]:rawtext--></a>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [25] Inheritance -- multiple and virtual inheritance">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [25] Inheritance -- multiple and virtual inheritance">Bottom</a> |&nbsp;<a href="private-inheritance.html" title="[24] Inheritance -- private and protected inheritance">Previous&nbsp;section</a> |&nbsp;<a href="intrinsic-types.html" title="[26] Built-in / intrinsic / primitive data types">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-25.9"></a>
+<div class=FaqTitle><h3>[25.9] Where in a hierarchy should I use virtual inheritance?</h3></div>
+<p>Just below the top of the diamond, <em>not</em> at the join-class.
+<p>To avoid the duplicated base class subobject that occurs with the &quot;dreaded
+diamond&quot;, you should use the <tt>virtual</tt> keyword in the inheritance part
+of the classes that derive directly from the top of the diamond:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Base&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;protected:<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;data_;<br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Der1&nbsp;:&nbsp;public&nbsp;virtual&nbsp;Base&nbsp;{<br>
+&nbsp;public:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^^^^^^^</tt><em>&#151;this&nbsp;is&nbsp;the&nbsp;key</em><tt><br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Der2&nbsp;:&nbsp;public&nbsp;virtual&nbsp;Base&nbsp;{<br>
+&nbsp;public:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^^^^^^^</tt><em>&#151;this&nbsp;is&nbsp;the&nbsp;key</em><tt><br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Join&nbsp;:&nbsp;public&nbsp;Der1,&nbsp;public&nbsp;Der2&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;void&nbsp;method()<br>
+&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data_&nbsp;=&nbsp;1;&nbsp;&nbsp;</tt><em><big>&#8592;</big>&nbsp;good:&nbsp;this&nbsp;is&nbsp;now&nbsp;unambiguous</em><tt><br>
+&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;int&nbsp;main()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;Join*&nbsp;j&nbsp;=&nbsp;new&nbsp;Join();<br>
+&nbsp;&nbsp;&nbsp;Base*&nbsp;b&nbsp;=&nbsp;j;&nbsp;&nbsp;&nbsp;</tt><em><big>&#8592;</big>&nbsp;good:&nbsp;this&nbsp;is&nbsp;now&nbsp;unambiguous</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>Because of the <tt>virtual</tt> keyword in the base-class portion of
+<tt>Der1</tt> and <tt>Der2</tt>, an instance of <tt>Join</tt> will have have only
+a single <tt>Base</tt> subobject.  This eliminates the ambiguities.  This is
+usually better than using full qualification as described in
+<a href="multiple-inheritance.html#faq-25.8" title="[25.8] What is the &quot;dreaded diamond&quot;?">the previous FAQ<!--rawtext:[25.8]:rawtext--></a>.
+<p>For emphasis, the <tt>virtual</tt> keyword goes in the hierarchy above
+<tt>Der1</tt> and <tt>Der2</tt>.  It doesn't help to put the <tt>virtual</tt>
+keyword in the <tt>Join</tt> class itself.  In other words, you have to know
+that a join class will exist when you are creating class <tt>Der1</tt> and
+<tt>Der2</tt>.
+<p><div class=CodeBlock>
+<tt>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Base<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;virtual&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\&nbsp;virtual<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Der1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Der2<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\&nbsp;&nbsp;/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Join
+</tt>
+</div>
+<p><small>[&nbsp;<a href="#top" title="Top of section [25] Inheritance -- multiple and virtual inheritance">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [25] Inheritance -- multiple and virtual inheritance">Bottom</a> |&nbsp;<a href="private-inheritance.html" title="[24] Inheritance -- private and protected inheritance">Previous&nbsp;section</a> |&nbsp;<a href="intrinsic-types.html" title="[26] Built-in / intrinsic / primitive data types">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-25.10"></a>
+<div class=FaqTitle><h3>[25.10] What does it mean to &quot;delegate to a sister class&quot; via virtual inheritance?</h3></div>
+<p>Consider the following example:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Base&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;virtual&nbsp;void&nbsp;foo()&nbsp;=&nbsp;0;<br>
+&nbsp;&nbsp;&nbsp;virtual&nbsp;void&nbsp;bar()&nbsp;=&nbsp;0;<br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Der1&nbsp;:&nbsp;public&nbsp;virtual&nbsp;Base&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;virtual&nbsp;void&nbsp;foo();<br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;void&nbsp;Der1::foo()<br>
+&nbsp;{&nbsp;bar();&nbsp;}<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Der2&nbsp;:&nbsp;public&nbsp;virtual&nbsp;Base&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;virtual&nbsp;void&nbsp;bar();<br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Join&nbsp;:&nbsp;public&nbsp;Der1,&nbsp;public&nbsp;Der2&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;int&nbsp;main()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;Join*&nbsp;p1&nbsp;=&nbsp;new&nbsp;Join();<br>
+&nbsp;&nbsp;&nbsp;Der1*&nbsp;p2&nbsp;=&nbsp;p1;<br>
+&nbsp;&nbsp;&nbsp;Base*&nbsp;p3&nbsp;=&nbsp;p1;<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;p1-&gt;foo();<br>
+&nbsp;&nbsp;&nbsp;p2-&gt;foo();<br>
+&nbsp;&nbsp;&nbsp;p3-&gt;foo();<br>
+&nbsp;}
+</tt>
+</div>
+<p>Believe it or not, when <nobr><tt>Der1::foo()</tt></nobr> calls <nobr><tt>this-&gt;bar()</tt></nobr>, it ends
+up calling <nobr><tt>Der2::bar()</tt></nobr>.  Yes, that's right: a class that <tt>Der1</tt>
+knows nothing about will supply the override of a virtual function invoked by
+<nobr><tt>Der1::foo()</tt></nobr>.  This &quot;cross delegation&quot; can be a powerful technique for
+customizing the behavior of polymorphic classes.
+<p><small>[&nbsp;<a href="#top" title="Top of section [25] Inheritance -- multiple and virtual inheritance">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [25] Inheritance -- multiple and virtual inheritance">Bottom</a> |&nbsp;<a href="private-inheritance.html" title="[24] Inheritance -- private and protected inheritance">Previous&nbsp;section</a> |&nbsp;<a href="intrinsic-types.html" title="[26] Built-in / intrinsic / primitive data types">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-25.11"></a>
+<div class=FaqTitle><h3>[25.11] What special considerations do I need to know about when I use virtual inheritance?</h3></div>
+<p>Generally, virtual base classes are most suitable when the classes that derive
+from the virtual base, and especially the virtual base itself, are pure
+abstract classes.  This means the classes above the &quot;join class&quot; have very
+little if any data.
+<p>Note: even if the virtual base itself is a pure abstract class with <em>no</em>
+member data, you still probably don't want to remove the virtual inheritance
+within classes <tt>Der1</tt> and <tt>Der2</tt>.  You can use fully qualified
+names to resolve any ambiguities that arise, and you might even be able to
+squeeze out a few cycles in some cases, however the object's address is
+somewhat ambiguous (there are still two <tt>Base</tt> class subobjects in the
+<tt>Join</tt> object), so simple things like trying to find out if two pointers
+point at the same instance might be tricky.  Just be careful &#151; very careful.
+<p><small>[&nbsp;<a href="#top" title="Top of section [25] Inheritance -- multiple and virtual inheritance">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [25] Inheritance -- multiple and virtual inheritance">Bottom</a> |&nbsp;<a href="private-inheritance.html" title="[24] Inheritance -- private and protected inheritance">Previous&nbsp;section</a> |&nbsp;<a href="intrinsic-types.html" title="[26] Built-in / intrinsic / primitive data types">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-25.12"></a>
+<div class=FaqTitle><h3>[25.12] What special considerations do I need to know about when I inherit from a class that uses virtual inheritance? <span class=Updated>&nbsp;Updated!&nbsp;</span></h3></div>
+<small><em>[Recently fixed spelling error (&quot;becuase&quot;) thanks to <a href="mailto:ocolombo@peoplecall.com" title="ocolombo@peoplecall.com">Olga Colombo</a> (in 5/03).  <a href="intrinsic-types.html#faq-26.6" title="[26.6] I'm sooooo confused. Would you please go over the rules about bytes, chars, and characters one more time?">Click here to go to the next FAQ in the &quot;chain&quot; of recent changes<!--rawtext:[26.6]:rawtext--></a>.]</em></small>
+<p>Initialization list of most-derived-class's ctor directly invokes the virtual
+base class's ctor.
+<p>Because a virtual base class subobject occurs only once in an instance, there
+are special rules to make sure the virtual base class's constructor and
+destructor get called exactly once per instance.  The C++ rules say that
+virtual base classes are constructed before all non-virtual base classes.  The
+thing you as a programmer need to know is this: constructors for virtual base
+classes <em>anywhere</em> in your class's inheritance hierarchy are called by
+the &quot;most derived&quot; class's constructor.
+<p>Practically speaking, this means that when you create a concrete class that
+has a virtual base class, you must be prepared to pass whatever parameters are
+required to call the virtual base class's constructor.  And, of course, if
+there are several virtual base classes anywhere in your classes ancestry, you
+must be prepared to call all their constructors.  This might mean that the
+most-derived class's constructor needs more parameters than you might
+otherwise think.
+<p>However, if the author of the virtual base class followed
+<a href="multiple-inheritance.html#faq-25.11" title="[25.11] What special considerations do I need to know about when I use virtual inheritance?">the guideline in the previous FAQ<!--rawtext:[25.11]:rawtext--></a>, then
+the virtual base class's constructor probably takes no parameters since it
+doesn't have any data to initialize.  This means (fortunately!) the authors of
+the concrete classes that inherit eventually from the virtual base class do
+not need to worry about taking extra parameters to pass to the virtual base
+class's ctor.
+<p><small>[&nbsp;<a href="#top" title="Top of section [25] Inheritance -- multiple and virtual inheritance">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [25] Inheritance -- multiple and virtual inheritance">Bottom</a> |&nbsp;<a href="private-inheritance.html" title="[24] Inheritance -- private and protected inheritance">Previous&nbsp;section</a> |&nbsp;<a href="intrinsic-types.html" title="[26] Built-in / intrinsic / primitive data types">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-25.13"></a>
+<div class=FaqTitle><h3>[25.13] What special considerations do I need to know about when I <em>use</em> a class that uses virtual inheritance?</h3></div>
+<p>No C-style downcasts; use <tt>dynamic_cast</tt> instead.
+<p>(Rest to be written.)
+<p><small>[&nbsp;<a href="#top" title="Top of section [25] Inheritance -- multiple and virtual inheritance">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [25] Inheritance -- multiple and virtual inheritance">Bottom</a> |&nbsp;<a href="private-inheritance.html" title="[24] Inheritance -- private and protected inheritance">Previous&nbsp;section</a> |&nbsp;<a href="intrinsic-types.html" title="[26] Built-in / intrinsic / primitive data types">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-25.14"></a>
+<div class=FaqTitle><h3>[25.14] One more time: what is the exact order of constructors in a multiple and/or virtual inheritance situation?</h3></div>
+<p>The very first constructors to be executed are the virtual base classes
+anywhere in the hierarchy.  They are executed in the order they appear in a
+depth-first left-to-right traversal of the graph of base classes, where
+<em>left to right</em> refer to the order of appearance of base class names.
+<p>After all virtual base class constructors are finished, the construction order
+is generally from base class to derived class.  The details are easiest to
+understand if you imagine that the very first thing done in the derived
+class's ctor is to call the base class's ctor (hint: that's the way most
+compilers actually do it).  So if class D inherits multiply from B1 and B2,
+the constructor for B1 executes first, then the constructor for B2, then the
+constructor for D.  This rule is applied recursively; for example, if B1
+inherits from B1a and B1b, and B2 inherits from B2a and B2b, then the final
+order is B1a, B1b, B1, B2a, B2b, B2, D.
+<p>Note that the order B1 and then B2 (or B1a then B1b) is determined by the
+order that the base classes appear in the declaration of the class,
+<em>not</em> in the order that the initializer appears in the derived class's
+initialization list.
+<p><small>[&nbsp;<a href="#top" title="Top of section [25] Inheritance -- multiple and virtual inheritance">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [25] Inheritance -- multiple and virtual inheritance">Bottom</a> |&nbsp;<a href="private-inheritance.html" title="[24] Inheritance -- private and protected inheritance">Previous&nbsp;section</a> |&nbsp;<a href="intrinsic-types.html" title="[26] Built-in / intrinsic / primitive data types">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="bottom"></a>
+<a href="mailto:cline@parashift.com" title="cline@parashift.com"><img src="mbox.gif" height=26 width=89 alt="E-Mail">&nbsp;E-mail the author</a><br>
+[&nbsp;<a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>
+|&nbsp;<a href="index.html#table-of-contents" title="Table of contents">Table&nbsp;of&nbsp;contents</a>
+|&nbsp;<a href="subject-index.html" title="Subject index; 3706 links to 2361 topics">Subject&nbsp;index</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.1" title="[1.1] Author">About&nbsp;the&nbsp;author</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">&copy;</a>
+|&nbsp;<a href="on-line-availability.html#faq-2.2" title="[2.2] How can I get a copy of all the HTML files of C++ FAQ Lite so I can read them Off-Line?">Download&nbsp;your&nbsp;own&nbsp;copy</a>&nbsp;]<br>
+<small>Revised May 2, 2003</small>
+</body>
+</html>

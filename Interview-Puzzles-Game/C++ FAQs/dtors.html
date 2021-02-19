@@ -1,0 +1,716 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"
+	"http://www.w3.org/TR/REC-html40/strict.dtd">
+<html>
+<head>
+<title>[11] Destructors, C++ FAQ Lite</title>
+<meta name="FILENAME" content="dtors.html">
+<meta name="ABSTRACT" content="[11] Destructors, C++ FAQ Lite">
+<meta name="OWNER"    content="cline@parashift.com">
+<meta name="AUTHOR"   content="Marshall Cline, cline@parashift.com">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rev=made href="mailto:cline@parashift.com">
+<style type='text/css'>
+  <!--
+  body       { font-family: arial; color: black; background: white }
+  .CodeBlock { color: black; background-color: #dfdfdf; margin-left: 30px; margin-right: 30px; padding: 5pt }
+  .FaqTitle  { color: black; background-color: gold }
+  .Updated   { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #ffff00; border: solid #e0e000 1px; }
+  .New       { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #00ff00; border: solid #00d000 1px; }
+  ul         { margin-bottom: 1px; margin-top: 1px }
+  ol         { margin-bottom: 1px; margin-top: 1px }
+  li         { margin-bottom: 4px; margin-top: 4px }
+  a          { color: blue }
+  a:hover    { color: red }
+  -->
+</style>
+</head>
+<body>
+<h1><a name="top"></a>[11] Destructors<br>
+<small><small>(Part of <a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>, <a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">Copyright&nbsp;&copy; 1991-2003</a>, <a href="http://www.parashift.com/" title="www.parashift.com/" target='_blank'>Marshall Cline</a>, <a href="mailto:cline@parashift.com" title="cline@parashift.com"><tt>cline@parashift.com</tt></a>)</small></small></h1>
+<hr>
+<h3>FAQs in section [11]:</h3>
+<ul>
+<li><a href="dtors.html#faq-11.1" title="[11.1] What's the deal with destructors?">[11.1] What's the deal with destructors?</a></li>
+<li><a href="dtors.html#faq-11.2" title="[11.2] What's the order that local objects are destructed?">[11.2] What's the order that local objects are destructed?</a></li>
+<li><a href="dtors.html#faq-11.3" title="[11.3] What's the order that objects in an array are destructed?">[11.3] What's the order that objects in an array are destructed?</a></li>
+<li><a href="dtors.html#faq-11.4" title="[11.4] Can I overload the destructor for my class?">[11.4] Can I overload the destructor for my class?</a></li>
+<li><a href="dtors.html#faq-11.5" title="[11.5] Should I explicitly call a destructor on a local variable?">[11.5] Should I explicitly call a destructor on a local variable?</a></li>
+<li><a href="dtors.html#faq-11.6" title="[11.6] What if I want a local to &quot;die&quot; before the close } of the scope in which it was created? Can I call a destructor on a local if I really want to?">[11.6] What if I want a local to &quot;die&quot; before the close <nobr><tt>}</tt></nobr> of the scope in which it was created? Can I call a destructor on a local if I <em>really</em> want to?</a></li>
+<li><a href="dtors.html#faq-11.7" title="[11.7] OK, OK already; I won't explicitly call the destructor of a local; but how do I handle the above situation?">[11.7] OK, OK already; I won't explicitly call the destructor of a local; but how do I handle the above situation?</a></li>
+<li><a href="dtors.html#faq-11.8" title="[11.8] What if I can't wrap the local in an artificial block?">[11.8] What if I can't wrap the local in an artificial block?</a></li>
+<li><a href="dtors.html#faq-11.9" title="[11.9] But can I explicitly call a destructor if I've allocated my object with new?">[11.9] But can I explicitly call a destructor if I've allocated my object with <tt>new</tt>?</a></li>
+<li><a href="dtors.html#faq-11.10" title="[11.10] What is &quot;placement new&quot; and why would I use it?">[11.10] What is &quot;placement <tt>new</tt>&quot; and why would I use it?</a></li>
+<li><a href="dtors.html#faq-11.11" title="[11.11] When I write a destructor, do I need to explicitly call the destructors for my member objects?">[11.11] When I write a destructor, do I need to explicitly call the destructors for my member objects?</a></li>
+<li><a href="dtors.html#faq-11.12" title="[11.12] When I write a derived class's destructor, do I need to explicitly call the destructor for my base class?">[11.12] When I write a derived class's destructor, do I need to explicitly call the destructor for my base class?</a></li>
+<li><a href="dtors.html#faq-11.13" title="[11.13] Should my destructor throw an exception when it detects a problem?">[11.13] Should my destructor throw an exception when it detects a problem?</a></li>
+<li><a href="dtors.html#faq-11.14" title="[11.14] Is there a way to force new to allocate memory from a specific memory area?">[11.14] Is there a way to force <tt>new</tt> to allocate memory from a specific memory area?</a></li>
+</ul>
+<p><hr>
+<p><a name="faq-11.1"></a>
+<div class=FaqTitle><h3>[11.1] What's the deal with destructors?</h3></div>
+<p>A destructor gives an object its last rites.
+<p>Destructors are used to release any resources allocated by the object.  E.g.,
+<tt>class</tt> <tt>Lock</tt> might lock a semaphore, and the destructor will release
+that semaphore.  The most common example is when the constructor uses <tt>new</tt>,
+and the destructor uses <tt>delete</tt>.
+<p>Destructors are a &quot;prepare to die&quot; member function.  They are often abbreviated
+&quot;dtor&quot;.
+<p><small>[&nbsp;<a href="#top" title="Top of section [11] Destructors">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [11] Destructors">Bottom</a> |&nbsp;<a href="ctors.html" title="[10] Constructors">Previous&nbsp;section</a> |&nbsp;<a href="assignment-operators.html" title="[12] Assignment operators">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-11.2"></a>
+<div class=FaqTitle><h3>[11.2] What's the order that local objects are destructed?</h3></div>
+<p>In reverse order of construction: First constructed, last destructed.
+<p>In the following example, <tt>b</tt>'s destructor will be executed first, then <tt>a</tt>'s
+destructor:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;userCode()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;Fred&nbsp;a;<br>
+&nbsp;&nbsp;&nbsp;Fred&nbsp;b;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p><small>[&nbsp;<a href="#top" title="Top of section [11] Destructors">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [11] Destructors">Bottom</a> |&nbsp;<a href="ctors.html" title="[10] Constructors">Previous&nbsp;section</a> |&nbsp;<a href="assignment-operators.html" title="[12] Assignment operators">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-11.3"></a>
+<div class=FaqTitle><h3>[11.3] What's the order that objects in an array are destructed?</h3></div>
+<p>In reverse order of construction: First constructed, last destructed.
+<p>In the following example, the order for destructors will be <nobr><tt>a[9]</tt></nobr>,
+<nobr><tt>a[8]</tt></nobr>, ..., <nobr><tt>a[1]</tt></nobr>, <nobr><tt>a[0]</tt></nobr>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;userCode()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;Fred&nbsp;a[10];<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p><small>[&nbsp;<a href="#top" title="Top of section [11] Destructors">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [11] Destructors">Bottom</a> |&nbsp;<a href="ctors.html" title="[10] Constructors">Previous&nbsp;section</a> |&nbsp;<a href="assignment-operators.html" title="[12] Assignment operators">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-11.4"></a>
+<div class=FaqTitle><h3>[11.4] Can I overload the destructor for my class?</h3></div>
+<p>No.
+<p>You can have only one destructor for a class <tt>Fred</tt>.  It's always called
+<nobr><tt>Fred::~Fred()</tt></nobr>.  It never takes any parameters, and it never returns
+anything.
+<p>You can't pass parameters to the destructor anyway, since you
+<a href="dtors.html#faq-11.5" title="[11.5] Should I explicitly call a destructor on a local variable?">never explicitly call a destructor<!--rawtext:[11.5]:rawtext--></a> (well,
+<a href="dtors.html#faq-11.10" title="[11.10] What is &quot;placement new&quot; and why would I use it?"><em>almost</em> never<!--rawtext:[11.10]:rawtext--></a>).
+<p><small>[&nbsp;<a href="#top" title="Top of section [11] Destructors">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [11] Destructors">Bottom</a> |&nbsp;<a href="ctors.html" title="[10] Constructors">Previous&nbsp;section</a> |&nbsp;<a href="assignment-operators.html" title="[12] Assignment operators">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-11.5"></a>
+<div class=FaqTitle><h3>[11.5] Should I explicitly call a destructor on a local variable?</h3></div>
+<p>No!
+<p>The destructor will get called <em>again</em> at the close <nobr><tt>}</tt></nobr> of the block in
+which the local was created.  This is a guarantee of the language; it happens
+automagically; there's no way to stop it from happening.  But you can get
+<em>really</em> bad results from calling a destructor on the same object a
+second time!  Bang!  You're dead!
+<p><small>[&nbsp;<a href="#top" title="Top of section [11] Destructors">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [11] Destructors">Bottom</a> |&nbsp;<a href="ctors.html" title="[10] Constructors">Previous&nbsp;section</a> |&nbsp;<a href="assignment-operators.html" title="[12] Assignment operators">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-11.6"></a>
+<div class=FaqTitle><h3>[11.6] What if I want a local to &quot;die&quot; before the close <nobr><tt>}</tt></nobr> of the scope in which it was created? Can I call a destructor on a local if I <em>really</em> want to?</h3></div>
+<p>No!  [For context, please read
+<a href="dtors.html#faq-11.5" title="[11.5] Should I explicitly call a destructor on a local variable?">the previous FAQ<!--rawtext:[11.5]:rawtext--></a>].
+<p>Suppose the (desirable) side effect of destructing a local <tt>File</tt> object is to
+close the <tt>File</tt>.  Now suppose you have an object <tt>f</tt> of a class <tt>File</tt> and you
+want <tt>File</tt> <tt>f</tt> to be closed before the end of the scope (i.e., the <nobr><tt>}</tt></nobr>) of the
+scope of object <tt>f</tt>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;someCode()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;File&nbsp;f;<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...insert&nbsp;code&nbsp;that&nbsp;should&nbsp;execute&nbsp;when&nbsp;<tt>f</tt>&nbsp;is&nbsp;still&nbsp;open...</em><tt><br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;</tt><em><big>&#8592;</big>&nbsp;We&nbsp;want&nbsp;the&nbsp;side-effect&nbsp;of&nbsp;<tt>f</tt>'s&nbsp;destructor&nbsp;here!</em><tt><br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...insert&nbsp;code&nbsp;that&nbsp;should&nbsp;execute&nbsp;after&nbsp;<tt>f</tt>&nbsp;is&nbsp;closed...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>There is a <a href="dtors.html#faq-11.7" title="[11.7] OK, OK already; I won't explicitly call the destructor of a local; but how do I handle the above situation?">simple solution to this
+problem<!--rawtext:[11.7]:rawtext--></a>.  But in the mean time,
+remember: <a href="dtors.html#faq-11.5" title="[11.5] Should I explicitly call a destructor on a local variable?"><em>Do not explicitly call the
+destructor!</em><!--rawtext:[11.5]:rawtext--></a>
+<p><small>[&nbsp;<a href="#top" title="Top of section [11] Destructors">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [11] Destructors">Bottom</a> |&nbsp;<a href="ctors.html" title="[10] Constructors">Previous&nbsp;section</a> |&nbsp;<a href="assignment-operators.html" title="[12] Assignment operators">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-11.7"></a>
+<div class=FaqTitle><h3>[11.7] OK, OK already; I won't explicitly call the destructor of a local; but how do I handle the above situation?</h3></div>
+<p>[For context, please read
+<a href="dtors.html#faq-11.6" title="[11.6] What if I want a local to &quot;die&quot; before the close } of the scope in which it was created? Can I call a destructor on a local if I really want to?">the previous FAQ<!--rawtext:[11.6]:rawtext--></a>].
+<p>Simply wrap the extent of the lifetime of the local in an artificial block <nobr><tt>{</tt>...<tt>}</tt></nobr>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;someCode()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File&nbsp;f;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>...insert&nbsp;code&nbsp;that&nbsp;should&nbsp;execute&nbsp;when&nbsp;<tt>f</tt>&nbsp;is&nbsp;still&nbsp;open...</em><tt><br>
+&nbsp;&nbsp;&nbsp;}</tt><em><big>&#8592;</big>&nbsp;<tt>f</tt>'s&nbsp;destructor&nbsp;will&nbsp;automagically&nbsp;be&nbsp;called&nbsp;here!</em><tt><br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...insert&nbsp;code&nbsp;here&nbsp;that&nbsp;should&nbsp;execute&nbsp;after&nbsp;<tt>f</tt>&nbsp;is&nbsp;closed...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p><small>[&nbsp;<a href="#top" title="Top of section [11] Destructors">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [11] Destructors">Bottom</a> |&nbsp;<a href="ctors.html" title="[10] Constructors">Previous&nbsp;section</a> |&nbsp;<a href="assignment-operators.html" title="[12] Assignment operators">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-11.8"></a>
+<div class=FaqTitle><h3>[11.8] What if I can't wrap the local in an artificial block?</h3></div>
+<p>Most of the time, you can limit the lifetime of a local by
+<a href="dtors.html#faq-11.7" title="[11.7] OK, OK already; I won't explicitly call the destructor of a local; but how do I handle the above situation?">wrapping the local in an artificial
+block (<nobr><tt>{</tt>...<tt>}</tt></nobr>)<!--rawtext:[11.7]:rawtext--></a>.  But if for some reason you can't do that, add a
+member function that has a similar effect as the destructor.  But <em>do not
+call the destructor itself!</em>
+<p>For example, in the case of <tt>class</tt> <tt>File</tt>, you might add a <nobr><tt>close()</tt></nobr> method.
+Typically the destructor will simply call this <nobr><tt>close()</tt></nobr> method.  Note that the
+<nobr><tt>close()</tt></nobr> method will need to mark the <tt>File</tt> object so a subsequent call won't
+re-close an already-closed <tt>File</tt>.  E.g., it might set the <tt>fileHandle_</tt>
+data member to some nonsensical value such as -1, and it might check at the
+beginning to see if the <tt>fileHandle_</tt> is already equal to -1:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;File&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;void&nbsp;close();<br>
+&nbsp;&nbsp;&nbsp;~File();<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;private:<br>
+&nbsp;&nbsp;&nbsp;int&nbsp;fileHandle_;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;<nobr><tt>fileHandle_&nbsp;&gt;=&nbsp;0</tt></nobr>&nbsp;if/only-if&nbsp;it's&nbsp;open</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;File::~File()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;close();<br>
+&nbsp;}<br>
+&nbsp;<br>
+&nbsp;void&nbsp;File::close()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;if&nbsp;(fileHandle_&nbsp;&gt;=&nbsp;0)&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>...insert&nbsp;code&nbsp;to&nbsp;call&nbsp;the&nbsp;OS&nbsp;to&nbsp;close&nbsp;the&nbsp;file...</em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fileHandle_&nbsp;=&nbsp;-1;<br>
+&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;}
+</tt>
+</div>
+<p>Note that the other <tt>File</tt> methods may also need to check if the
+<tt>fileHandle_</tt> is -1 (i.e., check if the <tt>File</tt> is closed).
+<p>Note also that any constructors that don't actually open a file should set
+<tt>fileHandle_</tt> to -1.
+<p><small>[&nbsp;<a href="#top" title="Top of section [11] Destructors">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [11] Destructors">Bottom</a> |&nbsp;<a href="ctors.html" title="[10] Constructors">Previous&nbsp;section</a> |&nbsp;<a href="assignment-operators.html" title="[12] Assignment operators">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-11.9"></a>
+<div class=FaqTitle><h3>[11.9] But can I explicitly call a destructor if I've allocated my object with <tt>new</tt>?</h3></div>
+<p>Probably not.
+<p>Unless you used <a href="dtors.html#faq-11.10" title="[11.10] What is &quot;placement new&quot; and why would I use it?">placement <tt>new</tt><!--rawtext:[11.10]:rawtext--></a>, you should simply
+<tt>delete</tt> the object rather than explicitly calling the destructor.  For
+example, suppose you allocated the object via a typical <tt>new</tt> expression:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;Fred*&nbsp;p&nbsp;=&nbsp;new&nbsp;Fred();
+</tt>
+</div>
+<p>Then the destructor <nobr><tt>Fred::~Fred()</tt></nobr> will automagically get called when
+you <tt>delete</tt> it via:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;delete&nbsp;p;&nbsp;&nbsp;</tt><em>//&nbsp;Automagically&nbsp;calls&nbsp;<nobr><tt>p-&gt;~Fred()</tt></nobr></em><tt>
+</tt>
+</div>
+<p>You should <em>not</em> explicitly call the destructor, since doing so won't
+release the memory that was allocated for the <tt>Fred</tt> object itself.  Remember:
+<a href="freestore-mgmt.html#faq-16.8" title="[16.8] What are the two steps that happen when I say delete p?"><nobr><tt>delete p</tt></nobr> does two things<!--rawtext:[16.8]:rawtext--></a>: it calls the
+destructor and it deallocates the memory.
+<p><small>[&nbsp;<a href="#top" title="Top of section [11] Destructors">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [11] Destructors">Bottom</a> |&nbsp;<a href="ctors.html" title="[10] Constructors">Previous&nbsp;section</a> |&nbsp;<a href="assignment-operators.html" title="[12] Assignment operators">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-11.10"></a>
+<div class=FaqTitle><h3>[11.10] What is &quot;placement <tt>new</tt>&quot; and why would I use it?</h3></div>
+<p>There are many uses of placement <tt>new</tt>.  The simplest use is to place an object
+at a particular location in memory.  This is done by supplying the place as a
+pointer parameter to the <tt>new</tt> part of a <tt>new</tt> expression:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#include&nbsp;&lt;new&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Must&nbsp;<nobr><tt>#include</tt></nobr>&nbsp;this&nbsp;to&nbsp;use&nbsp;&quot;placement&nbsp;<tt>new</tt>&quot;</em><tt><br>
+&nbsp;#include&nbsp;&quot;Fred.h&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Declaration&nbsp;of&nbsp;<tt>class</tt>&nbsp;<tt>Fred</tt></em><tt><br>
+&nbsp;<br>
+&nbsp;void&nbsp;someCode()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;char&nbsp;memory[sizeof(Fred)];&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Line&nbsp;#1</em><tt><br>
+&nbsp;&nbsp;&nbsp;void*&nbsp;place&nbsp;=&nbsp;memory;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Line&nbsp;#2</em><tt><br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;Fred*&nbsp;f&nbsp;=&nbsp;new(place)&nbsp;Fred();&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Line&nbsp;#3&nbsp;(see&nbsp;&quot;DANGER&quot;&nbsp;below)</em><tt><br>
+&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;The&nbsp;pointers&nbsp;<tt>f</tt>&nbsp;and&nbsp;<tt>place</tt>&nbsp;will&nbsp;be&nbsp;equal</em><tt><br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>Line #1 creates an array of <nobr><tt>sizeof(Fred)</tt></nobr> bytes of memory, which is big enough
+to hold a <tt>Fred</tt> object.  Line #2 creates a pointer <tt>place</tt> that points
+to the first byte of this memory (experienced C programmers will note that this
+step was unnecessary; it's there only to make the code more obvious).  Line #3
+essentially just calls the constructor <nobr><tt>Fred::Fred()</tt></nobr>.  The <tt>this</tt>
+pointer in the <tt>Fred</tt> constructor will be equal to <tt>place</tt>.  The returned
+pointer <tt>f</tt> will therefore be equal to <tt>place</tt>.
+<p><em>ADVICE:</em> Don't use this &quot;placement <tt>new</tt>&quot; syntax unless you have to.
+Use it only when you really care that an object is placed at a particular
+location in memory.  For example, when your hardware has a memory-mapped I/O
+timer device, and you want to place a <tt>Clock</tt> object at that memory
+location.
+<p><em>DANGER:</em> You are taking <em>sole</em> responsibility that the pointer you
+pass to the &quot;placement <tt>new</tt>&quot; <tt>operator</tt> points to a region of memory that is
+big enough and is properly aligned for the object type that you're creating.
+Neither the compiler nor the run-time system make any attempt to check whether
+you did this right.  If your <tt>Fred</tt> class needs to be aligned on a 4 byte
+boundary but you supplied a location that isn't properly aligned, you can have
+a serious disaster on your hands (if you don't know what &quot;alignment&quot; means,
+<em>please</em> don't use the placement <tt>new</tt> syntax).  You have been warned.
+<p>You are also solely responsible for destructing the placed object.  This is
+done by explicitly calling the destructor:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;someCode()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;char&nbsp;memory[sizeof(Fred)];<br>
+&nbsp;&nbsp;&nbsp;void*&nbsp;p&nbsp;=&nbsp;memory;<br>
+&nbsp;&nbsp;&nbsp;Fred*&nbsp;f&nbsp;=&nbsp;new(p)&nbsp;Fred();<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;f-&gt;~Fred();&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Explicitly&nbsp;call&nbsp;the&nbsp;destructor&nbsp;for&nbsp;the&nbsp;placed&nbsp;object</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>This is about the only time you ever explicitly call a destructor.
+<p>Note: there is <a href="dtors.html#faq-11.14" title="[11.14] Is there a way to force new to allocate memory from a specific memory area?">a much cleaner but more sophisticated<!--rawtext:[11.14]:rawtext--></a>
+way of handling the destruction / deletion situation.
+<p><small>[&nbsp;<a href="#top" title="Top of section [11] Destructors">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [11] Destructors">Bottom</a> |&nbsp;<a href="ctors.html" title="[10] Constructors">Previous&nbsp;section</a> |&nbsp;<a href="assignment-operators.html" title="[12] Assignment operators">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-11.11"></a>
+<div class=FaqTitle><h3>[11.11] When I write a destructor, do I need to explicitly call the destructors for my member objects?</h3></div>
+<p>No.  You never need to explicitly call a destructor (except with
+<a href="dtors.html#faq-11.10" title="[11.10] What is &quot;placement new&quot; and why would I use it?">placement <tt>new</tt><!--rawtext:[11.10]:rawtext--></a>).
+<p>A class's destructor (whether or not you explicitly define one)
+<em>automagically</em> invokes the destructors for member objects.  They are
+destroyed in the reverse order they appear within the declaration for the
+class.
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Member&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;~Member();<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Fred&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;~Fred();<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;private:<br>
+&nbsp;&nbsp;&nbsp;Member&nbsp;x_;<br>
+&nbsp;&nbsp;&nbsp;Member&nbsp;y_;<br>
+&nbsp;&nbsp;&nbsp;Member&nbsp;z_;<br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;Fred::~Fred()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Compiler&nbsp;automagically&nbsp;calls&nbsp;<nobr><tt>z_.~Member()</tt></nobr></em><tt><br>
+&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Compiler&nbsp;automagically&nbsp;calls&nbsp;<nobr><tt>y_.~Member()</tt></nobr></em><tt><br>
+&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Compiler&nbsp;automagically&nbsp;calls&nbsp;<nobr><tt>x_.~Member()</tt></nobr></em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p><small>[&nbsp;<a href="#top" title="Top of section [11] Destructors">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [11] Destructors">Bottom</a> |&nbsp;<a href="ctors.html" title="[10] Constructors">Previous&nbsp;section</a> |&nbsp;<a href="assignment-operators.html" title="[12] Assignment operators">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-11.12"></a>
+<div class=FaqTitle><h3>[11.12] When I write a derived class's destructor, do I need to explicitly call the destructor for my base class?</h3></div>
+<p>No.  You never need to explicitly call a destructor (except with
+<a href="dtors.html#faq-11.10" title="[11.10] What is &quot;placement new&quot; and why would I use it?">placement <tt>new</tt><!--rawtext:[11.10]:rawtext--></a>).
+<p>A derived class's destructor (whether or not you explicitly define one)
+<em>automagically</em> invokes the destructors for base class subobjects.
+Base classes are destructed after member objects.  In the event of multiple
+inheritance, direct base classes are destructed in the reverse order of their
+appearance in the inheritance list.
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Member&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;~Member();<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Base&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;virtual&nbsp;~Base();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;<a href="virtual-functions.html#faq-20.5" title="[20.5] When should my destructor be virtual?">A&nbsp;virtual&nbsp;destructor<!--rawtext:[20.5]:rawtext--></a></em><tt><br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Derived&nbsp;:&nbsp;public&nbsp;Base&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;~Derived();<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;private:<br>
+&nbsp;&nbsp;&nbsp;Member&nbsp;x_;<br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;Derived::~Derived()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Compiler&nbsp;automagically&nbsp;calls&nbsp;<nobr><tt>x_.~Member()</tt></nobr></em><tt><br>
+&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;Compiler&nbsp;automagically&nbsp;calls&nbsp;<nobr><tt>Base::~Base()</tt></nobr></em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>Note: Order dependencies with <tt>virtual</tt> inheritance are trickier.  If you are
+relying on order dependencies in a <tt>virtual</tt> inheritance hierarchy, you'll need
+a lot more information than is in this FAQ.
+<p><small>[&nbsp;<a href="#top" title="Top of section [11] Destructors">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [11] Destructors">Bottom</a> |&nbsp;<a href="ctors.html" title="[10] Constructors">Previous&nbsp;section</a> |&nbsp;<a href="assignment-operators.html" title="[12] Assignment operators">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-11.13"></a>
+<div class=FaqTitle><h3>[11.13] Should my destructor throw an exception when it detects a problem?</h3></div>
+<p>Beware!!!  See <a href="exceptions.html#faq-17.3" title="[17.3] How can I handle a destructor that fails?">this FAQ<!--rawtext:[17.3]:rawtext--></a> for details.
+<p><small>[&nbsp;<a href="#top" title="Top of section [11] Destructors">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [11] Destructors">Bottom</a> |&nbsp;<a href="ctors.html" title="[10] Constructors">Previous&nbsp;section</a> |&nbsp;<a href="assignment-operators.html" title="[12] Assignment operators">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-11.14"></a>
+<div class=FaqTitle><h3>[11.14] Is there a way to force <tt>new</tt> to allocate memory from a specific memory area?</h3></div>
+<p>Yes.  The good news is that these &quot;memory pools&quot; are useful in a number of
+situations.  The bad news is that I'll have to drag you through the mire of
+how it works before we discuss all the uses.  But if you don't know about
+memory pools, it might be worthwhile to slog through this FAQ &#151; you might
+learn something useful!
+<p>First of all, recall that a memory allocator is simply supposed to return
+uninitialized bits of memory; it is not supposed to produce &quot;objects.&quot; In
+particular, the memory allocator is not supposed to set the virtual-pointer or
+any other part of the object, as that is the job of the constructor which runs
+after the memory allocator.  Starting with a simple memory allocator function,
+<nobr><tt>allocate()</tt></nobr>, you would use <a href="dtors.html#faq-11.10" title="[11.10] What is &quot;placement new&quot; and why would I use it?">placement <tt>new</tt><!--rawtext:[11.10]:rawtext--></a> to
+construct an object in that memory.  In other words, the following is morally
+equivalent to <nobr><tt>new Foo()</tt></nobr>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void*&nbsp;raw&nbsp;=&nbsp;allocate(sizeof(Foo));&nbsp;&nbsp;</tt><em>//&nbsp;line&nbsp;1</em><tt><br>
+&nbsp;Foo*&nbsp;p&nbsp;=&nbsp;new(raw)&nbsp;Foo();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;line&nbsp;2</em><tt>
+</tt>
+</div>
+<p>Okay, assuming you've used <a href="dtors.html#faq-11.10" title="[11.10] What is &quot;placement new&quot; and why would I use it?">placement <tt>new</tt><!--rawtext:[11.10]:rawtext--></a> and have
+survived the above two lines of code, the next step is to turn your memory
+allocator into an object.  This kind of object is called a &quot;memory pool&quot; or a
+&quot;memory arena.&quot; This lets your users have more than one &quot;pool&quot; or &quot;arena&quot;
+from which memory will be allocated.  Each of these memory pool objects will
+allocate a big chunk of memory using some specific system call (e.g., shared
+memory, persistent memory, stack memory, etc.; see below), and will dole it
+out in little chunks as needed.  Your memory-pool class might look something
+like this:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Pool&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;void*&nbsp;alloc(size_t&nbsp;nbytes);<br>
+&nbsp;&nbsp;&nbsp;void&nbsp;dealloc(void*&nbsp;p);<br>
+&nbsp;private:<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...data&nbsp;members&nbsp;used&nbsp;in&nbsp;your&nbsp;pool&nbsp;object...</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;void*&nbsp;Pool::alloc(size_t&nbsp;nbytes)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...your&nbsp;algorithm&nbsp;goes&nbsp;here...</em><tt><br>
+&nbsp;}<br>
+&nbsp;<br>
+&nbsp;void&nbsp;Pool::dealloc(void*&nbsp;p)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...your&nbsp;algorithm&nbsp;goes&nbsp;here...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>Now one of your users might have a <tt>Pool</tt> called <tt>pool</tt>, from which they
+could allocate objects like this:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;Pool&nbsp;pool;<br>
+&nbsp;</tt><em>...</em><tt><br>
+&nbsp;void*&nbsp;raw&nbsp;=&nbsp;pool.alloc(sizeof(Foo));<br>
+&nbsp;Foo*&nbsp;p&nbsp;=&nbsp;new(raw)&nbsp;Foo();
+</tt>
+</div>
+<p>Or simply:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;Foo*&nbsp;p&nbsp;=&nbsp;new(pool.alloc(sizeof(Foo)))&nbsp;Foo();
+</tt>
+</div>
+<p>The reason it's good to turn <tt>Pool</tt> into a class is because it lets users
+create <em>N</em> different pools of memory rather than having one massive pool
+shared by all users.  That allows users to do lots of funky things.  For
+example, if they have a chunk of the system that allocates memory like crazy
+then goes away, they could allocate all their memory from a <tt>Pool</tt>, then not
+even bother doing any <tt>delete</tt>s on the little pieces: just deallocate the
+entire pool at once.  Or they could set up a &quot;shared memory&quot; area (where the
+operating system specifically provides memory that is shared between multiple
+processes) and have the pool dole out chunks of shared memory rather than
+process-local memory.  Another angle: many systems support a non-standard
+function often called <nobr><tt>alloca()</tt></nobr> which allocates a block of memory from
+the stack rather than the heap.  Naturally this block of memory automatically
+goes away when the function returns, eliminating the need for explicit
+<tt>delete</tt>s.  Someone could use <nobr><tt>alloca()</tt></nobr> to give the <tt>Pool</tt> its big chunk of
+memory, then all the little pieces allocated from that <tt>Pool</tt> act like they're
+local: they automatically vanish when the function returns.  Of course the
+destructors don't get called in some of these cases, and if the destructors do
+something nontrivial you won't be able to use these techniques, but in cases
+where the destructor merely deallocates memory, these sorts of techniques can
+be useful.
+<p>Okay, assuming you survived the 6 or 8 lines of code needed to wrap your
+allocate function as a method of a <tt>Pool</tt> class, the next step is to change
+the syntax for allocating objects.  The goal is to change from the rather
+clunky syntax <nobr><tt>new(pool.alloc(sizeof(Foo)))</tt></nobr> <nobr><tt>Foo()</tt></nobr> to the
+<a href="coding-standards.html#faq-27.13" title="[27.13] Should I use &quot;unusual&quot; syntax?">simpler syntax<!--rawtext:[27.13]:rawtext--></a> <nobr><tt>new(pool)</tt></nobr> <nobr><tt>Foo()</tt></nobr>.  To
+make this happen, you need to add the following two lines of code just below
+the definition of your <tt>Pool</tt> class:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;inline&nbsp;void*&nbsp;operator&nbsp;new(size_t&nbsp;nbytes,&nbsp;Pool&amp;&nbsp;pool)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;return&nbsp;pool.alloc(nbytes);<br>
+&nbsp;}
+</tt>
+</div>
+<p>Now when the compiler sees <nobr><tt>new(pool) Foo()</tt></nobr>, it calls the above
+<nobr><tt>operator new</tt></nobr> and passes <nobr><tt>sizeof(Foo)</tt></nobr> and <tt>pool</tt> as parameters,
+and the only function that ends up using the funky <nobr><tt>pool.alloc(nbytes)</tt></nobr>
+method is your own <nobr><tt>operator new</tt></nobr>.
+<p>Now to the issue of how to destruct/deallocate the <tt>Foo</tt> objects.  Recall that
+<a href="dtors.html#faq-11.10" title="[11.10] What is &quot;placement new&quot; and why would I use it?">the brute force approach sometimes used with placement
+<tt>new</tt><!--rawtext:[11.10]:rawtext--></a> is to explicitly call the destructor then explicitly deallocate
+the memory:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;sample(Pool&amp;&nbsp;pool)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;Foo*&nbsp;p&nbsp;=&nbsp;new(pool)&nbsp;Foo();<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;p-&gt;~Foo();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;explicitly&nbsp;call&nbsp;dtor</em><tt><br>
+&nbsp;&nbsp;&nbsp;pool.dealloc(p);&nbsp;&nbsp;</tt><em>//&nbsp;explicitly&nbsp;release&nbsp;the&nbsp;memory</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>This has several problems, all of which are fixable:
+<ol>
+<li>The memory will leak if <nobr><tt>Foo::Foo()</tt></nobr> throws an
+exception.</li>
+<li>The destruction/deallocation syntax is different from what most
+programmers are used to, so they'll probably screw it up.</li>
+<li>Users must somehow remember which pool goes with which object.
+Since the code that allocates is often in a different function from the code
+that deallocates, programmers will have to pass around two pointers (a <nobr><tt>Foo*</tt></nobr>
+and a <nobr><tt>Pool*</tt></nobr>), which gets ugly fast (example, what if they had an array of
+<tt>Foo</tt>s each of which potentially came from a different <tt>Pool</tt>;
+ugh).</li>
+</ol>
+<p>We will fix them in the above order.
+<p><em>Problem #1: plugging the memory leak.</em> When you use the &quot;normal&quot; new
+operator, e.g., <nobr><tt>Foo* p = new Foo()</tt></nobr>, the compiler generates some
+special code to handle the case when the constructor throws an exception.  The
+actual code generated by the compiler is functionally similar to this:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;</tt><em>//&nbsp;This&nbsp;is&nbsp;functionally&nbsp;what&nbsp;happens&nbsp;with&nbsp;<nobr><tt>Foo*&nbsp;p&nbsp;=&nbsp;new&nbsp;Foo()</tt></nobr></em><tt><br>
+&nbsp;<br>
+&nbsp;Foo*&nbsp;p;<br>
+&nbsp;<br>
+&nbsp;</tt><em>//&nbsp;don't&nbsp;catch&nbsp;exceptions&nbsp;thrown&nbsp;by&nbsp;the&nbsp;allocator&nbsp;itself</em><tt><br>
+&nbsp;void*&nbsp;raw&nbsp;=&nbsp;operator&nbsp;new(sizeof(Foo));<br>
+&nbsp;<br>
+&nbsp;</tt><em>//&nbsp;catch&nbsp;any&nbsp;exceptions&nbsp;thrown&nbsp;by&nbsp;the&nbsp;ctor</em><tt><br>
+&nbsp;try&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;p&nbsp;=&nbsp;new(raw)&nbsp;Foo();&nbsp;&nbsp;</tt><em>//&nbsp;call&nbsp;the&nbsp;ctor&nbsp;with&nbsp;<tt>raw</tt>&nbsp;as&nbsp;<tt>this</tt></em><tt><br>
+&nbsp;}<br>
+&nbsp;catch&nbsp;(...)&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;oops,&nbsp;ctor&nbsp;threw&nbsp;an&nbsp;exception</em><tt><br>
+&nbsp;&nbsp;&nbsp;operator&nbsp;delete(raw);<br>
+&nbsp;&nbsp;&nbsp;throw;&nbsp;&nbsp;</tt><em>//&nbsp;rethrow&nbsp;the&nbsp;ctor's&nbsp;exception</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>The point is that the compiler deallocates the memory if the ctor throws an
+exception.  But in the case of the &quot;new with parameter&quot; syntax (commonly
+called &quot;placement <tt>new</tt>&quot;), the compiler won't know what to do if the exception
+occurs so by default it does nothing:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;</tt><em>//&nbsp;This&nbsp;is&nbsp;functionally&nbsp;what&nbsp;happens&nbsp;with&nbsp;<nobr><tt>Foo*&nbsp;p&nbsp;=&nbsp;new(pool)&nbsp;Foo()</tt></nobr>:</em><tt><br>
+&nbsp;<br>
+&nbsp;void*&nbsp;raw&nbsp;=&nbsp;operator&nbsp;new(sizeof(Foo),&nbsp;pool);<br>
+&nbsp;</tt><em>//&nbsp;the&nbsp;above&nbsp;function&nbsp;simply&nbsp;returns&nbsp;&quot;pool.alloc(sizeof(Foo))&quot;</em><tt><br>
+&nbsp;<br>
+&nbsp;Foo*&nbsp;p&nbsp;=&nbsp;new(raw)&nbsp;Foo();<br>
+&nbsp;</tt><em>//&nbsp;if&nbsp;the&nbsp;above&nbsp;line&nbsp;&quot;throws&quot;,&nbsp;pool.dealloc(raw)&nbsp;is&nbsp;NOT&nbsp;called</em><tt>
+</tt>
+</div>
+<p>So the goal is to force the compiler to do something similar to what it does
+with the global <tt>new</tt> operator.  Fortunately it's simple: when the compiler
+sees <nobr><tt>new(pool) Foo()</tt></nobr>, it looks for a corresponding <nobr><tt>operator delete</tt></nobr>.
+If it finds one, it does the equivalent of wrapping the ctor call in a <tt>try</tt>
+block as shown above.  So we would simply provide an <nobr><tt>operator delete</tt></nobr> with
+the following signature (be careful to get this right; if the second parameter
+has a different type from the second parameter of the <nobr><tt>operator new(size_t,
+Pool&amp;)</tt></nobr>, the compiler doesn't complain; it simply bypasses the <tt>try</tt> block
+when your users say <nobr><tt>new(pool) Foo()</tt></nobr>):
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;operator&nbsp;delete(void*&nbsp;p,&nbsp;Pool&amp;&nbsp;pool)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;pool.dealloc(p);<br>
+&nbsp;}
+</tt>
+</div>
+<p>After this, the compiler will automatically wrap the ctor calls of your <tt>new</tt>
+expressions in a <tt>try</tt> block:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;</tt><em>//&nbsp;This&nbsp;is&nbsp;functionally&nbsp;what&nbsp;happens&nbsp;with&nbsp;<nobr><tt>Foo*&nbsp;p&nbsp;=&nbsp;new(pool)&nbsp;Foo()</tt></nobr></em><tt><br>
+&nbsp;<br>
+&nbsp;Foo*&nbsp;p;<br>
+&nbsp;<br>
+&nbsp;</tt><em>//&nbsp;don't&nbsp;catch&nbsp;exceptions&nbsp;thrown&nbsp;by&nbsp;the&nbsp;allocator&nbsp;itself</em><tt><br>
+&nbsp;void*&nbsp;raw&nbsp;=&nbsp;operator&nbsp;new(sizeof(Foo),&nbsp;pool);<br>
+&nbsp;</tt><em>//&nbsp;the&nbsp;above&nbsp;simply&nbsp;returns&nbsp;&quot;pool.alloc(sizeof(Foo))&quot;</em><tt><br>
+&nbsp;<br>
+&nbsp;</tt><em>//&nbsp;catch&nbsp;any&nbsp;exceptions&nbsp;thrown&nbsp;by&nbsp;the&nbsp;ctor</em><tt><br>
+&nbsp;try&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;p&nbsp;=&nbsp;new(raw)&nbsp;Foo();&nbsp;&nbsp;</tt><em>//&nbsp;call&nbsp;the&nbsp;ctor&nbsp;with&nbsp;<tt>raw</tt>&nbsp;as&nbsp;<tt>this</tt></em><tt><br>
+&nbsp;}<br>
+&nbsp;catch&nbsp;(...)&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;oops,&nbsp;ctor&nbsp;threw&nbsp;an&nbsp;exception</em><tt><br>
+&nbsp;&nbsp;&nbsp;operator&nbsp;delete(raw,&nbsp;pool);&nbsp;&nbsp;</tt><em>//&nbsp;that's&nbsp;the&nbsp;magical&nbsp;line!!</em><tt><br>
+&nbsp;&nbsp;&nbsp;throw;&nbsp;&nbsp;</tt><em>//&nbsp;rethrow&nbsp;the&nbsp;ctor's&nbsp;exception</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>In other words, the one-liner function <nobr><tt>operator delete(void* p, Pool&amp;
+pool)</tt></nobr> causes the compiler to automagically plug the memory leak.  Of
+course that function can be, but doesn't have to be, <tt>inline</tt>.
+<p><em>Problems #2 (&quot;ugly therefore error prone&quot;) and #3 (&quot;users must manually
+associate pool-pointers with the object that allocated them, which is error
+prone&quot;)</em> are solved simultaneously with an additional 10-20 lines of code
+in one place.  In other words, we add 10-20 lines of code in <em>one</em> place
+(your <tt>Pool</tt> header file) and simplify an arbitrarily large number of other
+places (every piece of code that <em>uses</em> your <tt>Pool</tt> class).
+<p>The idea is to implicitly associate a <nobr><tt>Pool*</tt></nobr> with <em>every</em> allocation.
+The <nobr><tt>Pool*</tt></nobr> associated with the global allocator would be <tt>NULL</tt>, but at least
+conceptually you could say <em>every</em> allocation has an associated <nobr><tt>Pool*</tt></nobr>.
+Then you replace the global <nobr><tt>operator delete</tt></nobr> so it looks up the associated
+<nobr><tt>Pool*</tt></nobr>, and if non-<tt>NULL</tt>, calls that <tt>Pool</tt>'s deallocate function.  For
+example, <a href="freestore-mgmt.html#faq-16.2" title="[16.2] Can I free() pointers allocated with new? Can I delete pointers allocated with malloc()?">if(!)<!--rawtext:[16.2]:rawtext--></a> the normal deallocator
+used <nobr><tt>free()</tt></nobr>, the replacment for the global <nobr><tt>operator delete</tt></nobr> would look
+something like this:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void&nbsp;operator&nbsp;delete(void*&nbsp;p)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;if&nbsp;(p&nbsp;!=&nbsp;NULL)&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pool*&nbsp;pool&nbsp;=&nbsp;</tt><em>/*&nbsp;somehow&nbsp;get&nbsp;the&nbsp;associated&nbsp;'Pool*'&nbsp;*/</em><tt>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(pool&nbsp;==&nbsp;null)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;free(p);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pool-&gt;dealloc(p);<br>
+&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;}
+</tt>
+</div>
+<p>If you're <a href="freestore-mgmt.html#faq-16.2" title="[16.2] Can I free() pointers allocated with new? Can I delete pointers allocated with malloc()?">not sure if the normal deallocator
+was <nobr><tt>free()</tt></nobr><!--rawtext:[16.2]:rawtext--></a>, the easiest approach is also replace the global <nobr><tt>operator
+new</tt></nobr> with something that uses <nobr><tt>malloc()</tt></nobr>.  The replacement for the global
+<nobr><tt>operator new</tt></nobr> would look something like this (note: this definition ignores a
+few details such as the <tt>new_handler</tt> loop and the <nobr><tt>throw
+std::bad_alloc()</tt></nobr> that happens if we run out of memory):
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void*&nbsp;operator&nbsp;new(size_t&nbsp;nbytes)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;if&nbsp;(nbytes&nbsp;==&nbsp;0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nbytes&nbsp;=&nbsp;1;&nbsp;&nbsp;</tt><em>//&nbsp;so&nbsp;all&nbsp;alloc's&nbsp;get&nbsp;a&nbsp;distinct&nbsp;address</em><tt><br>
+&nbsp;&nbsp;&nbsp;void*&nbsp;raw&nbsp;=&nbsp;malloc(nbytes);<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...somehow&nbsp;associate&nbsp;the&nbsp;NULL&nbsp;'Pool*'&nbsp;with&nbsp;'raw'...</em><tt><br>
+&nbsp;&nbsp;&nbsp;return&nbsp;raw;<br>
+&nbsp;}
+</tt>
+</div>
+<p>The only remaining problem is to associate a <nobr><tt>Pool*</tt></nobr> with an allocation.  One
+approach, used in at least one commercial product, is to use a
+<nobr><tt>std::map&lt;void*,Pool*&gt;</tt></nobr>.  In other words, build a look-up table whose
+keys are the allocation-pointer and whose values are the associated <nobr><tt>Pool*</tt></nobr>.
+For reasons I'll describe in a moment, it is essential that you insert a
+key/value pair into the map <em>only</em> in <nobr><tt>operator
+new(size_t,Pool&amp;)</tt></nobr>.  In particular, you must not insert a key/value pair
+from the global <nobr><tt>operator new</tt></nobr> (e.g., you must not say, <nobr><tt>poolMap[p] =
+NULL</tt></nobr> in the global <nobr><tt>operator new</tt></nobr>).  Reason: doing that would create a
+nasty chicken-and-egg problem &#151; since <nobr><tt>std::map</tt></nobr> probably uses the
+global <nobr><tt>operator new</tt></nobr>, it ends up inserting a new entry every time inserts a
+new entry, leading to infinite recursion &#151; bang you're dead.
+<p>Even though this technique requires a <nobr><tt>std::map</tt></nobr> look-up for each
+deallocation, it seems to have acceptable performance, at least in many cases.
+<p>Another approach that is faster but might use more memory and is a little
+trickier is to prepend a <nobr><tt>Pool*</tt></nobr> just before <em>all</em> allocations.  For
+example, if <tt>nbytes</tt> was 24, meaning the caller was asking to allocate
+24 bytes, we would allocate 28 (or 32 if you think the machine requires 8-byte
+alignment for things like <tt>double</tt>s and/or <nobr><tt>long long</tt></nobr>s), stuff
+the <nobr><tt>Pool*</tt></nobr> into the first 4 bytes, and return the pointer 4 (or 8) bytes from
+the beginning of what you allocated.  Then your global <nobr><tt>operator delete</tt></nobr> backs
+off the 4 (or 8) bytes, finds the <nobr><tt>Pool*</tt></nobr>, and if <tt>NULL</tt>, uses <nobr><tt>free()</tt></nobr>
+otherwise calls <nobr><tt>pool-&gt;dealloc()</tt></nobr>.  The parameter passed to <nobr><tt>free()</tt></nobr> and
+<nobr><tt>pool-&gt;dealloc()</tt></nobr> would be the pointer 4 (or 8) bytes to the left of the
+original parameter, <tt>p</tt>.  If(!) you decide on 4 byte alignment, your
+code would look something like this (although as before, the following
+<nobr><tt>operator new</tt></nobr> code elides the usual out-of-memory handlers):
+<p><div class=CodeBlock>
+<tt>
+&nbsp;void*&nbsp;operator&nbsp;new(size_t&nbsp;nbytes)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;if&nbsp;(nbytes&nbsp;==&nbsp;0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nbytes&nbsp;=&nbsp;1;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;so&nbsp;all&nbsp;alloc's&nbsp;get&nbsp;a&nbsp;distinct&nbsp;address</em><tt><br>
+&nbsp;&nbsp;&nbsp;void*&nbsp;ans&nbsp;=&nbsp;malloc(nbytes&nbsp;+&nbsp;4);&nbsp;&nbsp;</tt><em>//&nbsp;overallocate&nbsp;by&nbsp;4&nbsp;bytes</em><tt><br>
+&nbsp;&nbsp;&nbsp;*(Pool**)ans&nbsp;=&nbsp;NULL;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;use&nbsp;<tt>NULL</tt>&nbsp;in&nbsp;the&nbsp;global&nbsp;<tt>new</tt></em><tt><br>
+&nbsp;&nbsp;&nbsp;return&nbsp;(char*)ans&nbsp;+&nbsp;4;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;don't&nbsp;let&nbsp;users&nbsp;see&nbsp;the&nbsp;<nobr><tt>Pool*</tt></nobr></em><tt><br>
+&nbsp;}<br>
+&nbsp;<br>
+&nbsp;void*&nbsp;operator&nbsp;new(size_t&nbsp;nbytes,&nbsp;Pool&amp;&nbsp;pool)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;if&nbsp;(nbytes&nbsp;==&nbsp;0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nbytes&nbsp;=&nbsp;1;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;so&nbsp;all&nbsp;alloc's&nbsp;get&nbsp;a&nbsp;distinct&nbsp;address</em><tt><br>
+&nbsp;&nbsp;&nbsp;void*&nbsp;ans&nbsp;=&nbsp;pool.alloc(nbytes&nbsp;+&nbsp;4);&nbsp;</tt><em>//&nbsp;overallocate&nbsp;by&nbsp;4&nbsp;bytes</em><tt><br>
+&nbsp;&nbsp;&nbsp;*(Pool**)ans&nbsp;=&nbsp;&amp;pool;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;put&nbsp;the&nbsp;<nobr><tt>Pool*</tt></nobr>&nbsp;here</em><tt><br>
+&nbsp;&nbsp;&nbsp;return&nbsp;(char*)ans&nbsp;+&nbsp;4;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;don't&nbsp;let&nbsp;users&nbsp;see&nbsp;the&nbsp;<nobr><tt>Pool*</tt></nobr></em><tt><br>
+&nbsp;}<br>
+&nbsp;<br>
+&nbsp;void&nbsp;operator&nbsp;delete(void*&nbsp;p)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;if&nbsp;(p&nbsp;!=&nbsp;NULL)&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p&nbsp;=&nbsp;(char*)p&nbsp;-&nbsp;4;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;back&nbsp;off&nbsp;to&nbsp;the&nbsp;<nobr><tt>Pool*</tt></nobr></em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pool*&nbsp;pool&nbsp;=&nbsp;*(Pool**)p;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(pool&nbsp;==&nbsp;null)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;free(p);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;note:&nbsp;4&nbsp;bytes&nbsp;left&nbsp;of&nbsp;the&nbsp;original&nbsp;<tt>p</tt></em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pool-&gt;dealloc(p);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;note:&nbsp;4&nbsp;bytes&nbsp;left&nbsp;of&nbsp;the&nbsp;original&nbsp;<tt>p</tt></em><tt><br>
+&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;}
+</tt>
+</div>
+<p>Naturally the last few paragraphs of this FAQ are viable only when you are
+allowed to change the global <nobr><tt>operator new</tt></nobr> and <nobr><tt>operator delete</tt></nobr>.  If you are
+not allowed to change these global functions, the first three quarters of this
+FAQ is still applicable.
+<p><small>[&nbsp;<a href="#top" title="Top of section [11] Destructors">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [11] Destructors">Bottom</a> |&nbsp;<a href="ctors.html" title="[10] Constructors">Previous&nbsp;section</a> |&nbsp;<a href="assignment-operators.html" title="[12] Assignment operators">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="bottom"></a>
+<a href="mailto:cline@parashift.com" title="cline@parashift.com"><img src="mbox.gif" height=26 width=89 alt="E-Mail">&nbsp;E-mail the author</a><br>
+[&nbsp;<a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>
+|&nbsp;<a href="index.html#table-of-contents" title="Table of contents">Table&nbsp;of&nbsp;contents</a>
+|&nbsp;<a href="subject-index.html" title="Subject index; 3706 links to 2361 topics">Subject&nbsp;index</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.1" title="[1.1] Author">About&nbsp;the&nbsp;author</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">&copy;</a>
+|&nbsp;<a href="on-line-availability.html#faq-2.2" title="[2.2] How can I get a copy of all the HTML files of C++ FAQ Lite so I can read them Off-Line?">Download&nbsp;your&nbsp;own&nbsp;copy</a>&nbsp;]<br>
+<small>Revised May 2, 2003</small>
+</body>
+</html>

@@ -1,0 +1,437 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"
+	"http://www.w3.org/TR/REC-html40/strict.dtd">
+<html>
+<head>
+<title>[37] Compiler dependencies &nbsp;Updated!&nbsp;, C++ FAQ Lite</title>
+<meta name="FILENAME" content="compiler-dependencies.html">
+<meta name="ABSTRACT" content="[37] Compiler dependencies [Updated!], C++ FAQ Lite">
+<meta name="OWNER"    content="cline@parashift.com">
+<meta name="AUTHOR"   content="Marshall Cline, cline@parashift.com">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rev=made href="mailto:cline@parashift.com">
+<style type='text/css'>
+  <!--
+  body       { font-family: arial; color: black; background: white }
+  .CodeBlock { color: black; background-color: #dfdfdf; margin-left: 30px; margin-right: 30px; padding: 5pt }
+  .FaqTitle  { color: black; background-color: gold }
+  .Updated   { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #ffff00; border: solid #e0e000 1px; }
+  .New       { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #00ff00; border: solid #00d000 1px; }
+  ul         { margin-bottom: 1px; margin-top: 1px }
+  ol         { margin-bottom: 1px; margin-top: 1px }
+  li         { margin-bottom: 4px; margin-top: 4px }
+  a          { color: blue }
+  a:hover    { color: red }
+  -->
+</style>
+</head>
+<body>
+<h1><a name="top"></a>[37] Compiler dependencies <span class=Updated>&nbsp;Updated!&nbsp;</span><br>
+<small><small>(Part of <a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>, <a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">Copyright&nbsp;&copy; 1991-2003</a>, <a href="http://www.parashift.com/" title="www.parashift.com/" target='_blank'>Marshall Cline</a>, <a href="mailto:cline@parashift.com" title="cline@parashift.com"><tt>cline@parashift.com</tt></a>)</small></small></h1>
+<hr>
+<h3>FAQs in section [37]:</h3>
+<ul>
+<li><a href="compiler-dependencies.html#faq-37.1" title="[37.1] Where can I download a free C++ compiler?">[37.1] Where can I download a free C++ compiler?</a></li>
+<li><a href="compiler-dependencies.html#faq-37.2" title="[37.2] Where can I get more information on using MFC and Visual C++?">[37.2] Where can I get more information on using MFC and Visual C++?</a> <span class=Updated>&nbsp;Updated!&nbsp;</span></li>
+<li><a href="compiler-dependencies.html#faq-37.3" title="[37.3] How do I display text in the status bar using MFC?">[37.3] How do I display text in the status bar using MFC?</a></li>
+<li><a href="compiler-dependencies.html#faq-37.4" title="[37.4] How can I decompile an executable program back into C++ source code?">[37.4] How can I decompile an executable program back into C++ source code?</a></li>
+<li><a href="compiler-dependencies.html#faq-37.5" title="[37.5] Where can I get information about the C++ compiler from {Borland, IBM, Microsoft, Sun, etc.}?">[37.5] Where can I get information about the C++ compiler from {Borland, IBM, Microsoft, Sun, etc.}?</a></li>
+<li><a href="compiler-dependencies.html#faq-37.6" title="[37.6] What's the difference between C++ and Visual C++?">[37.6] What's the difference between C++ and Visual C++?</a></li>
+<li><a href="compiler-dependencies.html#faq-37.7" title="[37.7] How do compilers use &quot;over-allocation&quot; to remember the number of elements in an allocated array?">[37.7] How do compilers use &quot;over-allocation&quot; to remember the number of elements in an allocated array?</a></li>
+<li><a href="compiler-dependencies.html#faq-37.8" title="[37.8] How do compilers use an &quot;associative array&quot; to remember the number of elements in an allocated array?">[37.8] How do compilers use an &quot;associative array&quot; to remember the number of elements in an allocated array?</a></li>
+<li><a href="compiler-dependencies.html#faq-37.9" title="[37.9] If name mangling was standardized, could I link code compiled with compilers from different compiler vendors?">[37.9] If name mangling was standardized, could I link code compiled with compilers from different compiler vendors?</a></li>
+<li><a href="compiler-dependencies.html#faq-37.10" title="[37.10] GNU C++ (g++) produces big executables for tiny programs; Why?">[37.10] GNU C++ (g++) produces big executables for tiny programs; Why?</a></li>
+<li><a href="compiler-dependencies.html#faq-37.11" title="[37.11] Is there a yacc-able C++ grammar?">[37.11] Is there a <tt>yacc</tt>-able C++ grammar?</a></li>
+<li><a href="compiler-dependencies.html#faq-37.12" title="[37.12] What is C++ 1.2? 2.0? 2.1? 3.0?">[37.12] What is C++ 1.2? 2.0? 2.1? 3.0?</a></li>
+<li><a href="compiler-dependencies.html#faq-37.13" title="[37.13] Is it possible to convert C++ to C?">[37.13] Is it possible to convert C++ to C?</a></li>
+</ul>
+<p><hr>
+<p><a name="faq-37.1"></a>
+<div class=FaqTitle><h3>[37.1] Where can I download a free C++ compiler?</h3></div>
+<p>Check these out (alphabetically):
+<ul>
+<li><a href="http://www.borland.com/products/downloads/download_cbuilder.html" title="www.borland.com/products/downloads/download_cbuilder.html" target='_blank'>Borland
+gives away a command line compiler.</a></li>
+<li><a href="http://www.digitalmars.com" title="www.digitalmars.com" target='_blank'>Digital Mars.</a></li>
+<li><a href="http://www.delorie.com" title="www.delorie.com" target='_blank'>DJGPP is a port of GCC 3.2 to DOS, and
+includes RHIDE, a DOS-based IDE.</a></li>
+<li><a href="http://www.mingw.org" title="www.mingw.org" target='_blank'>MinGW has a port of GCC 3.2 that runs on MS
+Windows.</a></li>
+</ul>
+<p>Also check out <a href="http://www.idiom.com/free-compilers/LANG/C++-1.html" title="www.idiom.com/free-compilers/LANG/C++-1.html" target='_blank'><tt>www.idiom.com/free-compilers/LANG/C++-1.html</tt></a>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [37] Compiler dependencies">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [37] Compiler dependencies">Bottom</a> |&nbsp;<a href="class-libraries.html" title="[36] Class libraries">Previous&nbsp;section</a> |&nbsp;<a href="misc-technical-issues.html" title="[38] Miscellaneous technical issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-37.2"></a>
+<div class=FaqTitle><h3>[37.2] Where can I get more information on using MFC and Visual C++? <span class=Updated>&nbsp;Updated!&nbsp;</span></h3></div>
+<small><em>[Recently rewrote with updated URLs thanks to <a href="http://web.tiscali.it/fanelia/sendmail.html" title="web.tiscali.it/fanelia/sendmail.html" target='_blank'>Paolo Copello</a> (in 4/03).  <a href="misc-technical-issues.html#faq-38.8" title="[38.8] What are the C++ scoping rules for for loops?">Click here to go to the next FAQ in the &quot;chain&quot; of recent changes<!--rawtext:[38.8]:rawtext--></a>.]</em></small>
+<p>Here are some resources (in no particular order):
+<ul>
+<li><a href="http://www.visionx.com/mfcpro/" title="www.visionx.com/mfcpro/" target='_blank'><tt>www.visionx.com/mfcpro/</tt></a></li>
+<li><a href="http://www.mvps.org/vcfaq" title="www.mvps.org/vcfaq" target='_blank'><tt>www.mvps.org/vcfaq</tt></a></li>
+<li><a href="http://www.flounder.com/mvp_tips.htm" title="www.flounder.com/mvp_tips.htm" target='_blank'><tt>www.flounder.com/mvp_tips.htm</tt></a></li>
+<li><a href="http://msdn.microsoft.com/archive/en-us/dnarvc/html/msdn_mfcfaq50.asp" title="msdn.microsoft.com/archive/en-us/dnarvc/html/msdn_mfcfaq50.asp" target='_blank'><tt>msdn.microsoft.com/archive/en-us/dnarvc/html/msdn_mfcfaq50.asp</tt></a></li>
+</ul>
+<p><small>[&nbsp;<a href="#top" title="Top of section [37] Compiler dependencies">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [37] Compiler dependencies">Bottom</a> |&nbsp;<a href="class-libraries.html" title="[36] Class libraries">Previous&nbsp;section</a> |&nbsp;<a href="misc-technical-issues.html" title="[38] Miscellaneous technical issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-37.3"></a>
+<div class=FaqTitle><h3>[37.3] How do I display text in the status bar using MFC?</h3></div>
+<p>Use the following code snipped:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;CString&nbsp;s&nbsp;=&nbsp;&quot;Text&quot;;<br>
+&nbsp;CStatusBar*&nbsp;p&nbsp;=<br>
+&nbsp;&nbsp;(CStatusBar*)AfxGetApp()-&gt;m_pMainWnd-&gt;GetDescendantWindow(AFX_IDW_STATUS_BAR);<br>
+&nbsp;p-&gt;SetPaneText(1,&nbsp;s);
+</tt>
+</div>
+<p>This works with MFC v.1.00 which hopefully means it will work with other
+versions as well.
+<p><small>[&nbsp;<a href="#top" title="Top of section [37] Compiler dependencies">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [37] Compiler dependencies">Bottom</a> |&nbsp;<a href="class-libraries.html" title="[36] Class libraries">Previous&nbsp;section</a> |&nbsp;<a href="misc-technical-issues.html" title="[38] Miscellaneous technical issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-37.4"></a>
+<div class=FaqTitle><h3>[37.4] How can I decompile an executable program back into C++ source code?</h3></div>
+<p>You gotta be kidding, right?
+<p>Here are a few of the <em>many</em> reasons this is not even remotely feasible:
+<ul>
+<li>What makes you think the program was written in C++ to begin
+with?</li>
+<li>Even if you are sure it was originally written (at least partially)
+in C++, which one of the gazillion C++ compilers produced it?</li>
+<li>Even if you know the compiler, which particular version of the
+compiler was used?</li>
+<li>Even if you know the compiler's manufacturer and version number,
+what compile-time options were used?</li>
+<li>Even if you know the compiler's manufacturer and version number and
+compile-time options, what third party libraries were linked-in, and what was
+their version?</li>
+<li>Even if you know all that stuff, most executables have had their
+debugging information stripped out, so the resulting decompiled code will be
+totally unreadable.</li>
+<li>Even if you know everything about the compiler, manufacturer,
+version number, compile-time options, third party libraries, and debugging
+information, the cost of writing a decompiler that works with even one
+particular compiler and has even a modest success rate at generating code
+would be significant &#151; on the par with writing the compiler itself from
+scratch.</li>
+</ul>
+<p>But the biggest question is not <em>how</em> you can decompile someone's code,
+but <em>why</em> do you want to do this?  If you're trying to reverse-engineer
+someone else's code, shame on you; go find honest work.  If you're trying to
+recover from losing your own source, the best suggestion I have is to make
+better backups next time.
+<p>(Don't bother writing me email saying there are legitimate reasons for
+decompiling; I didn't say there weren't.)
+<p><small>[&nbsp;<a href="#top" title="Top of section [37] Compiler dependencies">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [37] Compiler dependencies">Bottom</a> |&nbsp;<a href="class-libraries.html" title="[36] Class libraries">Previous&nbsp;section</a> |&nbsp;<a href="misc-technical-issues.html" title="[38] Miscellaneous technical issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-37.5"></a>
+<div class=FaqTitle><h3>[37.5] Where can I get information about the C++ compiler from {Borland, IBM, Microsoft, Sun, etc.}?</h3></div>
+<p>In alphabetical order by vendor name:
+<ul>
+<li>Borland C++ 5.0 FAQs:
+<a href="http://www.borland.com/cbuilder/index.html" title="www.borland.com/cbuilder/index.html" target='_blank'><tt>www.borland.com/cbuilder/index.html</tt></a></li>
+<li>Comeau C++:
+<a href="http://www.comeaucomputing.com/" title="www.comeaucomputing.com/" target='_blank'><tt>www.comeaucomputing.com/</tt></a></li>
+<li>Digital Mars (free) C++:
+<a href="http://www.digitalmars.com/" title="www.digitalmars.com/" target='_blank'><tt>www.digitalmars.com/</tt></a></li>
+<li>DJ C++ (&quot;DJGPP&quot;):
+<a href="http://www.delorie.com/" title="www.delorie.com/" target='_blank'><tt>www.delorie.com/</tt></a></li>
+<li>Edison Design Group C++:
+<a href="http://www.edg.com/cpp.html" title="www.edg.com/cpp.html" target='_blank'><tt>www.edg.com/cpp.html</tt></a></li>
+<li>GNU C++ (&quot;g++&quot; or &quot;GCC&quot;): <a href="http://gcc.gnu.org/" title="gcc.gnu.org/" target='_blank'><tt>gcc.gnu.org/</tt></a>.  Note: there are
+two versions precompiled for Win32:
+<a href="http://www.cygwin.com/" title="www.cygwin.com/" target='_blank'>Cygwin</a> and
+<a href="http://www.mingw.org/" title="www.mingw.org/" target='_blank'>minGW</a>.</li>
+<li>HP C++:
+<a href="http://www.tru64unix.compaq.com/linux/compaq_cxx/index.html" title="www.tru64unix.compaq.com/linux/compaq_cxx/index.html" target='_blank'><tt>www.tru64unix.compaq.com/linux/compaq_cxx/index.html</tt></a></li>
+<li>IBM VisualAge C++:
+<a href="http://www.ibm.com/software/ad/vacpp/" title="www.ibm.com/software/ad/vacpp/" target='_blank'><tt>www.ibm.com/software/ad/vacpp/</tt></a></li>
+<li>Intel Reference C++:
+<a href="http://developer.intel.com/software/products/compilers/" title="developer.intel.com/software/products/compilers/" target='_blank'><tt>developer.intel.com/software/products/compilers/</tt></a></li>
+<li>KAI C++:
+<a href="http://developer.intel.com/software/products/kcc/" title="developer.intel.com/software/products/kcc/" target='_blank'><tt>developer.intel.com/software/products/kcc/</tt></a></li>
+<li>Metrowerks C++: <a href="http://metrowerks.com" title="metrowerks.com" target='_blank'><tt>metrowerks.com</tt></a> or
+<a href="http://www.metrowerks.com" title="www.metrowerks.com" target='_blank'><tt>www.metrowerks.com</tt></a></li>
+<li>Microsoft Visual C++:
+<a href="http://www.microsoft.com/visualc/" title="www.microsoft.com/visualc/" target='_blank'><tt>www.microsoft.com/visualc/</tt></a></li>
+<li>Open Watcom C++ (an open-source follow-up to Watcom C++):
+<a href="http://www.openwatcom.org/" title="www.openwatcom.org/" target='_blank'><tt>www.openwatcom.org/</tt></a></li>
+<li>Portland Group C++:
+<a href="http://www.pgroup.com" title="www.pgroup.com" target='_blank'><tt>www.pgroup.com</tt></a></li>
+<li>Silicon Graphics C++:
+<a href="http://www.sgi.com/developers/devtools/languages/c++.html" title="www.sgi.com/developers/devtools/languages/c++.html" target='_blank'><tt>www.sgi.com/developers/devtools/languages/c++.html</tt></a></li>
+<li>Watcom C++:
+<a href="http://www.sybase.com/products/archivedproducts/watcomc" title="www.sybase.com/products/archivedproducts/watcomc" target='_blank'><tt>www.sybase.com/products/archivedproducts/watcomc</tt></a></li>
+</ul>
+<p>[If anyone has other suggestions that should go into this list, please let me
+know; thanks; (<a href="mailto:cline@parashift.com" title="cline@parashift.com"><tt>cline@parashift.com</tt></a>)].
+<p><small>[&nbsp;<a href="#top" title="Top of section [37] Compiler dependencies">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [37] Compiler dependencies">Bottom</a> |&nbsp;<a href="class-libraries.html" title="[36] Class libraries">Previous&nbsp;section</a> |&nbsp;<a href="misc-technical-issues.html" title="[38] Miscellaneous technical issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-37.6"></a>
+<div class=FaqTitle><h3>[37.6] What's the difference between C++ and Visual C++?</h3></div>
+<p>C++ is the language itself, <a href="compiler-dependencies.html#faq-37.5" title="[37.5] Where can I get information about the C++ compiler from {Borland, IBM, Microsoft, Sun, etc.}?">Visual C++<!--rawtext:[37.5]:rawtext--></a> is a
+compiler that tries to implement the language.
+<p><small>[&nbsp;<a href="#top" title="Top of section [37] Compiler dependencies">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [37] Compiler dependencies">Bottom</a> |&nbsp;<a href="class-libraries.html" title="[36] Class libraries">Previous&nbsp;section</a> |&nbsp;<a href="misc-technical-issues.html" title="[38] Miscellaneous technical issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-37.7"></a>
+<div class=FaqTitle><h3>[37.7] How do compilers use &quot;over-allocation&quot; to remember the number of elements in an allocated array?</h3></div>
+<p>Recall that when you <nobr><tt>delete[]</tt></nobr> an array, the runtime system <a href="freestore-mgmt.html#faq-16.13" title="[16.13] After p = new Fred[n], how does the compiler know there are n objects to be destructed during delete[] p?">magically
+knows how many destructors to run<!--rawtext:[16.13]:rawtext--></a>.  This FAQ
+describes a technique used by some C++ compilers to do this (the other common
+technique is to <a href="compiler-dependencies.html#faq-37.8" title="[37.8] How do compilers use an &quot;associative array&quot; to remember the number of elements in an allocated array?">use an associative
+array<!--rawtext:[37.8]:rawtext--></a>).
+<p>If the compiler uses the &quot;over-allocation&quot; technique, the code for <nobr><tt>p = new
+Fred[n]</tt></nobr> looks something like the following.  Note that <tt>WORDSIZE</tt> is an
+imaginary machine-dependent constant that is at least <nobr><tt>sizeof(size_t)</tt></nobr>,
+possibly rounded up for any alignment constraints.  On many machines, this
+constant will have a value of 4 or 8.  It is not a real C++ identifier that
+will be defined for your compiler.
+<p><div class=CodeBlock>
+<tt>
+&nbsp;</tt><em>//&nbsp;Original&nbsp;code:&nbsp;<nobr><tt>Fred*&nbsp;p&nbsp;=&nbsp;new&nbsp;Fred[n];</tt></nobr></em><tt><br>
+&nbsp;char*&nbsp;tmp&nbsp;=&nbsp;(char*)&nbsp;operator&nbsp;new[]&nbsp;(WORDSIZE&nbsp;+&nbsp;n&nbsp;*&nbsp;sizeof(Fred));<br>
+&nbsp;Fred*&nbsp;p&nbsp;=&nbsp;(Fred*)&nbsp;(tmp&nbsp;+&nbsp;WORDSIZE);<br>
+&nbsp;*(size_t*)tmp&nbsp;=&nbsp;n;<br>
+&nbsp;size_t&nbsp;i;<br>
+&nbsp;try&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;for&nbsp;(i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;n;&nbsp;++i)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new(p&nbsp;+&nbsp;i)&nbsp;Fred();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;<a href="dtors.html#faq-11.10" title="[11.10] What is &quot;placement new&quot; and why would I use it?">Placement&nbsp;<tt>new</tt><!--rawtext:[11.10]:rawtext--></a></em><tt><br>
+&nbsp;}&nbsp;catch&nbsp;(...)&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;while&nbsp;(i--&nbsp;!=&nbsp;0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(p&nbsp;+&nbsp;i)-&gt;~Fred();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;<a href="dtors.html#faq-11.10" title="[11.10] What is &quot;placement new&quot; and why would I use it?">Explicit&nbsp;call&nbsp;to&nbsp;the&nbsp;destructor<!--rawtext:[11.10]:rawtext--></a></em><tt><br>
+&nbsp;&nbsp;&nbsp;operator&nbsp;delete[]&nbsp;((char*)p&nbsp;-&nbsp;WORDSIZE);<br>
+&nbsp;&nbsp;&nbsp;throw;<br>
+&nbsp;}
+</tt>
+</div>
+<p>Then the <nobr><tt>delete[] p</tt></nobr> statement becomes:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;</tt><em>//&nbsp;Original&nbsp;code:&nbsp;<nobr><tt>delete[]&nbsp;p;</tt></nobr></em><tt><br>
+&nbsp;size_t&nbsp;n&nbsp;=&nbsp;*&nbsp;(size_t*)&nbsp;((char*)p&nbsp;-&nbsp;WORDSIZE);<br>
+&nbsp;while&nbsp;(n--&nbsp;!=&nbsp;0)<br>
+&nbsp;&nbsp;&nbsp;(p&nbsp;+&nbsp;n)-&gt;~Fred();<br>
+&nbsp;operator&nbsp;delete[]&nbsp;((char*)p&nbsp;-&nbsp;WORDSIZE);
+</tt>
+</div>
+<p>Note that the address passed to <nobr><tt>operator delete[]</tt></nobr> is <em>not</em> the
+same as <tt>p</tt>.
+<p>Compared to the <a href="compiler-dependencies.html#faq-37.8" title="[37.8] How do compilers use an &quot;associative array&quot; to remember the number of elements in an allocated array?">associative array
+technique<!--rawtext:[37.8]:rawtext--></a>, this technique is faster,
+but more sensitive to the problem of programmers saying <nobr><tt>delete p</tt></nobr> rather than
+<nobr><tt>delete[] p</tt></nobr>.  For example, if you make a programming error by saying <nobr><tt>delete
+p</tt></nobr> where you should have said <nobr><tt>delete[] p</tt></nobr>, the address that is passed to
+<nobr><tt>operator delete(void*)</tt></nobr> is <em>not</em> the address of any valid heap
+allocation.  This will probably corrupt the heap.  Bang!  You're dead!
+<p><small>[&nbsp;<a href="#top" title="Top of section [37] Compiler dependencies">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [37] Compiler dependencies">Bottom</a> |&nbsp;<a href="class-libraries.html" title="[36] Class libraries">Previous&nbsp;section</a> |&nbsp;<a href="misc-technical-issues.html" title="[38] Miscellaneous technical issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-37.8"></a>
+<div class=FaqTitle><h3>[37.8] How do compilers use an &quot;associative array&quot; to remember the number of elements in an allocated array?</h3></div>
+<p>Recall that when you <nobr><tt>delete[]</tt></nobr> an array, the runtime system <a href="freestore-mgmt.html#faq-16.13" title="[16.13] After p = new Fred[n], how does the compiler know there are n objects to be destructed during delete[] p?">magically
+knows how many destructors to run<!--rawtext:[16.13]:rawtext--></a>.  This FAQ
+describes a technique used by some C++ compilers to do this (the other common
+technique is to <a href="compiler-dependencies.html#faq-37.7" title="[37.7] How do compilers use &quot;over-allocation&quot; to remember the number of elements in an allocated array?">over-allocate<!--rawtext:[37.7]:rawtext--></a>).
+<p>If the compiler uses the associative array technique, the code for <nobr><tt>p = new
+Fred[n]</tt></nobr> looks something like this (where <tt>arrayLengthAssociation</tt> is
+the imaginary name of a hidden, global associative array that maps from <nobr><tt>void*</tt></nobr>
+to &quot;size_t&quot;):
+<p><div class=CodeBlock>
+<tt>
+&nbsp;</tt><em>//&nbsp;Original&nbsp;code:&nbsp;<nobr><tt>Fred*&nbsp;p&nbsp;=&nbsp;new&nbsp;Fred[n];</tt></nobr></em><tt><br>
+&nbsp;Fred*&nbsp;p&nbsp;=&nbsp;(Fred*)&nbsp;operator&nbsp;new[]&nbsp;(n&nbsp;*&nbsp;sizeof(Fred));<br>
+&nbsp;size_t&nbsp;i;<br>
+&nbsp;try&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;for&nbsp;(i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;n;&nbsp;++i)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new(p&nbsp;+&nbsp;i)&nbsp;Fred();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;<a href="dtors.html#faq-11.10" title="[11.10] What is &quot;placement new&quot; and why would I use it?">Placement&nbsp;<tt>new</tt><!--rawtext:[11.10]:rawtext--></a></em><tt><br>
+&nbsp;}&nbsp;catch&nbsp;(...)&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;while&nbsp;(i--&nbsp;!=&nbsp;0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(p&nbsp;+&nbsp;i)-&gt;~Fred();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;<a href="dtors.html#faq-11.10" title="[11.10] What is &quot;placement new&quot; and why would I use it?">Explicit&nbsp;call&nbsp;to&nbsp;the&nbsp;destructor<!--rawtext:[11.10]:rawtext--></a></em><tt><br>
+&nbsp;&nbsp;&nbsp;operator&nbsp;delete[]&nbsp;(p);<br>
+&nbsp;&nbsp;&nbsp;throw;<br>
+&nbsp;}<br>
+&nbsp;arrayLengthAssociation.insert(p,&nbsp;n);
+</tt>
+</div>
+<p>Then the <nobr><tt>delete[] p</tt></nobr> statement becomes:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;</tt><em>//&nbsp;Original&nbsp;code:&nbsp;<nobr><tt>delete[]&nbsp;p;</tt></nobr></em><tt><br>
+&nbsp;size_t&nbsp;n&nbsp;=&nbsp;arrayLengthAssociation.lookup(p);<br>
+&nbsp;while&nbsp;(n--&nbsp;!=&nbsp;0)<br>
+&nbsp;&nbsp;&nbsp;(p&nbsp;+&nbsp;n)-&gt;~Fred();<br>
+&nbsp;operator&nbsp;delete[]&nbsp;(p);
+</tt>
+</div>
+<p>Cfront uses this technique (it uses an AVL tree to implement the associative
+array).
+<p>Compared to the <a href="compiler-dependencies.html#faq-37.7" title="[37.7] How do compilers use &quot;over-allocation&quot; to remember the number of elements in an allocated array?">over-allocation
+technique<!--rawtext:[37.7]:rawtext--></a>, the associative array
+technique is slower, but less sensitive to the problem of programmers saying
+<nobr><tt>delete p</tt></nobr> rather than <nobr><tt>delete[] p</tt></nobr>.  For example, if you make a programming
+error by saying <nobr><tt>delete p</tt></nobr> where you should have said <nobr><tt>delete[] p</tt></nobr>, only the
+first <tt>Fred</tt> in the array gets destructed, but the heap <em>may</em> survive
+(unless you've replaced <nobr><tt>operator delete[]</tt></nobr> with something that doesn't
+simply call <nobr><tt>operator delete</tt></nobr>, or unless the destructors for the other
+<tt>Fred</tt> objects were necessary).
+<p><small>[&nbsp;<a href="#top" title="Top of section [37] Compiler dependencies">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [37] Compiler dependencies">Bottom</a> |&nbsp;<a href="class-libraries.html" title="[36] Class libraries">Previous&nbsp;section</a> |&nbsp;<a href="misc-technical-issues.html" title="[38] Miscellaneous technical issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-37.9"></a>
+<div class=FaqTitle><h3>[37.9] If name mangling was standardized, could I link code compiled with compilers from different compiler vendors?</h3></div>
+<p>Short answer: Probably not.
+<p>In other words, some people would like to see name mangling standards
+incorporated into the proposed C++ ANSI standards in an attempt to avoiding
+having to purchase different versions of class libraries for different
+compiler vendors.  However name mangling differences are one of the smallest
+differences between implementations, even on the same platform.
+<p>Here is a partial list of other differences:
+<ul>
+<li>Number and type of hidden arguments to member functions.
+<ul>
+<li>is <tt>this</tt> handled specially?</li>
+<li>where is the return-by-value pointer passed?</li>
+</ul>
+</li>
+<li>Assuming a <a href="virtual-functions.html#faq-20.3" title="[20.3] What's the difference between how virtual and non-virtual member functions are called?">v-table<!--rawtext:[20.3]:rawtext--></a> is used:
+<ul>
+<li>what is its contents and layout?</li>
+<li>where/how is the adjustment to <tt>this</tt> made for multiple and/or
+<tt>virtual</tt> inheritance?</li>
+</ul>
+</li>
+<li>How are classes laid out, including:
+<ul>
+<li>location of base classes?</li>
+<li>handling of <tt>virtual</tt> base classes?</li>
+<li>location of <a href="virtual-functions.html#faq-20.3" title="[20.3] What's the difference between how virtual and non-virtual member functions are called?">v-pointers<!--rawtext:[20.3]:rawtext--></a>, if they are used at
+all?</li>
+</ul>
+</li>
+<li>Calling convention for functions, including:
+<ul>
+<li>where are the actual parameters placed?</li>
+<li>in what order are the actual parameters passed?</li>
+<li>how are registers saved?</li>
+<li>where does the return value go?</li>
+<li>does caller or callee pop the stack after the call?</li>
+<li>special rules for passing or returning structs or doubles?</li>
+<li>special rules for saving registers when calling leaf functions?</li>
+</ul>
+</li>
+<li>How is the run-time-type-identification laid out?</li>
+<li>How does the runtime exception handling system know which local
+objects need to be destructed during an exception throw?</li>
+</ul>
+<p><small>[&nbsp;<a href="#top" title="Top of section [37] Compiler dependencies">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [37] Compiler dependencies">Bottom</a> |&nbsp;<a href="class-libraries.html" title="[36] Class libraries">Previous&nbsp;section</a> |&nbsp;<a href="misc-technical-issues.html" title="[38] Miscellaneous technical issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-37.10"></a>
+<div class=FaqTitle><h3>[37.10] GNU C++ (g++) produces big executables for tiny programs; Why?</h3></div>
+<p>libg++ (the library used by g++) was probably compiled with debug info
+(<nobr><tt>-g</tt></nobr>).  On some machines, recompiling libg++ without debugging can save
+lots of disk space (approximately 1 MB; the down-side: you'll be unable to
+trace into libg++ calls).  Merely <tt>strip</tt>-ping the executable doesn't
+reclaim as much as recompiling without <nobr><tt>-g</tt></nobr> followed by subsequent
+<tt>strip</tt>-ping the resultant <tt>a.out</tt>'s.
+<p>Use <nobr><tt>size a.out</tt></nobr> to see how big the program code and data segments really
+are, rather than <nobr><tt>ls -s a.out</tt></nobr> which includes the symbol table.
+<p><small>[&nbsp;<a href="#top" title="Top of section [37] Compiler dependencies">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [37] Compiler dependencies">Bottom</a> |&nbsp;<a href="class-libraries.html" title="[36] Class libraries">Previous&nbsp;section</a> |&nbsp;<a href="misc-technical-issues.html" title="[38] Miscellaneous technical issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-37.11"></a>
+<div class=FaqTitle><h3>[37.11] Is there a <tt>yacc</tt>-able C++ grammar?</h3></div>
+<p>The primary <tt>yacc</tt> grammar you'll want is from Ed Willink.  Ed believes
+his grammar is fully compliant with <a href="big-picture.html#faq-6.12" title="[6.12] Where can I get a copy of the ANSI/ISO C++ standard?">the ISO/ANSI C++
+standard<!--rawtext:[6.12]:rawtext--></a>, however he doesn't warrant it: &quot;the grammar has not,&quot; he says,
+&quot;been used in anger.&quot; You can get
+<a href="http://www.computing.surrey.ac.uk/research/dsrg/fog/CxxGrammar.y" title="www.computing.surrey.ac.uk/research/dsrg/fog/CxxGrammar.y" target='_blank'>the
+grammar without action routines</a> or
+<a href="http://www.computing.surrey.ac.uk/research/dsrg/fog/CxxTester.y" title="www.computing.surrey.ac.uk/research/dsrg/fog/CxxTester.y" target='_blank'>the
+grammar with dummy action routines</a>.  You can also get
+<a href="http://www.computing.surrey.ac.uk/research/dsrg/fog/CxxLexer.l" title="www.computing.surrey.ac.uk/research/dsrg/fog/CxxLexer.l" target='_blank'>the
+corresponding lexer</a>.  For those who are interested in how he achieves
+a context-free parser (by pushing all the ambiguities plus a small number of
+repairs to be done later after parsing is complete), you might want to read
+chapter 4 of
+<a href="http://www.computing.surrey.ac.uk/research/dsrg/fog/FogThesis.pdf" title="www.computing.surrey.ac.uk/research/dsrg/fog/FogThesis.pdf" target='_blank'>his
+thesis</a>.
+<p>There is also a very old <tt>yacc</tt> grammar that doesn't support templates,
+exceptions, nor namespaces; plus it deviates from the core language in some
+subtle ways.  You can get that grammar
+<a href="http://www.empathy.com/pccts/roskind.zip" title="www.empathy.com/pccts/roskind.zip" target='_blank'>here</a> or
+<a href="http://srawgw.sra.co.jp/.a/pub/cmd/c++grammar2.0.tar.gz" title="srawgw.sra.co.jp/.a/pub/cmd/c++grammar2.0.tar.gz" target='_blank'>here</a>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [37] Compiler dependencies">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [37] Compiler dependencies">Bottom</a> |&nbsp;<a href="class-libraries.html" title="[36] Class libraries">Previous&nbsp;section</a> |&nbsp;<a href="misc-technical-issues.html" title="[38] Miscellaneous technical issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-37.12"></a>
+<div class=FaqTitle><h3>[37.12] What is C++ 1.2? 2.0? 2.1? 3.0?</h3></div>
+<p>These are not versions of the language, but rather versions of Cfront, which
+was the original C++ translator implemented by AT&amp;T.  It has become generally
+accepted to use these version numbers as if they were versions of the language
+itself.
+<p><em>Very</em> roughly speaking, these are the major features:
+<ul>
+<li>2.0 includes multiple/<tt>virtual</tt> inheritance and
+<a href="abcs.html#faq-22.4" title="[22.4] What is a &quot;pure virtual&quot; member function?">pure virtual<!--rawtext:[22.4]:rawtext--></a> functions</li>
+<li>2.1 includes semi-nested classes and
+<nobr><tt>delete[] pointerToArray</tt></nobr></li>
+<li>3.0 includes fully-nested classes, templates and <nobr><tt>i++</tt></nobr> <em>vs.</em>
+<nobr><tt>++i</tt></nobr></li>
+<li>4.0 will include exceptions</li>
+</ul>
+<p><small>[&nbsp;<a href="#top" title="Top of section [37] Compiler dependencies">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [37] Compiler dependencies">Bottom</a> |&nbsp;<a href="class-libraries.html" title="[36] Class libraries">Previous&nbsp;section</a> |&nbsp;<a href="misc-technical-issues.html" title="[38] Miscellaneous technical issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-37.13"></a>
+<div class=FaqTitle><h3>[37.13] Is it possible to convert C++ to C?</h3></div>
+<p>Depends on what you mean.  If you mean, <em>Is it possible to convert
+C++ to readable and maintainable C-code?</em> then sorry, the answer is
+No &#151; C++ features don't directly map to C, plus the generated C code
+is not intended for humans to follow.  If instead you mean, <em>Are
+there compilers which convert C++ to C for the purpose of compiling
+onto a platform that yet doesn't have a C++ compiler?</em> then you're
+in luck &#151; keep reading.
+<p>A compiler which compiles C++ to C does full syntax and semantic
+checking on the program, and just happens to use C code as a way of
+generating object code.  Such a compiler is not merely some kind of
+fancy macro processor.  (And please don't email me claiming these are
+preprocessors &#151; they are not &#151; they are full compilers.) It is
+possible to implement all of the features of ISO Standard C++ by
+translation to C, and except for exception handling, it typically
+results in object code with efficiency comparable to that of the code
+generated by a conventional C++ compiler.
+<p>Here are some products that perform compilation to C (note: if you
+know of any other products that do this, please
+<a href="mailto:cline@parashift.com" title="cline@parashift.com">email me</a>):
+<ul>
+<li><a href="http://www.comeaucomputing.com" title="www.comeaucomputing.com" target='_blank'>Comeau
+Computing</a> offers a compiler based on
+<a href="http://www.edg.com" title="www.edg.com" target='_blank'>Edison Design Group's front end</a>
+that outputs C code.</li>
+<li><a href="http://www.unipress.com/toolkit/" title="www.unipress.com/toolkit/" target='_blank'>Cfront</a>, the
+original implementation of C++, done by Bjarne Stroustrup and others at AT&amp;T,
+generates C code.  However it has two problems: it's been difficult to obtain
+a license since the mid 90s when it started going through a maze of ownership
+changes, and development ceased at that same time and so it is doesn't get bug
+fixes and doesn't support any of the newer language features (e.g.,
+exceptions, namespaces, RTTI, member templates).</li>
+<li>Contrary to popular myth, as of this writing there is no version of
+g++ that translates C++ to C.  Such a thing seems to be doable, but I am not
+aware that anyone has actually done it (yet).</li>
+</ul>
+<p>Note that you typically need to specify the target platform's CPU, OS
+and C compiler so that the generated C code will be specifically
+targeted for this platform.  This means: (a) you probably can't take
+the C code generated for platform X and compile it on platform Y; and
+(b) it'll be difficult to do the translation yourself &#151; it'll
+probably be a lot cheaper/safer with one of these tools.
+<p>One more time: do <em>not</em> email me saying these are just
+preprocessors &#151; they are not &#151; they are compilers.
+<p><small>[&nbsp;<a href="#top" title="Top of section [37] Compiler dependencies">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [37] Compiler dependencies">Bottom</a> |&nbsp;<a href="class-libraries.html" title="[36] Class libraries">Previous&nbsp;section</a> |&nbsp;<a href="misc-technical-issues.html" title="[38] Miscellaneous technical issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="bottom"></a>
+<a href="mailto:cline@parashift.com" title="cline@parashift.com"><img src="mbox.gif" height=26 width=89 alt="E-Mail">&nbsp;E-mail the author</a><br>
+[&nbsp;<a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>
+|&nbsp;<a href="index.html#table-of-contents" title="Table of contents">Table&nbsp;of&nbsp;contents</a>
+|&nbsp;<a href="subject-index.html" title="Subject index; 3706 links to 2361 topics">Subject&nbsp;index</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.1" title="[1.1] Author">About&nbsp;the&nbsp;author</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">&copy;</a>
+|&nbsp;<a href="on-line-availability.html#faq-2.2" title="[2.2] How can I get a copy of all the HTML files of C++ FAQ Lite so I can read them Off-Line?">Download&nbsp;your&nbsp;own&nbsp;copy</a>&nbsp;]<br>
+<small>Revised May 2, 2003</small>
+</body>
+</html>

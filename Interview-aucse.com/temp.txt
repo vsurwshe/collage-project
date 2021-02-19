@@ -1,0 +1,147 @@
+will it work?
+	typedef #include l;
+
+No
+
+
+
+#define MESS junk
+main()
+{
+	pf("MESS");
+}
+
+o/p = MESS
+
+
+
+main()
+{
+	int a[3][4]={ 1,2,3,4
+		      5,6,7,8
+		      9,10,11,12
+		    };
+pf("%u%u%u",a[0]+1,*(a[0]+1),*(*(a+0)+1));
+}
+//assuming array begins at 1002
+o/p 1004 	2	2
+
+
+
+
+
+will it compile successfully
+
+main()
+{
+	pf("%c",7["sundaram"]);
+}
+
+o/p        m
+
+
+
+main()
+{
+	pf(5+"helloworld");
+}
+
+o/p      world
+
+
+
+
+
+main()
+{
+	char str1[]="hello";
+	char str2[]="hello";
+	if(str1==str2)
+		{
+			pf("equal");
+		}
+	else	pf("unequal");
+
+}
+
+
+o/p     equal
+
+
+
+
+main()
+{
+	char str[7]="Strings";
+	pf("%s",str);
+}
+
+o/p	unpredictable
+
+
+
+
+
+main()
+{
+	char ch;
+	for(ch=0;ch<=255;ch++)
+		pf("%d%c",ch,ch);
+
+}
+
+o/p   infinite loop
+
+
+
+
+
+main()
+{
+	int a[]={0,1,2,3,4};
+	int *p;
+	p=&a[2];
+	pf("%d",p[-1]);
+}
+
+
+
+main()
+{
+int a=1;
+pf("%d%d%d",a++,++a,a++);
+}
+
+
+o/p 3	3	1
+
+
+
+
+
+scanf("%[^\n]s",str);//to accept strings with space
+
+
+
+switch(printf("a"),printf("ab"))
+
+{
+case 1:
+pf("case 1");
+break;
+case 2:
+pf("case 2");
+break;
+default:
+pf("default");
+break;
+}
+
+
+
+
+
+
+
+int *fun();//function dat returns a pointer
+int (*fun)();//pointer to a function

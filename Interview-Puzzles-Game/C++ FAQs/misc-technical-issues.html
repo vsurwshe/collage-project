@@ -1,0 +1,856 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"
+	"http://www.w3.org/TR/REC-html40/strict.dtd">
+<html>
+<head>
+<title>[38] Miscellaneous technical issues &nbsp;Updated!&nbsp;, C++ FAQ Lite</title>
+<meta name="FILENAME" content="misc-technical-issues.html">
+<meta name="ABSTRACT" content="[38] Miscellaneous technical issues [Updated!], C++ FAQ Lite">
+<meta name="OWNER"    content="cline@parashift.com">
+<meta name="AUTHOR"   content="Marshall Cline, cline@parashift.com">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rev=made href="mailto:cline@parashift.com">
+<style type='text/css'>
+  <!--
+  body       { font-family: arial; color: black; background: white }
+  .CodeBlock { color: black; background-color: #dfdfdf; margin-left: 30px; margin-right: 30px; padding: 5pt }
+  .FaqTitle  { color: black; background-color: gold }
+  .Updated   { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #ffff00; border: solid #e0e000 1px; }
+  .New       { color: black; cursor: default; font-size: x-small; font-variant: small-caps; font-family: cursive;
+               background-color: #00ff00; border: solid #00d000 1px; }
+  ul         { margin-bottom: 1px; margin-top: 1px }
+  ol         { margin-bottom: 1px; margin-top: 1px }
+  li         { margin-bottom: 4px; margin-top: 4px }
+  a          { color: blue }
+  a:hover    { color: red }
+  -->
+</style>
+</head>
+<body>
+<h1><a name="top"></a>[38] Miscellaneous technical issues <span class=Updated>&nbsp;Updated!&nbsp;</span><br>
+<small><small>(Part of <a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>, <a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">Copyright&nbsp;&copy; 1991-2003</a>, <a href="http://www.parashift.com/" title="www.parashift.com/" target='_blank'>Marshall Cline</a>, <a href="mailto:cline@parashift.com" title="cline@parashift.com"><tt>cline@parashift.com</tt></a>)</small></small></h1>
+<hr>
+<h3>FAQs in section [38]:</h3>
+<ul>
+<li><a href="misc-technical-issues.html#faq-38.1" title="[38.1] How do I convert a value (a number, for example) to a std::string?">[38.1] How do I convert a value (a number, for example) to a <nobr><tt>std::string</tt></nobr>?</a></li>
+<li><a href="misc-technical-issues.html#faq-38.2" title="[38.2] How do I convert a std::string to a number?">[38.2] How do I convert a <nobr><tt>std::string</tt></nobr> to a number?</a></li>
+<li><a href="misc-technical-issues.html#faq-38.3" title="[38.3] Can I templatize the above functions so they work with other types?">[38.3] Can I templatize the above functions so they work with other types?</a></li>
+<li><a href="misc-technical-issues.html#faq-38.4" title="[38.4] What should be done with macros that contain if?">[38.4] What should be done with macros that contain <tt>if</tt>?</a></li>
+<li><a href="misc-technical-issues.html#faq-38.5" title="[38.5] What should be done with macros that have multiple lines?">[38.5] What should be done with macros that have multiple lines?</a></li>
+<li><a href="misc-technical-issues.html#faq-38.6" title="[38.6] What should be done with macros that need to paste two tokens together?">[38.6] What should be done with macros that need to paste two tokens together?</a></li>
+<li><a href="misc-technical-issues.html#faq-38.7" title="[38.7] Why can't the compiler find my header file in #include &quot;c:\test.hpp&quot; ?">[38.7] Why can't the compiler find my header file in <nobr><tt>#include &quot;c:\test.hpp&quot;</tt></nobr>&nbsp;?</a></li>
+<li><a href="misc-technical-issues.html#faq-38.8" title="[38.8] What are the C++ scoping rules for for loops?">[38.8] What are the C++ scoping rules for <tt>for</tt> loops?</a> <span class=Updated>&nbsp;Updated!&nbsp;</span></li>
+<li><a href="misc-technical-issues.html#faq-38.9" title="[38.9] Why can't I overload a function by its return type?">[38.9] Why can't I overload a function by its return type?</a></li>
+<li><a href="misc-technical-issues.html#faq-38.10" title="[38.10] What is &quot;persistence&quot;? What is a &quot;persistent object&quot;?">[38.10] What is &quot;persistence&quot;? What is a &quot;persistent object&quot;?</a></li>
+<li><a href="misc-technical-issues.html#faq-38.11" title="[38.11] How can I create two classes that both know about each other?">[38.11] How can I create two classes that both know about each other?</a></li>
+<li><a href="misc-technical-issues.html#faq-38.12" title="[38.12] What special considerations are needed when forward declarations are used with member objects?">[38.12] What special considerations are needed when forward declarations are used with member objects?</a></li>
+<li><a href="misc-technical-issues.html#faq-38.13" title="[38.13] What special considerations are needed when forward declarations are used with inline functions?">[38.13] What special considerations are needed when forward declarations are used with inline functions?</a></li>
+<li><a href="misc-technical-issues.html#faq-38.14" title="[38.14] Why can't I put a forward-declared class in a std::vector&lt;&gt;?">[38.14] Why can't I put a forward-declared class in a <nobr><tt>std::vector&lt;&gt;</tt></nobr>?</a></li>
+</ul>
+<p><hr>
+<p><a name="faq-38.1"></a>
+<div class=FaqTitle><h3>[38.1] How do I convert a value (a number, for example) to a <nobr><tt>std::string</tt></nobr>?</h3></div>
+<p>There are two easy ways to do this: you can use the <nobr><tt>&lt;cstdio&gt;</tt></nobr> facilities or
+the <nobr><tt>&lt;iostream&gt;</tt></nobr> library.  In general, <a href="input-output.html#faq-15.1" title="[15.1] Why should I use &lt;iostream&gt; instead of the traditional &lt;cstdio&gt;?">you should
+prefer the <nobr><tt>&lt;iostream&gt;</tt></nobr> library<!--rawtext:[15.1]:rawtext--></a>.
+<p>The <nobr><tt>&lt;iostream&gt;</tt></nobr> library allows you to convert pretty much anything to a
+<nobr><tt>std::string</tt></nobr> using the following syntax (the example converts a <tt>double</tt>, but
+you could substitute pretty much anything that prints using the <nobr><tt>&lt;&lt;</tt></nobr>
+operator):
+<p><div class=CodeBlock>
+<tt>
+&nbsp;</tt><em>//&nbsp;File:&nbsp;convert.h</em><tt><br>
+&nbsp;#include&nbsp;&lt;iostream&gt;<br>
+&nbsp;#include&nbsp;&lt;sstream&gt;<br>
+&nbsp;#include&nbsp;&lt;string&gt;<br>
+&nbsp;#include&nbsp;&lt;stdexcept&gt;<br>
+&nbsp;<br>
+&nbsp;class&nbsp;BadConversion&nbsp;:&nbsp;public&nbsp;std::runtime_error&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;BadConversion(const&nbsp;std::string&amp;&nbsp;s)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;std::runtime_error(s)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;}<br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;inline&nbsp;std::string&nbsp;stringify(double&nbsp;x)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::ostringstream&nbsp;o;<br>
+&nbsp;&nbsp;&nbsp;if&nbsp;(!(o&nbsp;&lt;&lt;&nbsp;x))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;BadConversion(&quot;stringify(double)&quot;);<br>
+&nbsp;&nbsp;&nbsp;return&nbsp;o.str();<br>
+&nbsp;}
+</tt>
+</div>
+<p>The <nobr><tt>std::ostringstream</tt></nobr> object <tt>o</tt> offers formatting facilities just like
+those for <nobr><tt>std::cout</tt></nobr>.  You can use manipulators and format flags to control
+the formatting of the result, just as you can for other <nobr><tt>std::cout</tt></nobr>.
+<p>In this example, we <em>insert</em> <tt>x</tt> into <tt>o</tt> via the overloaded insertion
+operator, <nobr><tt>&lt;&lt;</tt></nobr>.  This invokes the iostream formatting facilities to convert
+<tt>x</tt> into a <nobr><tt>std::string</tt></nobr>.  <a href="input-output.html#faq-15.4" title="[15.4] How does that funky while (std::cin &gt;&gt; foo) syntax work?">The <tt>if</tt> test<!--rawtext:[15.4]:rawtext--></a> makes
+sure the conversion works correctly &#151; it should always succeed for
+built-in/intrinsic types, but the <tt>if</tt> test is good style.
+<p>The expression <nobr><tt>o.str()</tt></nobr> returns the <nobr><tt>std::string</tt></nobr> that contains
+whatever has been inserted into stream <tt>o</tt>, in this case the string value of
+<tt>x</tt>.
+<p>Here's how to use the <nobr><tt>stringify()</tt></nobr> function:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#include&nbsp;&quot;convert.h&quot;<br>
+&nbsp;<br>
+&nbsp;void&nbsp;myCode()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;double&nbsp;x&nbsp;=&nbsp;</tt><em>...</em><tt>;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;std::string&nbsp;s&nbsp;=&nbsp;&quot;the&nbsp;value&nbsp;is&nbsp;&quot;&nbsp;+&nbsp;stringify(x);<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p><small>[&nbsp;<a href="#top" title="Top of section [38] Miscellaneous technical issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [38] Miscellaneous technical issues">Bottom</a> |&nbsp;<a href="compiler-dependencies.html" title="[37] Compiler dependencies">Previous&nbsp;section</a> |&nbsp;<a href="misc-environmental-issues.html" title="[39] Miscellaneous environmental issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-38.2"></a>
+<div class=FaqTitle><h3>[38.2] How do I convert a <nobr><tt>std::string</tt></nobr> to a number?</h3></div>
+<p>There are two easy ways to do this: you can use the <nobr><tt>&lt;cstdio&gt;</tt></nobr> facilities or
+the <nobr><tt>&lt;iostream&gt;</tt></nobr> library.  In general, <a href="input-output.html#faq-15.1" title="[15.1] Why should I use &lt;iostream&gt; instead of the traditional &lt;cstdio&gt;?">you should
+prefer the <nobr><tt>&lt;iostream&gt;</tt></nobr> library<!--rawtext:[15.1]:rawtext--></a>.
+<p>The <nobr><tt>&lt;iostream&gt;</tt></nobr> library allows you to convert a <nobr><tt>std::string</tt></nobr> to pretty much
+anything using the following syntax (the example converts a <tt>double</tt>, but you
+could substitute pretty much anything that can be read using the <nobr><tt>&gt;&gt;</tt></nobr>
+operator):
+<p><div class=CodeBlock>
+<tt>
+&nbsp;</tt><em>//&nbsp;File:&nbsp;convert.h</em><tt><br>
+&nbsp;#include&nbsp;&lt;iostream&gt;<br>
+&nbsp;#include&nbsp;&lt;sstream&gt;<br>
+&nbsp;#include&nbsp;&lt;string&gt;<br>
+&nbsp;#include&nbsp;&lt;stdexcept&gt;<br>
+&nbsp;<br>
+&nbsp;class&nbsp;BadConversion&nbsp;:&nbsp;public&nbsp;std::runtime_error&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;BadConversion(const&nbsp;std::string&amp;&nbsp;s)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;std::runtime_error(s)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;}<br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;inline&nbsp;double&nbsp;convertToDouble(const&nbsp;std::string&amp;&nbsp;s)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::istringstream&nbsp;i(s);<br>
+&nbsp;&nbsp;&nbsp;double&nbsp;x;<br>
+&nbsp;&nbsp;&nbsp;if&nbsp;(!(i&nbsp;&gt;&gt;&nbsp;x))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;BadConversion(&quot;convertToDouble(\&quot;&quot;&nbsp;+&nbsp;s&nbsp;+&nbsp;&quot;\&quot;)&quot;);<br>
+&nbsp;&nbsp;&nbsp;return&nbsp;x;<br>
+&nbsp;}
+</tt>
+</div>
+<p>The <nobr><tt>std::istringstream</tt></nobr> object <tt>i</tt> offers formatting facilities just like
+those for <nobr><tt>std::cin</tt></nobr>.  You can use manipulators and format flags to control
+the formatting of the result, just as you can for other <nobr><tt>std::cin</tt></nobr>.
+<p>In this example, we initialize the <nobr><tt>std::istringstream</tt></nobr> <tt>i</tt> passing the
+<nobr><tt>std::string</tt></nobr> <tt>s</tt> (for example, <tt>s</tt> might be the string <nobr><tt>&quot;123.456&quot;</tt></nobr>),
+then we <em>extract</em> <tt>i</tt> into <tt>x</tt> via the overloaded extraction operator,
+<nobr><tt>&gt;&gt;</tt></nobr>.  This invokes the iostream formatting facilities to convert as much of
+the string as possible/appropriate based on the type of <tt>x</tt>.
+<p><a href="input-output.html#faq-15.4" title="[15.4] How does that funky while (std::cin &gt;&gt; foo) syntax work?">The <tt>if</tt> test<!--rawtext:[15.4]:rawtext--></a> makes sure the conversion works
+correctly.  For example, if the string contains characters that are
+inappropriate for the type of <tt>x</tt>, the <tt>if</tt> test will fail.
+<p>Here's how to use the <nobr><tt>convertToDouble()</tt></nobr> function:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#include&nbsp;&quot;convert.h&quot;<br>
+&nbsp;<br>
+&nbsp;void&nbsp;myCode()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::string&nbsp;s&nbsp;=&nbsp;</tt><em>...a&nbsp;string&nbsp;representation&nbsp;of&nbsp;a&nbsp;number...</em><tt>;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;double&nbsp;x&nbsp;=&nbsp;convertToDouble(s);<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>You probably want to enhance <nobr><tt>convertToDouble()</tt></nobr> so it optionally checks
+that there aren't any left-over characters:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;inline&nbsp;double&nbsp;convertToDouble(const&nbsp;std::string&amp;&nbsp;s,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bool&nbsp;failIfLeftoverChars&nbsp;=&nbsp;true)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::istringstream&nbsp;i(s);<br>
+&nbsp;&nbsp;&nbsp;double&nbsp;x;<br>
+&nbsp;&nbsp;&nbsp;char&nbsp;c;<br>
+&nbsp;&nbsp;&nbsp;if&nbsp;(!(i&nbsp;&gt;&gt;&nbsp;x)&nbsp;||&nbsp;(failIfLeftoverChars&nbsp;&amp;&amp;&nbsp;i.get(c)))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;BadConversion(&quot;convertToDouble(\&quot;&quot;&nbsp;+&nbsp;s&nbsp;+&nbsp;&quot;\&quot;)&quot;);<br>
+&nbsp;&nbsp;&nbsp;return&nbsp;x;<br>
+&nbsp;}
+</tt>
+</div>
+<p><small>[&nbsp;<a href="#top" title="Top of section [38] Miscellaneous technical issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [38] Miscellaneous technical issues">Bottom</a> |&nbsp;<a href="compiler-dependencies.html" title="[37] Compiler dependencies">Previous&nbsp;section</a> |&nbsp;<a href="misc-environmental-issues.html" title="[39] Miscellaneous environmental issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-38.3"></a>
+<div class=FaqTitle><h3>[38.3] Can I templatize the above functions so they work with other types?</h3></div>
+<p>Yes &#151; for any types that support <tt>iostream</tt>-style input/output.
+<p>For example, suppose you want to convert an object of class <tt>Foo</tt> to a
+<nobr><tt>std::string</tt></nobr>, or perhaps the reverse: from a <nobr><tt>std::string</tt></nobr> to a
+<tt>Foo</tt>.  You could write a whole family of conversion functions based on
+the ones shown in the previous FAQs, or you could write a template function so
+the compiler does the grunt work.
+<p>For example, to convert an arbitrary type <tt>T</tt> to a <nobr><tt>std::string</tt></nobr>,
+provided <tt>T</tt> supports syntax like <nobr><tt>std::cout &lt;&lt; x</tt></nobr>, you can use
+this:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;</tt><em>//&nbsp;File:&nbsp;convert.h</em><tt><br>
+&nbsp;#include&nbsp;&lt;iostream&gt;<br>
+&nbsp;#include&nbsp;&lt;sstream&gt;<br>
+&nbsp;#include&nbsp;&lt;string&gt;<br>
+&nbsp;#include&nbsp;&lt;typeinfo&gt;<br>
+&nbsp;#include&nbsp;&lt;stdexcept&gt;<br>
+&nbsp;<br>
+&nbsp;class&nbsp;BadConversion&nbsp;:&nbsp;public&nbsp;std::runtime_error&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;BadConversion(const&nbsp;std::string&amp;&nbsp;s)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;std::runtime_error(s)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;}<br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;template&lt;class&nbsp;T&gt;<br>
+&nbsp;inline&nbsp;std::string&nbsp;stringify(const&nbsp;T&amp;&nbsp;x)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::ostringstream&nbsp;o;<br>
+&nbsp;&nbsp;&nbsp;if&nbsp;(!(o&nbsp;&lt;&lt;&nbsp;x))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;BadConversion(std::string(&quot;stringify(&quot;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;type_info&lt;T&gt;::name()&nbsp;+&nbsp;&quot;)&quot;);<br>
+&nbsp;&nbsp;&nbsp;return&nbsp;o.str();<br>
+&nbsp;}
+</tt>
+</div>
+<p>Here's how to use the <nobr><tt>stringify()</tt></nobr> function:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#include&nbsp;&quot;convert.h&quot;<br>
+&nbsp;<br>
+&nbsp;void&nbsp;myCode()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;Foo&nbsp;x;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;std::string&nbsp;s&nbsp;=&nbsp;&quot;this&nbsp;is&nbsp;a&nbsp;Foo:&nbsp;&quot;&nbsp;+&nbsp;stringify(x);<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>You can also convert <em>from</em> any type that supports <tt>iostream</tt>
+input by adding this to file <tt>convert.h</tt>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;template&lt;class&nbsp;T&gt;<br>
+&nbsp;inline&nbsp;void&nbsp;convert(const&nbsp;std::string&amp;&nbsp;s,&nbsp;T&amp;&nbsp;x,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bool&nbsp;failIfLeftoverChars&nbsp;=&nbsp;true)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::istringstream&nbsp;i(s);<br>
+&nbsp;&nbsp;&nbsp;char&nbsp;c;<br>
+&nbsp;&nbsp;&nbsp;if&nbsp;(!(i&nbsp;&gt;&gt;&nbsp;x)&nbsp;||&nbsp;(failIfLeftoverChars&nbsp;&amp;&amp;&nbsp;i.get(c)))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;BadConversion(s);<br>
+&nbsp;}
+</tt>
+</div>
+<p>Here's how to use the <nobr><tt>convert()</tt></nobr> function:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#include&nbsp;&quot;convert.h&quot;<br>
+&nbsp;<br>
+&nbsp;void&nbsp;myCode()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::string&nbsp;s&nbsp;=&nbsp;</tt><em>...a&nbsp;string&nbsp;representation&nbsp;of&nbsp;a&nbsp;Foo...</em><tt>;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;Foo&nbsp;x;<br>
+&nbsp;&nbsp;&nbsp;convert(s,&nbsp;x);<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;</tt><em>...code&nbsp;that&nbsp;uses&nbsp;x...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>To simplify your code, particularly for light-weight easy-to-copy types, you
+probably want to add a return-by-value conversion function to file
+<tt>convert.h</tt>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;template&lt;class&nbsp;T&gt;<br>
+&nbsp;inline&nbsp;T&nbsp;convertTo(const&nbsp;std::string&amp;&nbsp;s,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bool&nbsp;failIfLeftoverChars&nbsp;=&nbsp;true)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;T&nbsp;x;<br>
+&nbsp;&nbsp;&nbsp;convert(s,&nbsp;x,&nbsp;failIfLeftoverChars);<br>
+&nbsp;&nbsp;&nbsp;return&nbsp;x;<br>
+&nbsp;}
+</tt>
+</div>
+<p>This simplifies your &quot;usage&quot; code some.  You call it by explicitly specifying
+the template parameter <tt>T</tt>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#include&nbsp;&quot;convert.h&quot;<br>
+&nbsp;<br>
+&nbsp;void&nbsp;myCode()<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::string&nbsp;a&nbsp;=&nbsp;</tt><em>...string&nbsp;representation&nbsp;of&nbsp;an&nbsp;int...</em><tt>;<br>
+&nbsp;&nbsp;&nbsp;std::string&nbsp;b&nbsp;=&nbsp;</tt><em>...string&nbsp;representation&nbsp;of&nbsp;an&nbsp;int...</em><tt>;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;if&nbsp;(convertTo&lt;int&gt;(a)&nbsp;&lt;&nbsp;convertTo&lt;int&gt;(b))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt>;<br>
+&nbsp;}
+</tt>
+</div>
+<p><small>[&nbsp;<a href="#top" title="Top of section [38] Miscellaneous technical issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [38] Miscellaneous technical issues">Bottom</a> |&nbsp;<a href="compiler-dependencies.html" title="[37] Compiler dependencies">Previous&nbsp;section</a> |&nbsp;<a href="misc-environmental-issues.html" title="[39] Miscellaneous environmental issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-38.4"></a>
+<div class=FaqTitle><h3>[38.4] What should be done with macros that contain <tt>if</tt>?</h3></div>
+<p>First, the best thing to do is get rid of the macro
+<a href="big-picture.html#faq-6.15" title="[6.15] Will I sometimes use any so-called &quot;evil&quot; constructs?">whenever practical<!--rawtext:[6.15]:rawtext--></a>.  In fact, get rid of
+<em>all</em> macros: they're <a href="big-picture.html#faq-6.14" title="[6.14] What does the FAQ mean by &quot;such-in-such is evil&quot;?">evil<!--rawtext:[6.14]:rawtext--></a> in 4 different ways:
+<a href="inline-functions.html#faq-9.5" title="[9.5] Why should I use inline functions instead of plain old #define macros?">evil#1<!--rawtext:[9.5]:rawtext--></a>, <a href="misc-technical-issues.html#faq-38.4" title="[38.4] What should be done with macros that contain if?">evil#2<!--rawtext:[38.4]:rawtext--></a>,
+<a href="misc-technical-issues.html#faq-38.5" title="[38.5] What should be done with macros that have multiple lines?">evil#3<!--rawtext:[38.5]:rawtext--></a>, and
+<a href="misc-technical-issues.html#faq-38.6" title="[38.6] What should be done with macros that need to paste two tokens together?">evil#4<!--rawtext:[38.6]:rawtext--></a>, regardless of whether the
+contain an <tt>if</tt> (but they're especially evil if they contain an
+<tt>if</tt>).
+<p>Seriously, sometimes you need to use them
+<a href="big-picture.html#faq-6.15" title="[6.15] Will I sometimes use any so-called &quot;evil&quot; constructs?">anyway<!--rawtext:[6.15]:rawtext--></a>, and when you do, read this to
+learn some safe ways to write a macro that contains an <tt>if</tt>.
+<p>Here's a naive solution:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#define&nbsp;MYMACRO(a,b)&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>(Bad)</em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(xyzzy)&nbsp;asdf()
+</tt>
+</div>
+<p>This will cause big problems if someone uses that macro in an <tt>if</tt> statement:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;if&nbsp;(whatever)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MYMACRO(foo,bar);<br>
+&nbsp;else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;baz;
+</tt>
+</div>
+<p>The problem is that the <nobr><tt>else baz</tt></nobr> nests with the wrong <tt>if</tt>: the compiler sees this:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;if&nbsp;(whatever)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(xyzzy)&nbsp;asdf();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;baz;
+</tt>
+</div>
+<p>Obviously that's a bug.
+<p>The easy solution is to require <nobr><tt>{</tt>...<tt>}</tt></nobr> everywhere, but there's
+another solution that I prefer even if there's a coding standard that requires
+<nobr><tt>{</tt>...<tt>}</tt></nobr> everywhere (just in case someone somewhere forgets): add
+a balancing <tt>else</tt> to the macro definition:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#define&nbsp;MYMACRO(a,b)&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>(Good)</em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(xyzzy)&nbsp;asdf();&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else
+</tt>
+</div>
+<p>Now the compiler will see a balanced set of <tt>if</tt>s and <tt>else</tt>s:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;if&nbsp;(whatever)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(xyzzy)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;asdf();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;&nbsp;&nbsp;</tt><em>//&nbsp;that's&nbsp;an&nbsp;empty&nbsp;statement</em><tt><br>
+&nbsp;else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;baz;
+</tt>
+</div>
+<p>Like I said, I personally do the above even when the coding standard calls for
+<nobr><tt>{</tt>...<tt>}</tt></nobr> in all the <tt>if</tt>s.  Call me paranoid, but I sleep better
+at night and my code has fewer bugs.
+<p>Note: you need to make sure to put a <nobr><tt>;</tt></nobr> at the end of the macro usage
+(<em>not</em> at the end of the macro definition!!).  For example, the macro
+usage should look like this:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;if&nbsp;(whatever)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MYMACRO(foo,bar);&nbsp;&nbsp;</tt><em>//&nbsp;right:&nbsp;there&nbsp;is&nbsp;a&nbsp;<nobr><tt>;</tt></nobr>&nbsp;after&nbsp;<nobr><tt>MYMACRO(</tt>...<tt>)</tt></nobr></em><tt><br>
+&nbsp;else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;baz;
+</tt>
+</div>
+<p>Note: there is another <nobr><tt>#define</tt></nobr> macro (<nobr><tt>do {</tt>...<tt>} while (false)</tt></nobr>)
+that is fairly popular, but <a href="misc-technical-issues.html#faq-38.5" title="[38.5] What should be done with macros that have multiple lines?">that has some
+strange side-effects when used in C++<!--rawtext:[38.5]:rawtext--></a>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [38] Miscellaneous technical issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [38] Miscellaneous technical issues">Bottom</a> |&nbsp;<a href="compiler-dependencies.html" title="[37] Compiler dependencies">Previous&nbsp;section</a> |&nbsp;<a href="misc-environmental-issues.html" title="[39] Miscellaneous environmental issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-38.5"></a>
+<div class=FaqTitle><h3>[38.5] What should be done with macros that have multiple lines?</h3></div>
+<p>Answer: Choke, gag, cough.  Macros are <a href="big-picture.html#faq-6.14" title="[6.14] What does the FAQ mean by &quot;such-in-such is evil&quot;?">evil<!--rawtext:[6.14]:rawtext--></a> in 4
+different ways: <a href="inline-functions.html#faq-9.5" title="[9.5] Why should I use inline functions instead of plain old #define macros?">evil#1<!--rawtext:[9.5]:rawtext--></a>,
+<a href="misc-technical-issues.html#faq-38.4" title="[38.4] What should be done with macros that contain if?">evil#2<!--rawtext:[38.4]:rawtext--></a>, <a href="misc-technical-issues.html#faq-38.5" title="[38.5] What should be done with macros that have multiple lines?">evil#3<!--rawtext:[38.5]:rawtext--></a>,
+and <a href="misc-technical-issues.html#faq-38.6" title="[38.6] What should be done with macros that need to paste two tokens together?">evil#4<!--rawtext:[38.6]:rawtext--></a>.  Kill them <em>all!!</em>
+<p>Seriously, sometimes you need to use them
+<a href="big-picture.html#faq-6.15" title="[6.15] Will I sometimes use any so-called &quot;evil&quot; constructs?">anyway<!--rawtext:[6.15]:rawtext--></a>, and when you do, read this to
+learn some safe ways to write a macro that has multiple statements.
+<p>Here's a naive solution:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#define&nbsp;MYMACRO(a,b)&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>(Bad)</em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;statement1;&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;statement2;&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt>&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;statementN;
+</tt>
+</div>
+<p>This can cause problems if someone uses the macro in a context that demands a
+single statement.  E.g.,
+<p><div class=CodeBlock>
+<tt>
+&nbsp;while&nbsp;(whatever)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MYMACRO(foo,&nbsp;bar);
+</tt>
+</div>
+<p>The naive solution is to wrap the statements inside <nobr><tt>{</tt>...<tt>}</tt></nobr>, such as this:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#define&nbsp;MYMACRO(a,b)&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>(Bad)</em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;statement1;&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;statement2;&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt>&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;statementN;&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</tt>
+</div>
+<p>But this will cause compile-time errors with things like the following:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;if&nbsp;(whatever)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MYMACRO(foo,&nbsp;bar);<br>
+&nbsp;else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;baz;
+</tt>
+</div>
+<p>since the compiler will see a <nobr><tt>} ; else</tt></nobr> which is illegal:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;if&nbsp;(whatever)<br>
+&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;statement1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;statement2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;statementN;<br>
+&nbsp;};&nbsp;&nbsp;</tt><em>//&nbsp;ERROR:&nbsp;<nobr><tt>{&nbsp;}</tt></nobr>&nbsp;cannot&nbsp;have&nbsp;a&nbsp;<nobr><tt>;</tt></nobr>&nbsp;before&nbsp;an&nbsp;<tt>else</tt></em><tt><br>
+&nbsp;else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;baz;
+</tt>
+</div>
+<p>The usual solution in C was to wrap the statements inside a <nobr><tt>do {</tt></nobr>
+<em>&lt;statements go here&gt;</em> <nobr><tt>} while (false)</tt></nobr>, since that will execute the
+<em>&lt;statements go here&gt;</em> part exactly once.  E.g., the macro might look
+like this:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#define&nbsp;MYMACRO(a,&nbsp;b)&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>(So-so)</em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;do&nbsp;{&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;statement1;&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;statement2;&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt>&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;statementN;&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;while&nbsp;(false)
+</tt>
+</div>
+<p>Note that there is no <nobr><tt>;</tt></nobr> at the end of the macro definition.  The <nobr><tt>;</tt></nobr> gets
+added by the user of the macro, such as the following:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;if&nbsp;(whatever)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MYMACRO(foo,&nbsp;bar);&nbsp;&nbsp;</tt><em>//&nbsp;The&nbsp;<nobr><tt>;</tt></nobr>&nbsp;is&nbsp;added&nbsp;here</em><tt><br>
+&nbsp;else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;baz;
+</tt>
+</div>
+<p>This will expand to the following (note that the <nobr><tt>;</tt></nobr> added by the user goes
+after (and completes) the &quot;} while (false)&quot; part):
+<p><div class=CodeBlock>
+<tt>
+&nbsp;if&nbsp;(whatever)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;do&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;statement1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;statement2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;statementN;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;while&nbsp;(false);<br>
+&nbsp;else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;baz;
+</tt>
+</div>
+<p>The only problem with this is that it <em>looks</em> like a loop, and some C++
+compilers refuse to &quot;inline expand&quot; any method that has a loop in it.
+<p>So in C++ the best solution is to wrap the statements in an <nobr><tt>if (true)
+{</tt></nobr> <em>&lt;statements go here&gt;</em> <nobr><tt>} else</tt></nobr> construct (note that the
+<tt>else</tt> is dangling, just like the situation described in the previous FAQ):
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#define&nbsp;MYMACRO(a,&nbsp;b)&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>(Good)</em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(true)&nbsp;{&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;statement1;&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;statement2;&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt>&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;statementN;&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else
+</tt>
+</div>
+<p>Now the code will expand into this (note the balanced set of <tt>if</tt>s and <tt>else</tt>s):
+<p><div class=CodeBlock>
+<tt>
+&nbsp;if&nbsp;(whatever)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(true)&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;statement1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;statement2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;statementN;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;&nbsp;&nbsp;</tt><em>//&nbsp;that's&nbsp;a&nbsp;null&nbsp;statement</em><tt><br>
+&nbsp;else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;baz;
+</tt>
+</div>
+<p><small>[&nbsp;<a href="#top" title="Top of section [38] Miscellaneous technical issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [38] Miscellaneous technical issues">Bottom</a> |&nbsp;<a href="compiler-dependencies.html" title="[37] Compiler dependencies">Previous&nbsp;section</a> |&nbsp;<a href="misc-environmental-issues.html" title="[39] Miscellaneous environmental issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-38.6"></a>
+<div class=FaqTitle><h3>[38.6] What should be done with macros that need to paste two tokens together?</h3></div>
+<p>Groan.  I really <em>hate</em> macros.  Yes
+<a href="big-picture.html#faq-6.15" title="[6.15] Will I sometimes use any so-called &quot;evil&quot; constructs?">they're useful sometimes<!--rawtext:[6.15]:rawtext--></a>, and yes I use
+them.  But I always wash my hands afterwards.  Twice.  Macros are
+<a href="big-picture.html#faq-6.14" title="[6.14] What does the FAQ mean by &quot;such-in-such is evil&quot;?">evil<!--rawtext:[6.14]:rawtext--></a> in 4 different ways:
+<a href="inline-functions.html#faq-9.5" title="[9.5] Why should I use inline functions instead of plain old #define macros?">evil#1<!--rawtext:[9.5]:rawtext--></a>, <a href="misc-technical-issues.html#faq-38.4" title="[38.4] What should be done with macros that contain if?">evil#2<!--rawtext:[38.4]:rawtext--></a>,
+<a href="misc-technical-issues.html#faq-38.5" title="[38.5] What should be done with macros that have multiple lines?">evil#3<!--rawtext:[38.5]:rawtext--></a>, and
+<a href="misc-technical-issues.html#faq-38.6" title="[38.6] What should be done with macros that need to paste two tokens together?">evil#4<!--rawtext:[38.6]:rawtext--></a>.
+<p>Okay, here we go again, desperately trying to make an inherently evil thing a
+little <a href="big-picture.html#faq-6.15" title="[6.15] Will I sometimes use any so-called &quot;evil&quot; constructs?">less evil<!--rawtext:[6.15]:rawtext--></a>.
+<p>First, the basic approach is use the ISO/ANSI C and ISO/ANSI C++ &quot;token
+pasting&quot; feature: <nobr><tt>##</tt></nobr>.  On the surface this would look like the
+following:
+<p>Suppose you have a macro called &quot;MYMACRO&quot;, and suppose you're passing a token
+as the parameter of that macro, and suppose you want to concatenate that token
+with the token &quot;Tmp&quot; to create a variable name.  For example, the use of
+<nobr><tt>MYMACRO(Foo)</tt></nobr> would create a variable named <tt>FooTmp</tt> and the use
+of <nobr><tt>MYMACRO(Bar)</tt></nobr> would create a variable named <tt>BarTmp</tt>.  In this
+case the naive approach would be to say this:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#define&nbsp;MYMACRO(a)&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>/*...*/</em><tt>&nbsp;a&nbsp;##&nbsp;Tmp&nbsp;</tt><em>/*...*/</em><tt>
+</tt>
+</div>
+<p>However you need a double layer of indirection when you use <nobr><tt>##</tt></nobr>.
+Basically you need to create a special macro for &quot;token pasting&quot; such as:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#define&nbsp;name2(a,b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name2_hidden(a,b)<br>
+&nbsp;#define&nbsp;name2_hidden(a,b)&nbsp;&nbsp;a&nbsp;##&nbsp;b
+</tt>
+</div>
+<p>Trust me on this &#151; you really need to do this!  (And <em>please</em> nobody
+write me saying it sometimes works without the second layer of
+indirection. Try concatenating a symbol with <tt>__LINE__</tt> and see what
+happens then.)
+<p>Then replace your use of <nobr><tt>a ## Tmp</tt></nobr> with <nobr><tt>name2(a,Tmp)</tt></nobr>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#define&nbsp;MYMACRO(a)&nbsp;\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>/*...*/</em><tt>&nbsp;name2(a,Tmp)&nbsp;</tt><em>/*...*/</em><tt>
+</tt>
+</div>
+<p>And if you have a three-way concatenation to do (e.g., to paste three tokens
+together), you'd create a <nobr><tt>name3()</tt></nobr> macro like this:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#define&nbsp;name3(a,b,c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name3_hidden(a,b,c)<br>
+&nbsp;#define&nbsp;name3_hidden(a,b,c)&nbsp;&nbsp;a&nbsp;##&nbsp;b&nbsp;##&nbsp;c
+</tt>
+</div>
+<p><small>[&nbsp;<a href="#top" title="Top of section [38] Miscellaneous technical issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [38] Miscellaneous technical issues">Bottom</a> |&nbsp;<a href="compiler-dependencies.html" title="[37] Compiler dependencies">Previous&nbsp;section</a> |&nbsp;<a href="misc-environmental-issues.html" title="[39] Miscellaneous environmental issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-38.7"></a>
+<div class=FaqTitle><h3>[38.7] Why can't the compiler find my header file in <nobr><tt>#include &quot;c:\test.hpp&quot;</tt></nobr>&nbsp;?</h3></div>
+<p>Because <nobr><tt>&quot;\t&quot;</tt></nobr> is a tab character.
+<p>You should use forward slashes (<nobr><tt>&quot;/&quot;</tt></nobr>) rather than backslashes
+(<nobr><tt>&quot;\&quot;</tt></nobr>) in your <nobr><tt>#include</tt></nobr> filenames, even on an operating system that
+uses backslashes such as DOS, Windows, OS/2, etc.  For example:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;#if&nbsp;1<br>
+&nbsp;&nbsp;&nbsp;#include&nbsp;&quot;/version/next/alpha/beta/test.hpp&quot;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;RIGHT!</em><tt><br>
+&nbsp;#else<br>
+&nbsp;&nbsp;&nbsp;#include&nbsp;&quot;\version\next\alpha\beta\test.hpp&quot;&nbsp;&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;WRONG!</em><tt><br>
+&nbsp;#endif
+</tt>
+</div>
+<p>Note that <a href="input-output.html#faq-15.16" title="[15.16] Why can't I open a file in a different directory such as &quot;..\test.dat&quot;?">you should use forward slashes (<nobr><tt>&quot;/&quot;</tt></nobr>) on all your
+filenames<!--rawtext:[15.16]:rawtext--></a>, not just on your <nobr><tt>#include</tt></nobr> files.
+<p><small>[&nbsp;<a href="#top" title="Top of section [38] Miscellaneous technical issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [38] Miscellaneous technical issues">Bottom</a> |&nbsp;<a href="compiler-dependencies.html" title="[37] Compiler dependencies">Previous&nbsp;section</a> |&nbsp;<a href="misc-environmental-issues.html" title="[39] Miscellaneous environmental issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-38.8"></a>
+<div class=FaqTitle><h3>[38.8] What are the C++ scoping rules for <tt>for</tt> loops? <span class=Updated>&nbsp;Updated!&nbsp;</span></h3></div>
+<small><em>[Recently replaced the pithy one-liner at the very beginning and corrected another typo thanks to <a href="mailto:d01mg@efd.lth.se" title="d01mg@efd.lth.se">Mans Gunnarsson</a> (in 4/03).  <a href="misc-environmental-issues.html#faq-39.3" title="[39.3] Are there any pretty-printers that reformat C++ source code?">Click here to go to the next FAQ in the &quot;chain&quot; of recent changes<!--rawtext:[39.3]:rawtext--></a>.]</em></small>
+<p>Loop variables declared in the <tt>for</tt> statement proper are local to the loop body.
+<p>The following code used to be legal, but not any more, since <tt>i</tt>'s scope is now
+inside the <tt>for</tt> loop only:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;for&nbsp;(int&nbsp;i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;10;&nbsp;++i)&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;</tt><em>/*&nbsp;something&nbsp;weird&nbsp;*/</em><tt>&nbsp;)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}<br>
+&nbsp;<br>
+&nbsp;if&nbsp;(i&nbsp;!=&nbsp;10)&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;</tt><em>//&nbsp;We&nbsp;exited&nbsp;the&nbsp;loop&nbsp;early;&nbsp;handle&nbsp;this&nbsp;situation&nbsp;separately</em><tt><br>
+&nbsp;&nbsp;&nbsp;</tt><em>...</em><tt><br>
+&nbsp;}
+</tt>
+</div>
+<p>If you're working with some old code that uses a <tt>for</tt> loop variable after the
+<tt>for</tt> loop, the compiler will (hopefully!) give you a warning or an error
+message such as &quot;Variable <tt>i</tt> is not in scope&quot;.
+<p>Unfortunately there are cases when old code will compile cleanly, but will do
+something different &#151; the wrong thing.  For example, if the old code has a
+global variable <tt>i</tt>, the above code <nobr><tt>if (i != 10)</tt></nobr> silently change in
+meaning from the <tt>for</tt> loop variable <tt>i</tt> under the old rule to the global
+variable <tt>i</tt> under the current rule.  This is not good.  If you're concerned,
+you should check with your compiler to see if it has some option that forces
+it to use the old rules with your old code.
+<p>Note: You should avoid having the same variable name in nested scopes, such as
+a global <tt>i</tt> and a local <tt>i</tt>.  In fact, you should avoid globals althogether
+whenever you can.  If you abided by these coding standards in your old code,
+you won't be hurt by a lot of things, including the scoping rules for <tt>for</tt>
+loop variables.
+<p>Note: If your new code might get compiled with an old compiler, you might want
+to put <nobr><tt>{</tt>...<tt>}</tt></nobr> around the <tt>for</tt> loop to force even old compilers
+to scope the loop variable to the loop.  And <em>please</em>
+<a href="big-picture.html#faq-6.15" title="[6.15] Will I sometimes use any so-called &quot;evil&quot; constructs?">try to<!--rawtext:[6.15]:rawtext--></a> avoid the temptation to use
+macros for this.  Remember: macros are <a href="big-picture.html#faq-6.14" title="[6.14] What does the FAQ mean by &quot;such-in-such is evil&quot;?">evil<!--rawtext:[6.14]:rawtext--></a> in 4
+different ways: <a href="inline-functions.html#faq-9.5" title="[9.5] Why should I use inline functions instead of plain old #define macros?">evil#1<!--rawtext:[9.5]:rawtext--></a>,
+<a href="misc-technical-issues.html#faq-38.4" title="[38.4] What should be done with macros that contain if?">evil#2<!--rawtext:[38.4]:rawtext--></a>, <a href="misc-technical-issues.html#faq-38.5" title="[38.5] What should be done with macros that have multiple lines?">evil#3<!--rawtext:[38.5]:rawtext--></a>,
+and <a href="misc-technical-issues.html#faq-38.6" title="[38.6] What should be done with macros that need to paste two tokens together?">evil#4<!--rawtext:[38.6]:rawtext--></a>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [38] Miscellaneous technical issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [38] Miscellaneous technical issues">Bottom</a> |&nbsp;<a href="compiler-dependencies.html" title="[37] Compiler dependencies">Previous&nbsp;section</a> |&nbsp;<a href="misc-environmental-issues.html" title="[39] Miscellaneous environmental issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-38.9"></a>
+<div class=FaqTitle><h3>[38.9] Why can't I overload a function by its return type?</h3></div>
+<p>If you declare both <nobr><tt>char f()</tt></nobr> and <nobr><tt>float f()</tt></nobr>, the compiler gives
+you an error message, since calling simply <nobr><tt>f()</tt></nobr> would be ambiguous.
+<p><small>[&nbsp;<a href="#top" title="Top of section [38] Miscellaneous technical issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [38] Miscellaneous technical issues">Bottom</a> |&nbsp;<a href="compiler-dependencies.html" title="[37] Compiler dependencies">Previous&nbsp;section</a> |&nbsp;<a href="misc-environmental-issues.html" title="[39] Miscellaneous environmental issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-38.10"></a>
+<div class=FaqTitle><h3>[38.10] What is &quot;persistence&quot;? What is a &quot;persistent object&quot;?</h3></div>
+<p>A persistent object can live after the program which created it has stopped.
+Persistent objects can even outlive different versions of the creating program,
+can outlive the disk system, the operating system, or even the hardware on
+which the OS was running when they were created.
+<p>The challenge with persistent objects is to effectively store their member
+function code out on secondary storage along with their data bits (and the data
+bits and member function code of all member objects, and of all their member
+objects and base classes, etc).  This is non-trivial when you have to do it
+yourself.  In C++, you have to do it yourself.  C++/OO databases can help hide
+the mechanism for all this.
+<p><small>[&nbsp;<a href="#top" title="Top of section [38] Miscellaneous technical issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [38] Miscellaneous technical issues">Bottom</a> |&nbsp;<a href="compiler-dependencies.html" title="[37] Compiler dependencies">Previous&nbsp;section</a> |&nbsp;<a href="misc-environmental-issues.html" title="[39] Miscellaneous environmental issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-38.11"></a>
+<div class=FaqTitle><h3>[38.11] How can I create two classes that both know about each other?</h3></div>
+<p>Use a forward declaration.
+<p>Sometimes you must create two classes that use each other.  This is called a
+circular dependency.  For example:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Fred&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;Barney*&nbsp;foo();&nbsp;&nbsp;</tt><em>//&nbsp;Error:&nbsp;Unknown&nbsp;symbol&nbsp;'Barney'</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Barney&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;Fred*&nbsp;bar();<br>
+&nbsp;};
+</tt>
+</div>
+<p>The <tt>Fred</tt> class has a member function that returns a <nobr><tt>Barney*</tt></nobr>,
+and the <tt>Barney</tt> class has a member function that returns a <tt>Fred</tt>.
+You may inform the compiler about the existence of a class or structure by
+using a &quot;forward declaration&quot;:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Barney;
+</tt>
+</div>
+<p>This line must appear <em>before</em> the declaration of class <tt>Fred</tt>.  It
+simply informs the compiler that the name <tt>Barney</tt> is a class, and
+further it is a promise to the compiler that you will eventually supply a
+complete definition of that class.
+<p><small>[&nbsp;<a href="#top" title="Top of section [38] Miscellaneous technical issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [38] Miscellaneous technical issues">Bottom</a> |&nbsp;<a href="compiler-dependencies.html" title="[37] Compiler dependencies">Previous&nbsp;section</a> |&nbsp;<a href="misc-environmental-issues.html" title="[39] Miscellaneous environmental issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-38.12"></a>
+<div class=FaqTitle><h3>[38.12] What special considerations are needed when forward declarations are used with member objects?</h3></div>
+<p>The order of class declarations is critical.
+<p>The compiler will give you a compile-time error if the first class contains an
+object (as opposed to a pointer to an object) of the second class.  For example,
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Fred;&nbsp;&nbsp;</tt><em>//&nbsp;Okay:&nbsp;<a href="misc-technical-issues.html#faq-38.11" title="[38.11] How can I create two classes that both know about each other?">forward&nbsp;declaration<!--rawtext:[38.11]:rawtext--></a></em><tt><br>
+&nbsp;<br>
+&nbsp;class&nbsp;Barney&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;Fred&nbsp;x;&nbsp;&nbsp;</tt><em>//&nbsp;Error:&nbsp;The&nbsp;declaration&nbsp;of&nbsp;<tt>Fred</tt>&nbsp;is&nbsp;incomplete</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Fred&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;Barney*&nbsp;y;<br>
+&nbsp;};
+</tt>
+</div>
+<p>One way to solve this problem is to reverse order of the classes so the &quot;used&quot;
+class is defined before the class that uses it:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Barney;&nbsp;&nbsp;</tt><em>//&nbsp;Okay:&nbsp;<a href="misc-technical-issues.html#faq-38.11" title="[38.11] How can I create two classes that both know about each other?">forward&nbsp;declaration<!--rawtext:[38.11]:rawtext--></a></em><tt><br>
+&nbsp;<br>
+&nbsp;class&nbsp;Fred&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;Barney*&nbsp;y;&nbsp;&nbsp;</tt><em>//&nbsp;Okay:&nbsp;the&nbsp;first&nbsp;can&nbsp;point&nbsp;to&nbsp;an&nbsp;object&nbsp;of&nbsp;the&nbsp;second</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Barney&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;Fred&nbsp;x;&nbsp;&nbsp;</tt><em>//&nbsp;Okay:&nbsp;the&nbsp;second&nbsp;can&nbsp;have&nbsp;an&nbsp;object&nbsp;of&nbsp;the&nbsp;first</em><tt><br>
+&nbsp;};
+</tt>
+</div>
+<p>Note that it is never legal for each class to fully contain an object of the
+other class since that would imply infinitely large objects.  In other words,
+if an instance of <tt>Fred</tt> contains a <tt>Barney</tt> (as opposed to a
+<nobr><tt>Barney*</tt></nobr>), and a <tt>Barney</tt> contains a <tt>Fred</tt> (as opposed to a
+<nobr><tt>Fred*</tt></nobr>), the compiler will give you an error.
+<p><small>[&nbsp;<a href="#top" title="Top of section [38] Miscellaneous technical issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [38] Miscellaneous technical issues">Bottom</a> |&nbsp;<a href="compiler-dependencies.html" title="[37] Compiler dependencies">Previous&nbsp;section</a> |&nbsp;<a href="misc-environmental-issues.html" title="[39] Miscellaneous environmental issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-38.13"></a>
+<div class=FaqTitle><h3>[38.13] What special considerations are needed when forward declarations are used with inline functions?</h3></div>
+<p>The order of class declarations is critical.
+<p>The compiler will give you a compile-time error if the first class contains an
+inline function that invokes a member function of the second class.  For
+example,
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Fred;&nbsp;&nbsp;</tt><em>//&nbsp;Okay:&nbsp;<a href="misc-technical-issues.html#faq-38.11" title="[38.11] How can I create two classes that both know about each other?">forward&nbsp;declaration<!--rawtext:[38.11]:rawtext--></a></em><tt><br>
+&nbsp;<br>
+&nbsp;class&nbsp;Barney&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;void&nbsp;method()<br>
+&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x-&gt;yabbaDabbaDo();&nbsp;&nbsp;</tt><em>//&nbsp;Error:&nbsp;<tt>Fred</tt>&nbsp;used&nbsp;before&nbsp;it&nbsp;was&nbsp;defined</em><tt><br>
+&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;private:<br>
+&nbsp;&nbsp;&nbsp;Fred*&nbsp;x;&nbsp;&nbsp;</tt><em>//&nbsp;Okay:&nbsp;the&nbsp;first&nbsp;can&nbsp;point&nbsp;to&nbsp;an&nbsp;object&nbsp;of&nbsp;the&nbsp;second</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Fred&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;void&nbsp;yabbaDabbaDo();<br>
+&nbsp;private:<br>
+&nbsp;&nbsp;&nbsp;Barney*&nbsp;y;<br>
+&nbsp;};
+</tt>
+</div>
+<p>One way to solve this problem is to move the offending member function into the
+<tt>Barney.cpp</tt> file as a non-<tt>inline</tt> member function.  Another way
+to solve this problem is to reverse order of the classes so the &quot;used&quot; class is
+defined before the class that uses it:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Barney;&nbsp;&nbsp;</tt><em>//&nbsp;Okay:&nbsp;<a href="misc-technical-issues.html#faq-38.11" title="[38.11] How can I create two classes that both know about each other?">forward&nbsp;declaration<!--rawtext:[38.11]:rawtext--></a></em><tt><br>
+&nbsp;<br>
+&nbsp;class&nbsp;Fred&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;void&nbsp;yabbaDabbaDo();<br>
+&nbsp;private:<br>
+&nbsp;&nbsp;&nbsp;Barney*&nbsp;y;&nbsp;&nbsp;</tt><em>//&nbsp;Okay:&nbsp;the&nbsp;first&nbsp;can&nbsp;point&nbsp;to&nbsp;an&nbsp;object&nbsp;of&nbsp;the&nbsp;second</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Barney&nbsp;{<br>
+&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;void&nbsp;method()<br>
+&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x-&gt;yabbaDabbaDo();&nbsp;&nbsp;</tt><em>//&nbsp;Okay:&nbsp;<tt>Fred</tt>&nbsp;is&nbsp;fully&nbsp;defined&nbsp;at&nbsp;this&nbsp;point</em><tt><br>
+&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;private:<br>
+&nbsp;&nbsp;&nbsp;Fred*&nbsp;x;<br>
+&nbsp;};
+</tt>
+</div>
+<p>Just remember this: Whenever you use <a href="misc-technical-issues.html#faq-38.11" title="[38.11] How can I create two classes that both know about each other?">forward
+declaration<!--rawtext:[38.11]:rawtext--></a>, you can use only that symbol; you may not do anything that
+requires knowledge of the forward-declared class.  Specifically you may not
+access any members of the second class.
+<p><small>[&nbsp;<a href="#top" title="Top of section [38] Miscellaneous technical issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [38] Miscellaneous technical issues">Bottom</a> |&nbsp;<a href="compiler-dependencies.html" title="[37] Compiler dependencies">Previous&nbsp;section</a> |&nbsp;<a href="misc-environmental-issues.html" title="[39] Miscellaneous environmental issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="faq-38.14"></a>
+<div class=FaqTitle><h3>[38.14] Why can't I put a forward-declared class in a <nobr><tt>std::vector&lt;&gt;</tt></nobr>?</h3></div>
+<p>Because the <nobr><tt>std::vector&lt;&gt;</tt></nobr> template needs to know the <nobr><tt>sizeof()</tt></nobr> its
+contained elements, plus the <nobr><tt>std::vector&lt;&gt;</tt></nobr> probably accesses members of the
+contained elements (such as the copy constructor, the destructor, etc.).  For
+example,
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Fred;&nbsp;&nbsp;</tt><em>//&nbsp;Okay:&nbsp;<a href="misc-technical-issues.html#faq-38.11" title="[38.11] How can I create two classes that both know about each other?">forward&nbsp;declaration<!--rawtext:[38.11]:rawtext--></a></em><tt><br>
+&nbsp;<br>
+&nbsp;class&nbsp;Barney&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::vector&lt;Fred&gt;&nbsp;x;&nbsp;&nbsp;</tt><em>//&nbsp;Error:&nbsp;the&nbsp;declaration&nbsp;of&nbsp;<tt>Fred</tt>&nbsp;is&nbsp;incomplete</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Fred&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;Barney*&nbsp;y;<br>
+&nbsp;};
+</tt>
+</div>
+<p>One solution to this problem is to change <tt>Barney</tt> so it uses a
+<nobr><tt>std::vector&lt;&gt;</tt></nobr> of <tt>Fred</tt> <em>pointers</em> rather than a
+<nobr><tt>std::vector&lt;&gt;</tt></nobr> of <tt>Fred</tt> <em>objects</em>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Fred;&nbsp;&nbsp;</tt><em>//&nbsp;Okay:&nbsp;<a href="misc-technical-issues.html#faq-38.11" title="[38.11] How can I create two classes that both know about each other?">forward&nbsp;declaration<!--rawtext:[38.11]:rawtext--></a></em><tt><br>
+&nbsp;<br>
+&nbsp;class&nbsp;Barney&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::vector&lt;Fred*&gt;&nbsp;x;&nbsp;&nbsp;</tt><em>//&nbsp;Okay:&nbsp;<tt>Barney</tt>&nbsp;can&nbsp;use&nbsp;<tt>Fred</tt>&nbsp;pointers</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Fred&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;Barney*&nbsp;y;<br>
+&nbsp;};
+</tt>
+</div>
+<p>Another solution to this problem is to reverse the order of the classes so
+<tt>Fred</tt> is defined before <tt>Barney</tt>:
+<p><div class=CodeBlock>
+<tt>
+&nbsp;class&nbsp;Barney;&nbsp;&nbsp;</tt><em>//&nbsp;Okay:&nbsp;<a href="misc-technical-issues.html#faq-38.11" title="[38.11] How can I create two classes that both know about each other?">forward&nbsp;declaration<!--rawtext:[38.11]:rawtext--></a></em><tt><br>
+&nbsp;<br>
+&nbsp;class&nbsp;Fred&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;Barney*&nbsp;y;&nbsp;&nbsp;</tt><em>//&nbsp;Okay:&nbsp;the&nbsp;first&nbsp;can&nbsp;point&nbsp;to&nbsp;an&nbsp;object&nbsp;of&nbsp;the&nbsp;second</em><tt><br>
+&nbsp;};<br>
+&nbsp;<br>
+&nbsp;class&nbsp;Barney&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;std::vector&lt;Fred&gt;&nbsp;x;&nbsp;&nbsp;</tt><em>//&nbsp;Okay:&nbsp;<tt>Fred</tt>&nbsp;is&nbsp;fully&nbsp;defined&nbsp;at&nbsp;this&nbsp;point</em><tt><br>
+&nbsp;};
+</tt>
+</div>
+<p>Just remember this: Whenever you use a class as a template parameter, the
+declaration of that class must be complete and not simply <a href="misc-technical-issues.html#faq-38.11" title="[38.11] How can I create two classes that both know about each other?">forward declared<!--rawtext:[38.11]:rawtext--></a>.
+<p><small>[&nbsp;<a href="#top" title="Top of section [38] Miscellaneous technical issues">Top</a> |&nbsp;<a href="#bottom" title="Bottom of section [38] Miscellaneous technical issues">Bottom</a> |&nbsp;<a href="compiler-dependencies.html" title="[37] Compiler dependencies">Previous&nbsp;section</a> |&nbsp;<a href="misc-environmental-issues.html" title="[39] Miscellaneous environmental issues">Next&nbsp;section</a> |&nbsp;<a href="index.html#search-the-faq" title="Look up FAQs several ways">Search&nbsp;the&nbsp;FAQ</a> ]</small>
+<hr>
+<p><a name="bottom"></a>
+<a href="mailto:cline@parashift.com" title="cline@parashift.com"><img src="mbox.gif" height=26 width=89 alt="E-Mail">&nbsp;E-mail the author</a><br>
+[&nbsp;<a href="index.html" title="C++ FAQ Lite"><em>C++ FAQ Lite</em></a>
+|&nbsp;<a href="index.html#table-of-contents" title="Table of contents">Table&nbsp;of&nbsp;contents</a>
+|&nbsp;<a href="subject-index.html" title="Subject index; 3706 links to 2361 topics">Subject&nbsp;index</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.1" title="[1.1] Author">About&nbsp;the&nbsp;author</a>
+|&nbsp;<a href="copy-permissions.html#faq-1.2" title="[1.2] Copyright Notice">&copy;</a>
+|&nbsp;<a href="on-line-availability.html#faq-2.2" title="[2.2] How can I get a copy of all the HTML files of C++ FAQ Lite so I can read them Off-Line?">Download&nbsp;your&nbsp;own&nbsp;copy</a>&nbsp;]<br>
+<small>Revised May 2, 2003</small>
+</body>
+</html>
